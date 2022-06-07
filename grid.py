@@ -1,8 +1,9 @@
 from car import Car
 #from loader import loader
 
+
 class Grid():
-    def __init__(self, size = 7):
+    def __init__(self, size=7):
         self._grid = []
         for i in range(size):
             self._grid.append(size * ['*'])
@@ -17,7 +18,6 @@ class Grid():
                 self._grid[row][col + i] = name
             elif orientation == 'V':
                 self._grid[row + i][col] = name
-
 
     def move(self, name, distance):
         car = self._cars[name]
@@ -42,7 +42,14 @@ class Grid():
         for row in self._grid:
             print(''.join(row))
 
+    def possible_cars(self, x, y):
+        """ Generates a set of cars that could move to given coordinates. """
+        possible_cars = set()
+        for car in self._cars:
+            if car.can_move_to(x, y):
+                possible_cars.add(car)
 
+        return possible_cars
 
 
 if __name__ == '__main__':
