@@ -50,7 +50,20 @@ class Grid():
                     list_of_empties.append(element)
         return list_of_empties
 
-    
+    # geeft de buren van dingen op bepaald x,y coordinaat
+    def neighbours(self, x, y):
+        coordinate = self._grid[y][x]
+        neighbours = []
+
+        for i in [-1, 1]:
+            neighbour = self._grid[y + i][x]
+            neighbours.append([neighbour, (y + i, x)])
+        for j in [-1, 1]:
+            neighbour = self._grid[y][x + j]
+            neighbours.append([neighbour, (y, x + j)])
+
+        print(f"{coordinate} is op {x, y} met buren, {neighbours}")
+
 
     def print_grid(self):
         for row in self._grid:

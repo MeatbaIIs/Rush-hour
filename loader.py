@@ -48,6 +48,7 @@ if __name__ == "__main__":
 
     grid.print_grid()
     grid.check_empties()
+    grid.neighbours(1,1)
 
 
 
