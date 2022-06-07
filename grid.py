@@ -24,8 +24,8 @@ class Grid():
         coor = car.coordinates()
         orientation = car._orientation
         length = car._length
-        col = coor[0]
-        row = coor[1]
+        row = coor[0]
+        col = coor[1]
 
         for i in range(length):
             if orientation == 'H':
@@ -38,14 +38,60 @@ class Grid():
         if name == 'X':
             car.win()
 
+    def possible_moves(self, name):
+        moves = set()
+        car = self._cars[name]
+        orientation = car._orientation
+        length = car._length
+        coor = car.coordinates()
+        col = coor[0]
+        row = coor[1]
+        print(col)
+        if orientation == 'H':
+            distance = 0
+            for i in range(row + length, self._size):
+                if self._grid[i][col] == '*':
+                    distance += 1
+                    moves.add(distance)
+                else:
+                    break
+
+            distance = 0
+            for i in range(row, -1, -1):
+                if self._grid[i][col] == '*':
+                    distance -= 1
+                    moves.add(distance)
+                else:
+                    break
+
+        elif orientation == 'V':
+            distance = 0
+            for i in range(col + length, self._size):
+                if self._grid[row][i] == '*':
+                    distance += 1
+                    moves.add(distance)
+                else:
+                    break
+
+            distance = 0
+            for i in range(row, -1, -1):
+                print(i, row)
+                if self._grid[row][i] == '*':
+                    distance -= 1
+                    moves.add(distance)
+                else:
+                    break
+
+        return moves
+
     def print_grid(self):
         for row in self._grid:
             print(''.join(row))
 
-
-
-
 if __name__ == '__main__':
     grid = Grid()
-    grid.add_car('X', 'V', 3, 0, 2)
+    grid.add_car('X', 'V', 0, 3, 2)
     grid.print_grid()
+    #grid.move('X', 3)
+    #grid.print_grid()
+    print(grid.possible_moves('X'))
