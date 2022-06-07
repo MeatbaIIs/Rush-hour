@@ -3,7 +3,9 @@ from car import Car
 
 class Grid():
     def __init__(self, size = 7):
-        self._grid = size * [size * ['*']]
+        self._grid = []
+        for i in range(7):
+            self._grid.append(size * ['*'])
         self._cars = {}
         self._size = size
 
@@ -39,4 +41,5 @@ class Grid():
 
 if __name__ == '__main__':
     grid = Grid()
+    grid.add_car('X', 'V', 3, 0, 2)
     grid.print_grid()
