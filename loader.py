@@ -10,23 +10,26 @@ import re
 
 def main(input_file_name):
     # Get grid size from the input file name
-    size = re.search("Rushhour.+x", input_file_name).group()
-    size = re.search("\d", size).group()
+    size = re.search(
+        "Rushhour.+x", input_file_name).group().lstrip("Rushhour").rstrip("x")
 
     # Load grid
-    grid = Grid(size)
+    grid = Grid(int(size))
 
     # Load cars in the grid
     with open(input_file_name) as f:
+
         # Skip over first line
         f.readline()
+
         while True:
             line = f.readline().strip().split(",")
 
             if line == [""]:
                 break
 
-            grid.add_car(line[0], line[1], line[2], line[3], line[4])
+            grid.add_car(line[0], line[1], int(line[2]),
+                         int(line[3]), int(line[4]))
 
 
 if __name__ == "__main__":
