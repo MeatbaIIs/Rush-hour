@@ -2,12 +2,14 @@ from car import Car
 #from loader import loader
 
 class Grid():
-    def __init__(self, size = 7):
+    def __init__(self, size):
         self._grid = []
         for i in range(size):
             self._grid.append(size * ['*'])
         self._cars = {}
         self._size = size
+        # is true when red car is at finish from move
+        self._win = False
 
     def add_car(self, name, orientation, col, row, length):
         car = Car(name, orientation, col, row, length, self._size)
@@ -17,7 +19,7 @@ class Grid():
                 self._grid[row][col + i] = name
             elif orientation == 'V':
                 self._grid[row + i][col] = name
-
+                                                                                                                                                                                                      
 
     def move(self, name, distance):
         car = self._cars[name]
@@ -36,7 +38,19 @@ class Grid():
                 self._grid[row + i + distance][col] = name
 
         if name == 'X':
-            car.win()
+            self._win = car.win()
+
+    def check_empties(self):
+        list_of_empties = []
+        for y in range(self._size):
+            for x in range(self._size):
+                element = self._grid[y][x] 
+                if element == "*":
+                    # print(f"{x, y} are coordinates for * ")
+                    list_of_empties.append(element)
+        return list_of_empties
+
+    
 
     def possible_moves(self, name):
         moves = set()
@@ -73,6 +87,7 @@ class Grid():
                 else:
                     break
 
+<<<<<<< HEAD
             distance = 0
             for i in range(row, -1, -1):
                 print(i, row)
@@ -95,3 +110,9 @@ if __name__ == '__main__':
     #grid.move('X', 3)
     #grid.print_grid()
     print(grid.possible_moves('X'))
+=======
+if __name__ == '__main__':
+    grid = Grid()
+    # grid.add_car('X', 'V', 3, 0, 2)
+    # grid.print_grid()
+>>>>>>> 93505f2c4c8cde4a010b37e4495d53b24320abde

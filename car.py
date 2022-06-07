@@ -10,7 +10,7 @@ class Car():
 
     # gives the coordinates of the car as a list of (x, y)
     def coordinates(self):
-        coordinate = [self._row, self._col]
+        coordinate = [self._col, self._row]
 
         return coordinate
     
@@ -18,7 +18,7 @@ class Car():
     def win(self):
         # red car is denoted by X
         if self._name == "X":
-            if self._col == self._grid_size:
+            if self._col == self._grid_size - 1:
                 return True
             else:
                 return False

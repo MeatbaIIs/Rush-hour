@@ -31,6 +31,7 @@ def main(input_file_name):
             grid.add_car(line[0], line[1], int(line[2]) - 1,
                          int(line[3]) - 1, int(line[4]))
 
+    return grid
 
 if __name__ == "__main__":
     # set-up parsing command line arguments
@@ -43,4 +44,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # run main with provided arguments
-    main(args.input)
+    grid = main(args.input)
+
+    grid.print_grid()
+    grid.check_empties()
+
+
+
