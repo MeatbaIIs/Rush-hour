@@ -4,7 +4,7 @@ from car import Car
 class Grid():
     def __init__(self, size = 7):
         self._grid = []
-        for i in range(7):
+        for i in range(size):
             self._grid.append(size * ['*'])
         self._cars = {}
         self._size = size
@@ -17,6 +17,7 @@ class Grid():
                 self._grid[row][col + i] = name
             elif orientation == 'V':
                 self._grid[row + i][col] = name
+
 
     def move(self, name, distance):
         car = self._cars[name]
@@ -34,9 +35,14 @@ class Grid():
                 self._grid[row + i][col] = '*'
                 self._grid[row + i + distance][col] = name
 
+        if name == 'X':
+            car.win()
+
     def print_grid(self):
         for row in self._grid:
             print(''.join(row))
+
+
 
 
 if __name__ == '__main__':
