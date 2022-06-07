@@ -1,4 +1,4 @@
-#from car import Car
+from car import Car
 #from loader import loader
 
 class Grid():
@@ -7,14 +7,14 @@ class Grid():
         self._cars = {}
         self._size = size
 
-    # def add_car(self, name, orientation, col, row, length):
-    #     car = Car(name, orientation, col, row, length, self._size)
-    #     self._cars[name] = car
-    #     for i in range(length):
-    #         if orientation == 'H':
-    #             self._grid[row][col + i] = name
-    #         elif orientation == 'V':
-    #             self._grid[row + i][col] = name
+    def add_car(self, name, orientation, col, row, length):
+        car = Car(name, orientation, col, row, length, self._size)
+        self._cars[name] = car
+        for i in range(length):
+            if orientation == 'H':
+                self._grid[row][col + i] = name
+            elif orientation == 'V':
+                self._grid[row + i][col] = name
 
     def move(self, name, distance):
         car = self._cars[name]
