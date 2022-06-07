@@ -101,6 +101,17 @@ class Grid():
 
         print(f"{coordinate} is op {x, y} met buren, {neighbours}")
 
+    def give_empties(self):
+        list_of_empties = []
+
+        for y in range(self._size):
+            for x in range(self._size):
+                element = self._grid[y][x]
+                if element == "*":
+                    list_of_empties.append((y, x))
+        print(list_of_empties)
+        return list_of_empties
+
 
     def print_grid(self):
         for row in self._grid:
