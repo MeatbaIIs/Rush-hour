@@ -47,7 +47,8 @@ if __name__ == "__main__":
     grid = main(args.input)
 
     grid.print_grid()
-    grid.check_empties()
+    grid.give_empties()
+    grid.neighbours(1,1)
 
 
 
