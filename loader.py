@@ -28,8 +28,8 @@ def main(input_file_name):
             if line == [""]:
                 break
 
-            grid.add_car(line[0], line[1], int(line[2]),
-                         int(line[3]), int(line[4]))
+            grid.add_car(line[0], line[1], int(line[2]) - 1,
+                         int(line[3]) - 1, int(line[4]))
 
 
 if __name__ == "__main__":
