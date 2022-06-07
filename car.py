@@ -1,8 +1,8 @@
 class Car():
-    def __init__(self, name, orientation, col, row, length, grid_size) -> None:
+    def __init__(self, name, orientation, x, row, length, grid_size) -> None:
         self._name = name
         self._orientation = orientation
-        self._col = col
+        self._x = x
         self._row = row
         self._length = length
         # give the columns of the grid for the win condition
@@ -10,7 +10,7 @@ class Car():
 
     # gives the coordinates of the car as a list of (x, y)
     def coordinates(self):
-        coordinate = [self._col, self._row]
+        coordinate = [self._x, self._row]
 
         return coordinate
 
@@ -18,7 +18,7 @@ class Car():
     def win(self):
         # red car is denoted by X
         if self._name == "X":
-            if self._col == self._grid_size - 1:
+            if self._x == self._grid_size - 1:
                 return True
             else:
                 return False
@@ -34,7 +34,7 @@ class Car():
                 return False
 
         # If the car is vertical
-        if not self._col == x:
+        if not self._x == x:
             return False
 
         pass
