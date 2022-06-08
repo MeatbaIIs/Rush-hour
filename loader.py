@@ -49,5 +49,10 @@ if __name__ == "__main__":
 
     grid.print_grid()
     grid.give_empties()
+    print("doing all possible moves")
+    grid.give_all_possible_moves()
+
+
+
     grid.neighbours(1, 1)
     grid.possible_cars(3, 4)
