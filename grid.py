@@ -151,7 +151,7 @@ class Grid():
                     car = self._cars[neighbour]
                     movable_neighbours.append([car._name, (x - j, y)])
                 break
-            
+
         return movable_neighbours
 
     # gives a list of the coordinates of all empty locations on the board
@@ -178,8 +178,6 @@ class Grid():
         
         print(total_coords)
 
-
-    
 
     def print_grid(self):
         for y in self._grid:
