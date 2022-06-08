@@ -33,6 +33,7 @@ def main(input_file_name):
 
     return grid
 
+
 if __name__ == "__main__":
     # set-up parsing command line arguments
     parser = argparse.ArgumentParser(description="Solve a Rush hour puzzle.")
@@ -53,3 +54,5 @@ if __name__ == "__main__":
 
 
 
+    grid.neighbours(1, 1)
+    grid.possible_cars(1, 1)
