@@ -31,8 +31,17 @@ def main(input_file_name):
             grid.add_car(line[0], line[1], int(line[2]) - 1,
                          int(line[3]) - 1, int(line[4]))
 
-    return grid
 
+    grid.print_grid()
+    grid.give_empties()
+    print("doing all possible moves")
+    grid.give_all_possible_moves()
+
+
+
+    #grid.neighbours(1, 1)
+    grid.possible_cars(3, 4)
+    grid.random_algorythm()
 
 if __name__ == "__main__":
     # set-up parsing command line arguments
@@ -45,15 +54,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # run main with provided arguments
-    grid = main(args.input)
+    main(args.input)
 
-    grid.print_grid()
-    grid.give_empties()
-    print("doing all possible moves")
-    grid.give_all_possible_moves()
-
-
-
-    #grid.neighbours(1, 1)
-    grid.possible_cars(3, 4)
-    grid.random_algorythm()
+   
