@@ -23,13 +23,14 @@ class Grid():
 
     def random_algorythm(self):
         random_car = random.choice(list(self._cars.keys()))
-        while not self._cars[random_car].win():
+        while not self.win():
             moves = self.possible_moves(random_car)
             random_move = random.choice(moves)
             print(random_move)
             self.move(random_car, random_move)
             self.print_grid()
             random_car = random.choice(list(self._cars.keys()))
+        print("Yay,solved")
 
 
     def move(self, name, distance):
@@ -55,23 +56,6 @@ class Grid():
             self._grid[new_y: new_y + length ][x] = length * [name]
             # aanpassen naar een functie
             car._y = new_y
-
-        # for i in range(length):
-        #     if orientation == 'H':
-        #         self._grid[y][x + i] = '*'
-        #         self._grid[y][x + i + distance] = name
-        #         # aanpassen naar een functie
-        #         car._x = x + distance
-        #
-        #     if orientation == 'V':
-        #         self._grid[y + i][x] = '*'
-        #         self._grid[y + i + distance][x] = name
-        #         # aanpassen naar een functie
-        #         car._y = y + distance
-
-
-        if name == 'X':
-            car.win()
 
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
@@ -158,6 +142,19 @@ class Grid():
     def print_grid(self):
         for y in self._grid:
             print(''.join(y))
+
+    def win(self):
+        x, y = self._cars['X'].coordinates()
+        # win = True
+        print((self._size - x - 2) * ["*"])
+        if not self._grid[y][x + 2:self._size] == (self._size - x - 2) * ["*"]:
+            return False
+        return True
+        # for i in range(x + 2, self._size):
+        #     if not self._grid[y][i] == "*":
+        #         win = False
+        #         break
+        # return win
 
 
 if __name__ == '__main__':
