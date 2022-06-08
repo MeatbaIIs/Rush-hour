@@ -48,7 +48,8 @@ if __name__ == "__main__":
 
     grid.print_grid()
     grid.give_empties()
-    grid.neighbours(1,1)
+    print("doing all possible moves")
+    grid.give_all_possible_moves()
 
 
 
