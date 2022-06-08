@@ -1,5 +1,6 @@
 from car import Car
 #from loader import loader
+import random
 
 
 class Grid():
@@ -11,6 +12,7 @@ class Grid():
         self._size = size
 
     def add_car(self, name, orientation, x, y, length):
+        """Add a car to the grid"""
         car = Car(name, orientation, x, y, length, self._size)
         self._cars[name] = car
         for i in range(length):
@@ -19,23 +21,53 @@ class Grid():
             elif orientation == 'V':
                 self._grid[y + i][x] = name
 
+    def random_algorythm(self):
+        random_car = random.choice(list(self._cars.keys()))
+        while not self._cars[random_car].win():
+            moves = self.possible_moves(random_car)
+            random_move = random.choice(moves)
+            print(random_move)
+            self.move(random_car, random_move)
+            self.print_grid()
+            random_car = random.choice(list(self._cars.keys()))
+
+
     def move(self, name, distance):
+        """Move a car a set distance, does not check if its a possible move"""
         car = self._cars[name]
         coor = car.coordinates()
         orientation = car._orientation
         length = car._length
 
+
         x = coor[0]
         y = coor[1]
 
-        for i in range(length):
-            if orientation == 'H':
-                self._grid[y][x + i] = '*'
-                self._grid[y][x + i + distance] = name
+        if orientation == 'H':
+            new_x = x + distance
+            self._grid[y][x:x+length] = length * ["*"]
+            self._grid[y][new_x:new_x +length] = length * [name]
+            # aanpassen naar een functie
+            car._x = new_x
+        elif orientation == 'V':
+            new_y = y + distance
+            self._grid[y:y+length][x] = length * ["*"]
+            self._grid[new_y: new_y + length ][x] = length * [name]
+            # aanpassen naar een functie
+            car._y = new_y
 
-            if orientation == 'V':
-                self._grid[y + i][x] = '*'
-                self._grid[y + i + distance][x] = name
+        # for i in range(length):
+        #     if orientation == 'H':
+        #         self._grid[y][x + i] = '*'
+        #         self._grid[y][x + i + distance] = name
+        #         # aanpassen naar een functie
+        #         car._x = x + distance
+        #
+        #     if orientation == 'V':
+        #         self._grid[y + i][x] = '*'
+        #         self._grid[y + i + distance][x] = name
+        #         # aanpassen naar een functie
+        #         car._y = y + distance
 
 
         if name == 'X':
@@ -51,7 +83,8 @@ class Grid():
         return possible_cars
 
     def possible_moves(self, name):
-        moves = set()
+        """Gives the possible moves of a given car"""
+        moves = []
         car = self._cars[name]
         orientation = car._orientation
         length = car._length
@@ -60,12 +93,13 @@ class Grid():
         x = coor[0]
         y = coor[1]
 
+        # check orientation and then checks the empty spaces in front and behind the car
         if orientation == 'H':
             distance = 0
             for i in range(x + length, self._size):
                 if self._grid[y][i] == '*':
                     distance += 1
-                    moves.add(distance)
+                    moves.append(distance)
                 else:
                     break
 
@@ -73,7 +107,7 @@ class Grid():
             for i in range(x - 1, -1, -1):
                 if self._grid[y][i] == '*':
                     distance -= 1
-                    moves.add(distance)
+                    moves.append(distance)
                 else:
                     break
 
@@ -82,7 +116,7 @@ class Grid():
             for i in range(y + length, self._size):
                 if self._grid[i][x] == '*':
                     distance += 1
-                    moves.add(distance)
+                    moves.append(distance)
                 else:
                     break
 
@@ -90,7 +124,7 @@ class Grid():
             for i in range(y - 1, -1, -1):
                 if self._grid[i][x] == '*':
                     distance -= 1
-                    moves.add(distance)
+                    moves.append(distance)
                 else:
                     break
 
@@ -132,4 +166,5 @@ if __name__ == '__main__':
     grid.print_grid()
     #grid.move('X', 3)
     # grid.print_grid()
-    print(grid.possible_moves('X'))
+    #print(grid.possible_moves('X'))
+    grid.random_algorythm()
