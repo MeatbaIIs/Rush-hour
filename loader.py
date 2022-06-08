@@ -50,4 +50,4 @@ if __name__ == "__main__":
     grid.print_grid()
     grid.give_empties()
     grid.neighbours(1, 1)
-    grid.possible_cars(1, 1)
+    grid.possible_cars(3, 4)

@@ -58,21 +58,25 @@ class Grid():
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
         if not self._grid[y][x] == '*':
-            return set()
-        possible_cars = set()
+            return {}
+        possible_cars = {}
         for car in self._cars.values():
             grid_values = []
-            if car._orientation == 'H' and car._y == y and x < car._x:
-                grid_values = self._grid[y][x:car._x+1]
-            elif car._orientation == 'H' and car._y == y and x > car._x:
-                grid_values = self._grid[y][car._x:x+1]
-            elif car._orientation == 'V' and car._x == x and y < car._y:
-                grid_values = self._grid[y: car._y+1][x]
-            elif car._orientation == 'V' and car._x == x and y > car._y:
-                grid_values = self._grid[car._y: y+1][x]
+            if car._orientation == 'H' and car._y == y:
+                distance = x-car._x
+                if x < car._x:
+                    grid_values = self._grid[y][x:car._x+1]
+                elif x > car._x:
+                    grid_values = self._grid[y][car._x:x+1]
+            elif car._orientation == 'V' and car._x == x:
+                distance = y-car._y
+                if y < car._y:
+                    grid_values = self._grid[y: car._y+1][x]
+                elif y > car._y:
+                    grid_values = self._grid[car._y: y+1][x]
 
             if grid_values and all(value in ['*', car._name] for value in grid_values):
-                possible_cars.add(car)
+                possible_cars[car] = distance
                 print(car._name)
 
         print(possible_cars)
