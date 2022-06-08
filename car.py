@@ -14,17 +14,9 @@ class Car():
 
         return coordinate
 
-    # returns true if the red car is over the finish line
-    def win(self):
-        # red car is denoted by X
-        if self._name == "X":
-            #for i in range(self._x, self._grid_size)
-            if self._x == self._grid_size - 1:
-                return True
-            else:
-                return False
-        else:
-            return False
+    def set_coordinates(self, new_x, new_y):
+        self._x = new_x
+        self._y = new_y
 
     def can_move_to(self, x, y):
         """ Check whether the car can move to the given coordinates. """

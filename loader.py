@@ -49,6 +49,4 @@ if __name__ == "__main__":
     grid.print_grid()
     grid.give_empties()
     grid.neighbours(1,1)
-
-
-
+    grid.random_algorythm()
