@@ -52,4 +52,8 @@ if __name__ == "__main__":
     print("doing all possible moves")
     grid.give_all_possible_moves()
 
-    grid.possible_cars(1, 1)
+
+
+    #grid.neighbours(1, 1)
+    grid.possible_cars(3, 4)
+    grid.random_algorythm()
