@@ -63,15 +63,15 @@ class Grid():
         if orientation == 'H':
             distance = 0
             for i in range(x + length, self._size):
-                if self._grid[i][x] == '*':
+                if self._grid[y][i] == '*':
                     distance += 1
                     moves.add(distance)
                 else:
                     break
 
             distance = 0
-            for i in range(x, -1, -1):
-                if self._grid[i][x] == '*':
+            for i in range(x - 1, -1, -1):
+                if self._grid[y][i] == '*':
                     distance -= 1
                     moves.add(distance)
                 else:
@@ -80,17 +80,15 @@ class Grid():
         elif orientation == 'V':
             distance = 0
             for i in range(y + length, self._size):
-                print(i)
-                if self._grid[y][i] == '*':
+                if self._grid[i][x] == '*':
                     distance += 1
                     moves.add(distance)
                 else:
                     break
 
             distance = 0
-
-            for i in range(y, -1, -1):
-                if self._grid[y][i] == '*':
+            for i in range(y - 1, -1, -1):
+                if self._grid[i][x] == '*':
                     distance -= 1
                     moves.add(distance)
                 else:
@@ -130,7 +128,7 @@ class Grid():
 
 if __name__ == '__main__':
     grid = Grid()
-    grid.add_car('X', 'V', 0, 3, 2)
+    grid.add_car('X', 'H', 2, 3, 2)
     grid.print_grid()
     #grid.move('X', 3)
     # grid.print_grid()
