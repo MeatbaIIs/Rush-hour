@@ -54,6 +54,6 @@ if __name__ == "__main__":
 
 
 
-    grid.neighbours(1, 1)
+    #grid.neighbours(1, 1)
     grid.possible_cars(3, 4)
     grid.random_algorythm()

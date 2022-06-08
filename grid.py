@@ -50,26 +50,18 @@ class Grid():
             new_x = x + distance
             # empty the previous space of the car
             self._grid[y][x:x+length] = length * ["*"]
-<<<<<<< HEAD
+            
             # fill the new space of the car
             self._grid[y][new_x:new_x +length] = length * [name]
-=======
-            self._grid[y][new_x:new_x + length] = length * [name]
->>>>>>> 9e4ad599ad0417b6a4a759702df099b0ec5564c5
             # aanpassen naar een functie
             car.set_coordinates(new_x, y)
 
         elif orientation == 'V':
             new_y = y + distance
-<<<<<<< HEAD
             for i in range(length):
                 self._grid[y+i][x] = "*"
             for i in range(length):
                 self._grid[new_y + i][x] = name
-=======
-            self._grid[y:y+length][x] = length * ["*"]
-            self._grid[new_y: new_y + length][x] = length * [name]
->>>>>>> 9e4ad599ad0417b6a4a759702df099b0ec5564c5
             # aanpassen naar een functie
             car.set_coordinates(x, new_y)
             #car._y = new_y
@@ -182,7 +174,7 @@ class Grid():
                     movable_neighbours.append([car._name, (x, y + i)])
                 # doesnt add any cars if there is a horizontal car blocking the way
                 break
-            
+
 
         for i in range(1, self._size):
             if y - i < 0:
@@ -193,7 +185,7 @@ class Grid():
                     car = self._cars[neighbour]
                     movable_neighbours.append([car._name, (x, y - i)])
                 break
-            
+
 
         for j in range(1, self._size):
             if x + j >= self._size - 1:
@@ -204,8 +196,8 @@ class Grid():
                     car = self._cars[neighbour]
                     movable_neighbours.append([car._name, (x + j, y)])
                 break
-            
-        
+
+
         for j in range(1, self._size):
             if x - j < 0:
                 break
@@ -239,7 +231,7 @@ class Grid():
             coords = self.movable_neighbours(element[0], element[1])
             if len(coords) != 0:
                 total_coords.append(coords)
-        
+
         print(total_coords)
         return total_coords
 
