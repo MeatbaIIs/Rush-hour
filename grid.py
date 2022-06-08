@@ -37,17 +37,30 @@ class Grid():
                 self._grid[y + i][x] = '*'
                 self._grid[y + i + distance][x] = name
 
-
         if name == 'X':
             car.win()
 
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
+        if not self._grid[y][x] == '*':
+            return set()
         possible_cars = set()
-        for car in self._cars:
-            if car.can_move_to(x, y):
-                possible_cars.add(car)
+        for car in self._cars.values():
+            grid_values = []
+            if car._orientation == 'H' and car._y == y and x < car._x:
+                grid_values = self._grid[y][x:car._x+1]
+            elif car._orientation == 'H' and car._y == y and x > car._x:
+                grid_values = self._grid[y][car._x:x+1]
+            elif car._orientation == 'V' and car._x == x and y < car._y:
+                grid_values = self._grid[y: car._y+1][x]
+            elif car._orientation == 'V' and car._x == x and y > car._y:
+                grid_values = self._grid[car._y: y+1][x]
 
+            if grid_values and all(value in ['*', car._name] for value in grid_values):
+                possible_cars.add(car)
+                print(car._name)
+
+        print(possible_cars)
         return possible_cars
 
     def possible_moves(self, name):
@@ -109,6 +122,7 @@ class Grid():
             neighbours.append([neighbour, (y, x + j)])
 
         print(f"{coordinate} is op {x, y} met buren, {neighbours}")
+        return neighbours
 
     def give_empties(self):
         list_of_empties = []
