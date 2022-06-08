@@ -171,7 +171,7 @@ class Grid():
     # they are the first car towards the point. The point must be * ofcourse
     def movable_neighbours(self, x, y):
         coordinate = self._grid[y][x]
-        movable_neighbours = []
+        movable_neighbours = {}
         # loop over next neighbours up till the size of the board
         if coordinate != "*":
             print("input is not a *")
@@ -186,7 +186,7 @@ class Grid():
                 neighbour = self._grid[y + i][x]
                 if self._cars[neighbour]._orientation == "V":
                     car = self._cars[neighbour]
-                    movable_neighbours.append([car._name, (x, y + i)])
+                    movable_neighbours[car] = car._name, i
                 # doesnt add any cars if there is a horizontal car blocking the way
                 break
 
@@ -198,7 +198,7 @@ class Grid():
                 neighbour = self._grid[y - i][x]
                 if self._cars[neighbour]._orientation == "V":
                     car = self._cars[neighbour]
-                    movable_neighbours.append([car._name, (x, y - i)])
+                    movable_neighbours[car] = car._name, i
                 break
 
 
@@ -209,7 +209,7 @@ class Grid():
                 neighbour = self._grid[y][x + j]
                 if self._cars[neighbour]._orientation == "H":
                     car = self._cars[neighbour]
-                    movable_neighbours.append([car._name, (x + j, y)])
+                    movable_neighbours[car] = car._name, j
                 break
 
 
@@ -220,7 +220,7 @@ class Grid():
                 neighbour = self._grid[y][x - j]
                 if self._cars[neighbour]._orientation == "H":
                     car = self._cars[neighbour]
-                    movable_neighbours.append([car._name, (x - j, y)])
+                    movable_neighbours[car] = car._name, j
                 break
 
         return movable_neighbours
@@ -240,12 +240,11 @@ class Grid():
     # give all possible moves after inputting all empty locations
     def give_all_possible_moves(self):
         empties = self.give_empties()
-        total_coords = []
+        total_coords = {}
 
         for element in empties:
             coords = self.movable_neighbours(element[0], element[1])
-            if len(coords) != 0:
-                total_coords.append(coords)
+            total_coords.update(coords)
 
         print(total_coords)
         return total_coords
