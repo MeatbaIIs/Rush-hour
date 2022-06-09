@@ -3,13 +3,14 @@ Initialize a grid with the Rush Hour puzzle given as command line argument, solv
 Usage: loader.py [PUZZLE_NAME.CSV]
 """
 
+import time
+from matplotlib.colors import ListedColormap
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import csv
 from grid import Grid
 import argparse
 import re
-import csv
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from matplotlib.colors import ListedColormap
 
 
 def main(input_file_name):
@@ -41,6 +42,14 @@ def main(input_file_name):
     # grid.give_all_possible_moves()
 
     #grid.neighbours(1, 1)
+    # grid.possible_cars(3, 4)
+
+    # grid.print_grid()
+
+    # start_time = time.time()
+    # grid.other_random_algorithm()
+    # print("--- %s seconds ---" % (time.time() - start_time))
+
     # grid.possible_cars(3, 4)
     # grid.random_algorythm()
 
