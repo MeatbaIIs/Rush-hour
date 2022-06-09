@@ -3,6 +3,7 @@ from car import Car
 import random
 import time
 
+
 class Grid():
     def __init__(self, size=7):
         self._grid = []
@@ -26,6 +27,7 @@ class Grid():
 
     def random_algorythm(self):
         """Move a random car randomly and check for the win condition"""
+        iterator = 0
         random_car = random.choice(list(self._cars.keys()))
 
         i = 0
@@ -37,7 +39,8 @@ class Grid():
                 i += 1
                 random_move = random.choice(moves)
                 self.move(random_car, random_move)
-                self.print_grid()
+                # self.print_grid()
+                iterator += 1
             # pick a new random car
             random_car = random.choice(list(self._cars.keys()))
         print(f"Yay, solved in {i} steps and {time.time() - t} seconds")
@@ -46,17 +49,23 @@ class Grid():
         """Move a random car randomly and check for the win condition"""
         # auto's uit het
         cars = self._cars
+<<<<<<< HEAD
 
         random_car = random.choice(list(cars.keys()))
         while random_car == self._last_car:
             random_car = random.choice(list(cars.keys()))
 
+=======
+        moves = []
+>>>>>>> 06a64a124f76473b0af940a30fb43a6c7c915831
 
-        moves = self.possible_moves(random_car)
-        if moves:
-            random_move = random.choice(moves)
-            self.move(random_car, random_move)
+        while not moves:
+            random_car = random.choice(list(cars.keys()))
+            moves = self.possible_moves(random_car)
 
+        random_move = random.choice(moves)
+        self.move(random_car, random_move)
+        return random_car + ',' + str(random_move)
 
 
     def move(self, name, distance):
@@ -78,7 +87,7 @@ class Grid():
             self._grid[y][x:x+length] = length * ["*"]
 
             # fill the new space of the car
-            self._grid[y][new_x:new_x +length] = length * [name]
+            self._grid[y][new_x:new_x + length] = length * [name]
 
             # change coordinates of car
             car.set_coordinates(new_x, y)
@@ -92,7 +101,7 @@ class Grid():
                 self._grid[new_y + i][x] = name
             car.set_coordinates(x, new_y)
 
-        print(name + ',', distance)
+        # print(name + ',', distance)
 
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
@@ -163,7 +172,6 @@ class Grid():
                 else:
                     break
 
-
         # same as horizontal orientation
         elif orientation == 'V':
             distance = 0
@@ -189,29 +197,29 @@ class Grid():
         #print(name, moves)
         return moves
 
-    # gives the cars that can move to a certain sport given their orientation and that
-    # they are the first car towards the point. The point must be * ofcourse
     def movable_neighbours(self, x, y):
+        """
+        gives the cars that can move to a certain sport given their orientation and that
+        they are the first car towards the point. The point must be * ofcourse
+        """
         coordinate = self._grid[y][x]
         movable_neighbours = {}
         # loop over next neighbours up till the size of the board
         if coordinate != "*":
-            print("input is not a *")
-            return
+            return {}
 
         for i in range(1, self._size):
             # cant go over grid size or break loop
-            if y + i >= self._size - 1:
+            if y + i > self._size - 1:
                 break
             # checks that the next grid element is a car name
             elif self._grid[y + i][x] != "*":
                 neighbour = self._grid[y + i][x]
                 if self._cars[neighbour]._orientation == "V":
                     car = self._cars[neighbour]
-                    movable_neighbours[car] = car._name, i
+                    movable_neighbours[car] = car._name, -i
                 # doesnt add any cars if there is a horizontal car blocking the way
                 break
-
 
         for i in range(1, self._size):
             if y - i < 0:
@@ -220,20 +228,19 @@ class Grid():
                 neighbour = self._grid[y - i][x]
                 if self._cars[neighbour]._orientation == "V":
                     car = self._cars[neighbour]
+                    # distance is negative
                     movable_neighbours[car] = car._name, i
                 break
 
-
         for j in range(1, self._size):
-            if x + j >= self._size - 1:
+            if x + j > self._size - 1:
                 break
             elif self._grid[y][x + j] != "*":
                 neighbour = self._grid[y][x + j]
                 if self._cars[neighbour]._orientation == "H":
                     car = self._cars[neighbour]
-                    movable_neighbours[car] = car._name, j
+                    movable_neighbours[car] = car._name, -j
                 break
-
 
         for j in range(1, self._size):
             if x - j < 0:
@@ -242,13 +249,15 @@ class Grid():
                 neighbour = self._grid[y][x - j]
                 if self._cars[neighbour]._orientation == "H":
                     car = self._cars[neighbour]
+                    # distance is negative
                     movable_neighbours[car] = car._name, j
                 break
 
+        
         return movable_neighbours
 
-    # gives a list of the coordinates of all empty locations on the board
     def give_empties(self):
+        """ gives a list of the coordinates of all empty locations on the board """
         list_of_empties = []
 
         for y in range(self._size):
@@ -259,8 +268,8 @@ class Grid():
 
         return list_of_empties
 
-    # give all possible moves after inputting all empty locations
     def give_all_possible_moves(self):
+        """ give all possible moves after inputting all empty locations """
         empties = self.give_empties()
         total_coords = {}
 
@@ -268,14 +277,32 @@ class Grid():
             coords = self.movable_neighbours(element[0], element[1])
             total_coords.update(coords)
 
-        print(total_coords)
         return total_coords
+
+    
+    def other_random_algorithm(self):
+        iterator = 0
+        while self.win() == False:
+            list_of_empties = self.give_empties()
+            empty = random.choice(list_of_empties)
+            possible_moves = self.movable_neighbours(empty[0], empty[1])
+
+            if len(possible_moves) != 0:
+                moving_car = random.choice(list(possible_moves.keys()))
+                car_name, car_distance = possible_moves[moving_car]
+
+                self.move(car_name, car_distance)
+                iterator += 1
+        
+        self.print_grid()
+        print(f"we have won after {iterator} moves")
 
 
     def print_grid(self):
         for y in self._grid:
             print(''.join(y))
         print()
+
 
     def win(self):
         """Check if the red car can reach the end"""
@@ -286,11 +313,12 @@ class Grid():
             return True
         return False
 
-if __name__ == '__main__':
-    grid = Grid()
-    grid.add_car('X', 'H', 2, 3, 2)
-    grid.print_grid()
-    #grid.move('X', 3)
+
+# if __name__ == '__main__':
+    # grid = Grid()
+    # grid.add_car('X', 'H', 2, 3, 2)
     # grid.print_grid()
-    # print(grid.possible_moves('X'))
-    grid.random_algorythm()
+    # #grid.move('X', 3)
+    # # grid.print_grid()
+    # # print(grid.possible_moves('X'))
+    # grid.random_algorythm()
