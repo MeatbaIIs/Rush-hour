@@ -35,20 +35,17 @@ def main(input_file_name):
 
     grid.print_grid()
 
-    # start_time = time.time()
-    # grid.other_random_algorithm()
-    # print("--- %s seconds ---" % (time.time() - start_time))
-
     start_time = time.time()
-    grid.random_algorythm()
+    grid.other_random_algorithm()
     print("--- %s seconds ---" % (time.time() - start_time))
 
-
     
-
-    # #grid.neighbours(1, 1)
-    # grid.possible_cars(3, 4)
+    grid.possible_cars(3, 4)
     # grid.random_algorythm()
+    while not grid.win():
+        grid.random_step()
+
+
 
 if __name__ == "__main__":
     # set-up parsing command line arguments
@@ -62,5 +59,3 @@ if __name__ == "__main__":
 
     # run main with provided arguments
     main(args.input)
-
-   
