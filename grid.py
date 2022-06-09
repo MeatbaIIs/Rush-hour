@@ -10,6 +10,7 @@ class Grid():
             self._grid.append(size * ['*'])
         self._cars = {}
         self._size = size
+        self._last_car = ""
 
     def add_car(self, name, orientation, x, y, length):
         """Add a car to the grid"""
@@ -45,12 +46,17 @@ class Grid():
         """Move a random car randomly and check for the win condition"""
         # auto's uit het
         cars = self._cars
+
         random_car = random.choice(list(cars.keys()))
+        while random_car == self._last_car:
+            random_car = random.choice(list(cars.keys()))
+
 
         moves = self.possible_moves(random_car)
         if moves:
             random_move = random.choice(moves)
             self.move(random_car, random_move)
+
 
 
     def move(self, name, distance):

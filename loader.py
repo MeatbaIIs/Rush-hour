@@ -34,16 +34,20 @@ def main(input_file_name):
 
     grid.print_grid()
     grid.give_empties()
-    print("doing all possible moves")
-    grid.give_all_possible_moves()
+    #print("doing all possible moves")
+    #grid.give_all_possible_moves()
 
 
 
     #grid.neighbours(1, 1)
     grid.possible_cars(3, 4)
     # grid.random_algorythm()
+    c = 0
     while not grid.win():
+        c += 1
         grid.random_step()
+
+    print(c, "steps")
 
 
 
