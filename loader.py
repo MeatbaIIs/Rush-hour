@@ -6,6 +6,10 @@ Usage: loader.py [PUZZLE_NAME.CSV]
 from grid import Grid
 import argparse
 import re
+import csv
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.colors import ListedColormap
 
 
 def main(input_file_name):
@@ -31,20 +35,82 @@ def main(input_file_name):
             grid.add_car(line[0], line[1], int(line[2]) - 1,
                          int(line[3]) - 1, int(line[4]))
 
-
-    grid.print_grid()
-    grid.give_empties()
-    print("doing all possible moves")
-    grid.give_all_possible_moves()
-
-
+    # grid.print_grid()
+    # grid.give_empties()
+    # print("doing all possible moves")
+    # grid.give_all_possible_moves()
 
     #grid.neighbours(1, 1)
-    grid.possible_cars(3, 4)
+    # grid.possible_cars(3, 4)
     # grid.random_algorythm()
-    while not grid.win():
-        grid.random_step()
 
+    # Set up figure
+    # fig, ax = plt.subplots(figsize=(10, 10))
+    # ims = []
+
+    # colors_list = []
+    # for i in range(100):
+    #     r = 0.3 + i*0.6/100
+    #     g = 0.7 - i*0.4/100
+    #     b = 0.9 - i*0.45/100
+    #     colors_list.append((r, g, b))
+    # custom_colors = ListedColormap(colors_list)
+
+    # names = []
+    # x_pos = []
+    # y_pos = []
+
+    # for car in grid._cars.values():
+    #     for i in range(car._length):
+    #         names.append(car._name)
+    #         if car._orientation == 'H':
+    #             x_pos.append(car._x + i)
+    #             y_pos.append(car._y)
+    #         else:
+    #             x_pos.append(car._x)
+    #             y_pos.append(car._y + i)
+    # ax.scatter(x_pos, y_pos, marker="s", s=200, cmap=custom_colors)
+
+    # plt.imshow(grid._grid)
+    # plt.show()
+    # Find solution and output solution to csv file
+    filename = input_file_name + "_solution.csv"
+    with open(filename, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile, delimiter=',')
+        csvwriter.writerow(['car', 'move'])
+
+        while not grid.win():
+            # ord
+            # Visualize one frame
+            # names = []
+            # x_pos = []
+            # y_pos = []
+
+            # for car in grid._cars.values():
+            #     for i in range(car._length):
+            #         names.append(car._name)
+            #         if car._orientation == 'H':
+            #             x_pos.append(car._x + i)
+            #             y_pos.append(car._y)
+            #         else:
+            #             x_pos.append(car._x)
+            #             y_pos.append(car._y + i)
+            # im = ax.scatter(x_pos, y_pos, marker="s",
+            #                 s=200, cmap=custom_colors)
+            # ims.append([im])
+
+            # Take step in algorith
+            step = grid.random_step()
+
+            # Write step to csv
+            csvwriter.writerow(step.split(","))
+
+    # ani = animation.ArtistAnimation(
+    #     fig, ims, interval=50, blit=True, repeat_delay=1000)
+    # output_file_name = input_file_name + ".gif"
+    # ani.save(output_file_name, writer=animation.PillowWriter(fps=24))
+
+    print("found a solution!")
 
 
 if __name__ == "__main__":

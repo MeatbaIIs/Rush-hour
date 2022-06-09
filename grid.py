@@ -46,12 +46,15 @@ class Grid():
         """Move a random car randomly and check for the win condition"""
         # auto's uit het
         cars = self._cars
-        random_car = random.choice(list(cars.keys()))
+        moves = []
 
-        moves = self.possible_moves(random_car)
-        if moves:
-            random_move = random.choice(moves)
-            self.move(random_car, random_move)
+        while not moves:
+            random_car = random.choice(list(cars.keys()))
+            moves = self.possible_moves(random_car)
+
+        random_move = random.choice(moves)
+        self.move(random_car, random_move)
+        return random_car + ',' + str(random_move)
 
     def move(self, name, distance):
         """Move a car a set distance, does not check if its a possible move"""
@@ -86,7 +89,7 @@ class Grid():
                 self._grid[new_y + i][x] = name
             car.set_coordinates(x, new_y)
 
-        print(name + ',', distance)
+        # print(name + ',', distance)
 
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
