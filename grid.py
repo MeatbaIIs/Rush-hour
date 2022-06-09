@@ -3,6 +3,7 @@ from car import Car
 import random
 import time
 
+
 class Grid():
     def __init__(self, size=7):
         self._grid = []
@@ -52,7 +53,6 @@ class Grid():
             random_move = random.choice(moves)
             self.move(random_car, random_move)
 
-
     def move(self, name, distance):
         """Move a car a set distance, does not check if its a possible move"""
 
@@ -72,7 +72,7 @@ class Grid():
             self._grid[y][x:x+length] = length * ["*"]
 
             # fill the new space of the car
-            self._grid[y][new_x:new_x +length] = length * [name]
+            self._grid[y][new_x:new_x + length] = length * [name]
 
             # change coordinates of car
             car.set_coordinates(new_x, y)
@@ -157,7 +157,6 @@ class Grid():
                 else:
                     break
 
-
         # same as horizontal orientation
         elif orientation == 'V':
             distance = 0
@@ -183,9 +182,11 @@ class Grid():
         #print(name, moves)
         return moves
 
-    # gives the cars that can move to a certain sport given their orientation and that
-    # they are the first car towards the point. The point must be * ofcourse
     def movable_neighbours(self, x, y):
+        """
+        gives the cars that can move to a certain sport given their orientation and that
+        they are the first car towards the point. The point must be * ofcourse
+        """
         coordinate = self._grid[y][x]
         movable_neighbours = {}
         # loop over next neighbours up till the size of the board
@@ -206,7 +207,6 @@ class Grid():
                 # doesnt add any cars if there is a horizontal car blocking the way
                 break
 
-
         for i in range(1, self._size):
             if y - i < 0:
                 break
@@ -217,7 +217,6 @@ class Grid():
                     movable_neighbours[car] = car._name, i
                 break
 
-
         for j in range(1, self._size):
             if x + j >= self._size - 1:
                 break
@@ -227,7 +226,6 @@ class Grid():
                     car = self._cars[neighbour]
                     movable_neighbours[car] = car._name, j
                 break
-
 
         for j in range(1, self._size):
             if x - j < 0:
@@ -241,8 +239,8 @@ class Grid():
 
         return movable_neighbours
 
-    # gives a list of the coordinates of all empty locations on the board
     def give_empties(self):
+        """ gives a list of the coordinates of all empty locations on the board """
         list_of_empties = []
 
         for y in range(self._size):
@@ -253,8 +251,8 @@ class Grid():
 
         return list_of_empties
 
-    # give all possible moves after inputting all empty locations
     def give_all_possible_moves(self):
+        """ give all possible moves after inputting all empty locations """
         empties = self.give_empties()
         total_coords = {}
 
@@ -264,7 +262,6 @@ class Grid():
 
         print(total_coords)
         return total_coords
-
 
     def print_grid(self):
         for y in self._grid:
@@ -280,11 +277,12 @@ class Grid():
             return True
         return False
 
-if __name__ == '__main__':
-    grid = Grid()
-    grid.add_car('X', 'H', 2, 3, 2)
-    grid.print_grid()
-    #grid.move('X', 3)
+
+# if __name__ == '__main__':
+    # grid = Grid()
+    # grid.add_car('X', 'H', 2, 3, 2)
     # grid.print_grid()
-    # print(grid.possible_moves('X'))
-    grid.random_algorythm()
+    # #grid.move('X', 3)
+    # # grid.print_grid()
+    # # print(grid.possible_moves('X'))
+    # grid.random_algorythm()

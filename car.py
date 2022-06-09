@@ -8,8 +8,8 @@ class Car():
         # give the columns of the grid for the win condition
         self._grid_size = grid_size
 
-    # gives the coordinates of the car as a list of (x, y)
     def coordinates(self):
+        """ gives the coordinates of the car as a list of (x, y) """
         coordinate = [self._x, self._y]
 
         return coordinate
