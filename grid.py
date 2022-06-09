@@ -1,7 +1,7 @@
 from car import Car
 #from loader import loader
 import random
-
+import time
 
 class Grid():
     def __init__(self, size=7):
@@ -27,20 +27,34 @@ class Grid():
         """Move a random car randomly and check for the win condition"""
         random_car = random.choice(list(self._cars.keys()))
 
+        i = 0
+        t = time.time()
         while not self.win():
             # get the possible moves and pick a random one
             moves = self.possible_moves(random_car)
             if moves:
+                i += 1
                 random_move = random.choice(moves)
                 self.move(random_car, random_move)
                 self.print_grid()
             # pick a new random car
             random_car = random.choice(list(self._cars.keys()))
-        print("Yay,solved")
+        print(f"Yay, solved in {i} steps and {time.time() - t} seconds")
+
+    def random_step(self):
+        """Move a random car randomly and check for the win condition"""
+        # auto's uit het
+        cars = self._cars
+        random_car = random.choice(list(cars.keys()))
+
+        moves = self.possible_moves(random_car)
+        if moves:
+            random_move = random.choice(moves)
+            self.move(random_car, random_move)
+
 
     def move(self, name, distance):
         """Move a car a set distance, does not check if its a possible move"""
-        print(name)
 
         # get variables
         car = self._cars[name]
@@ -71,6 +85,8 @@ class Grid():
             for i in range(length):
                 self._grid[new_y + i][x] = name
             car.set_coordinates(x, new_y)
+
+        print(name + ',', distance)
 
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
@@ -258,7 +274,7 @@ class Grid():
     def win(self):
         """Check if the red car can reach the end"""
         x, y = self._cars['X'].coordinates()
-        
+
         # check whether every space before the red car is empty
         if self._grid[y][x + 2:self._size] == (self._size - x - 2) * ["*"]:
             return True
