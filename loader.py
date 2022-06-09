@@ -6,6 +6,7 @@ Usage: loader.py [PUZZLE_NAME.CSV]
 from grid import Grid
 import argparse
 import re
+import time
 
 
 def main(input_file_name):
@@ -33,15 +34,21 @@ def main(input_file_name):
 
 
     grid.print_grid()
-    grid.give_empties()
-    print("doing all possible moves")
-    grid.give_all_possible_moves()
 
+    # start_time = time.time()
+    # grid.other_random_algorithm()
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
-
-    #grid.neighbours(1, 1)
-    grid.possible_cars(3, 4)
+    start_time = time.time()
     grid.random_algorythm()
+    print("--- %s seconds ---" % (time.time() - start_time))
+
+
+    
+
+    # #grid.neighbours(1, 1)
+    # grid.possible_cars(3, 4)
+    # grid.random_algorythm()
 
 if __name__ == "__main__":
     # set-up parsing command line arguments
