@@ -8,12 +8,14 @@ class Grid():
         for i in range(size):
             self._grid.append(size * ['*'])
         self._cars = {}
+        self._total_movements = []
         self._size = size
 
     def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
         car = Car(name, orientation, x, y, length, self._size, car_num)
         self._cars[name] = car
+        self._total_movements.append(0)
 
         # change empty spaces to the right letter
         for i in range(length):
@@ -91,6 +93,9 @@ class Grid():
             car.set_coordinates(x, new_y)
 
         # print(name + ',', distance)
+
+        # Update total movements
+        self._total_movements[car._car_num] += distance
 
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
