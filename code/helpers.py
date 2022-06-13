@@ -4,7 +4,7 @@ Usage: loader.py [PUZZLE_NAME.CSV]
 """
 
 import csv
-from classes.grid import Grid
+from .classes.grid import Grid
 import re
 
 

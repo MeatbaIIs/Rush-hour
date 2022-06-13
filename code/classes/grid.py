@@ -18,7 +18,7 @@ class Grid():
 
     def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
-        car = Car(name, orientation, x, y, length, self._size, car_num)
+        car = Car(name, orientation, x, y, length, self._size) #car_num)
         self._cars[name] = car
 
         # change empty spaces to the right letter

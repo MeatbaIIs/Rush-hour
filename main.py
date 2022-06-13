@@ -6,16 +6,18 @@ Usage: main.py [PUZZLE_NAME.CSV]
 import csv
 from code.algorithms.depth_first import Depth_first as dfs
 from code.classes.car import Car
-from code.classes.grid import Grid
 from code.helpers import loader, save_solution
+from code.classes.grid import Grid
 import argparse
 
 
 def main(input_file_name):
     grid = loader(input_file_name)
 
-    dfs.run(grid)
-    print('found a solution!')
+    # dfs.run(grid)
+    # print('found a solution!')
+    algorithm = dfs(grid)
+    algorithm.run()
 
 
 if __name__ == "__main__":
