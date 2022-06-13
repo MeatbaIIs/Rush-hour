@@ -2,11 +2,9 @@
 Code to make histograms from codes and alogrithms to dertemine what a feasable upper bound for the number of steps is
 
 """
-from enum import auto
-from grid import Grid
+
 from helpers import loader
 from matplotlib import pyplot as plt
-import numpy as np
 
 
 file_name = "data/Rushhour12x12_7.csv"
