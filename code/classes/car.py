@@ -1,5 +1,5 @@
 class Car():
-    def __init__(self, name, orientation, x, y, length, grid_size) -> None:
+    def __init__(self, name, orientation, x, y, length, grid_size, car_num) -> None:
         self._name = name
         self._orientation = orientation
         self._x = x
@@ -7,6 +7,7 @@ class Car():
         self._length = length
         # give the columns of the grid for the win condition
         self._grid_size = grid_size
+        self._car_num = car_num
 
     def coordinates(self):
         """ gives the coordinates of the car as a list of (x, y) """
