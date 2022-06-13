@@ -16,10 +16,10 @@ class DepthFirst:
         self._current_node = grid._total_moves[:]
 
         # last number of the total movements is the number of steps
-        self._N_steps = current_node[-1]
+        self._N_steps = self._current_node[-1]
 
         # keep remembering the previous node
-        self._previous_node = current_node
+        self._previous_node = self._current_node
 
         # remember the exact moves that have been done for the current node
         self._done_movements = []
@@ -32,7 +32,7 @@ class DepthFirst:
     #     # this is for the next nodes when starting at a certain point
     #     moves = self.grid.possible_moves()
 
-    #     berekent voor alle mogelijke moves wat de total moves zouden zijn
+    #     berekent voor alle mogelijke moves wat de total moves zouden zijn als we naar die node zouden bewegen
     #     for move in moves:
     #         current_node + move
     #         movement_nodes.append(node)

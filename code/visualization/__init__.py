@@ -1,2 +1,2 @@
-# from .histogram impor
+# from .histogram import hist
 from visualization import main
