@@ -78,6 +78,7 @@ class Grid():
 
         # check orientation
         if orientation == 'H':
+
             new_x = x + distance
             # empty the previous space of the car
             self._grid[y][x:x+length] = length * ["*"]
