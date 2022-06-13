@@ -7,8 +7,12 @@ class Grid():
         self._grid = []
         for i in range(size):
             self._grid.append(size * ['*'])
+        # dictionary of all the cars
         self._cars = {}
+
+        # keep track of the movement per car to compare grids
         self._total_movements = []
+        
         self._size = size
 
     def add_car(self, name, orientation, x, y, length, car_num):
