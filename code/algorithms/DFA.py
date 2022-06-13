@@ -27,39 +27,49 @@ class DepthFirst:
         self._done_movements = []
 
 
-    # """
-    # pseudocode for the steps
-    # """"
-    # def step(self):
-    #     moves = self.grid.possible_moves()
+    """
+    pseudocode for the steps
+    """"
+    def step(self):
+        moves = self.grid.possible_moves()
 
-    #     # berekent voor alle mogelijke moves wat de total moves zouden zijn als we naar die node zouden bewegen
-    #     for move in moves:
-    #         # de move functie moet aangepast worden zodat we vanuit bijvoorbeeld auto B die beweegt in +3
-    #         # dat de lijst total moves gekopieerd wordt en de 2 plek +3 wordt
-    #         current_node + move
+        # berekent voor alle mogelijke moves wat de total moves zouden zijn als we naar die node zouden bewegen
+        for move in moves:
+            # de move functie moet aangepast worden zodat we vanuit bijvoorbeeld auto B die beweegt in +3
+            # dat de lijst total moves gekopieerd wordt en de 2 plek +3 wordt
+            current_node + move
 
-    #         # sla op wat de moves zijn in alle moves zodat we niet dezelfde configuratie hebben
-    #         movement_nodes.append(node)
+            # sla op wat de moves zijn in alle moves zodat we niet dezelfde configuratie hebben
+            movement_nodes.append(node)
         
-    #     # update de vorige node naar huidige voordat we bewegen
-    #     self.previous_node = self.current_node
-    #     # beweeg de huidige node naar de volgende
-    #     self._current_node =  self.grid.move(random.choice van moves)
-    #     # verwijder na de movement de move
-    #     moves.remove(move)
+        # bekijk eerst of er moves mogelijks zijn
+        if len(moves) != 0:
+            # update de vorige node naar huidige voordat we bewegen
+            self.previous_node = self.current_node
+            # beweeg de huidige node naar de volgende
+            self._current_node =  self.grid.move(random.choice van moves)
         
-    #     # we kijken of de nieuwe huidige node niet al bestaat in ons algoritmes geheugen
-    #     if self._current_node in self.movement_nodes:
-    #         # we voegen de huidige node niet toe aan de lijst omdat we een stap terug moeten
+            moves.remove(move)
+        
+            # we kijken of de nieuwe huidige node niet al bestaat in ons algoritmes geheugen
+            if self._current_node in self.movement_nodes:
+                # we voegen de huidige node niet toe aan de lijst omdat we een stap terug moeten
+                
+                # we gaan voor de huidige node 1 stap terug die we halen uit de gedane movement lijst
+                self.current_node.move(laatste element in de gedane stappen)
+                # we zetten de previous node 2 stappen terug uit de exacte  movement lijst
+                self.previous_node.move(laatste en enalaatste element in de gedane stappen)
+                
+            # anders slaan we de node wel op
+            else:
+                self._movement_nodes.append(self._current_node)
+        # als alle moves al eerder voorkwamen of er geen moves mogelijk zijn gaan we ook naar de vorige node
+        else:
+            # we gaan voor de huidige node 1 stap terug die we halen uit de gedane movement lijst
+            self.current_node.move(laatste element in de gedane stappen)
+            # we zetten de previous node 2 stappen terug uit de exacte  movement lijst
+            self.previous_node.move(laatste en enalaatste element in de gedane stappen)
 
-    #         # we gaan voor de huidige node 1 stap terug die we halen uit de gedane movement lijst
-    #         self.current_node.move(laatste element in de gedane stappen)
-    #         # we zetten de previous node 2 stappen terug uit de exacte  movement lijst
-    #         self.previous_node.move(laatste en enalaatste element in de gedane stappen)
-    #     # anders slaan we de node wel op
-    #     else:
-    #         self._movement_nodes.append(self._current_node)
               
     
     def run(self):
