@@ -26,23 +26,24 @@ class Grid():
 
     def random_algorythm(self):
         """Move a random car randomly and check for the win condition"""
-        iterator = 0
         random_car = random.choice(list(self._cars.keys()))
 
-        i = 0
-        t = time.time()
+        steps = 0
+        # t = time.time()
         while not self.win():
             # get the possible moves and pick a random one
             moves = self.possible_moves(random_car)
+
             if moves:
-                i += 1
+                steps += 1
                 random_move = random.choice(moves)
                 self.move(random_car, random_move)
-                # self.print_grid()
-                iterator += 1
+
             # pick a new random car
             random_car = random.choice(list(self._cars.keys()))
-        print(f"Yay, solved in {i} steps and {time.time() - t} seconds")
+        # print(f"Yay, solved in {steps} steps and {time.time() - t} seconds")
+
+        return steps
 
     def random_step(self):
         """Move a random car randomly and check for the win condition"""
@@ -88,7 +89,7 @@ class Grid():
                 self._grid[new_y + i][x] = name
             car.set_coordinates(x, new_y)
 
-        print(name + ',', distance)
+        # print(name + ',', distance)
 
     def possible_cars(self, x, y):
         """ Generates a set of cars that could move to given coordinates. """
@@ -281,9 +282,9 @@ class Grid():
                 self.move(car_name, car_distance)
                 iterator += 1
         
-        self.print_grid()
-        print(f"we have won after {iterator} moves")
-
+        # self.print_grid()
+        # print(f"we have won after {iterator} moves")
+        return iterator
 
     def print_grid(self):
         for y in self._grid:
