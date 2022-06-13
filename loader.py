@@ -83,7 +83,7 @@ def main(input_file_name):
     # plt.imshow(grid._grid)
     # plt.show()
     # Find solution and output solution to csv file
-    filename = input_file_name + "_solution.csv"
+    filename = input_file_name.rstrip(".csv") + "_solution.csv"
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
         csvwriter.writerow(['car', 'move'])
