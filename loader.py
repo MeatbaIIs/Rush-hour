@@ -9,6 +9,7 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import csv
 from grid import Grid
+from depth_first import Depth_first
 import argparse
 import re
 
@@ -41,15 +42,12 @@ def main(input_file_name):
     # print("doing all possible moves")
     # grid.give_all_possible_moves()
 
-<<<<<<< HEAD
     grid.print_grid()
     grid.give_empties()
+    algorithm = Depth_first(grid)
+    algorithm.run()
     #print("doing all possible moves")
     #grid.give_all_possible_moves()
-=======
-    #grid.neighbours(1, 1)
-    # grid.possible_cars(3, 4)
->>>>>>> 06a64a124f76473b0af940a30fb43a6c7c915831
 
     # grid.print_grid()
 
@@ -59,15 +57,6 @@ def main(input_file_name):
 
     # grid.possible_cars(3, 4)
     # grid.random_algorythm()
-<<<<<<< HEAD
-    c = 0
-    while not grid.win():
-        c += 1
-        grid.random_step()
-
-    print(c, "steps")
-
-=======
 
     # Set up figure
     # fig, ax = plt.subplots(figsize=(10, 10))
@@ -126,7 +115,7 @@ def main(input_file_name):
 
             # Take step in algorith
             step = grid.random_step()
-
+            grid.print_grid()
             # Write step to csv
             csvwriter.writerow(step.split(","))
 
@@ -136,7 +125,6 @@ def main(input_file_name):
     # ani.save(output_file_name, writer=animation.PillowWriter(fps=24))
 
     print("found a solution!")
->>>>>>> 06a64a124f76473b0af940a30fb43a6c7c915831
 
 
 if __name__ == "__main__":

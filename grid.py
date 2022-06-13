@@ -39,7 +39,7 @@ class Grid():
                 i += 1
                 random_move = random.choice(moves)
                 self.move(random_car, random_move)
-                # self.print_grid()
+                self.print_grid()
                 iterator += 1
             # pick a new random car
             random_car = random.choice(list(self._cars.keys()))
@@ -49,15 +49,7 @@ class Grid():
         """Move a random car randomly and check for the win condition"""
         # auto's uit het
         cars = self._cars
-<<<<<<< HEAD
-
-        random_car = random.choice(list(cars.keys()))
-        while random_car == self._last_car:
-            random_car = random.choice(list(cars.keys()))
-
-=======
         moves = []
->>>>>>> 06a64a124f76473b0af940a30fb43a6c7c915831
 
         while not moves:
             random_car = random.choice(list(cars.keys()))
@@ -253,7 +245,7 @@ class Grid():
                     movable_neighbours[car] = car._name, j
                 break
 
-        
+
         return movable_neighbours
 
     def give_empties(self):
@@ -279,7 +271,7 @@ class Grid():
 
         return total_coords
 
-    
+
     def other_random_algorithm(self):
         iterator = 0
         while self.win() == False:
@@ -293,7 +285,7 @@ class Grid():
 
                 self.move(car_name, car_distance)
                 iterator += 1
-        
+
         self.print_grid()
         print(f"we have won after {iterator} moves")
 
