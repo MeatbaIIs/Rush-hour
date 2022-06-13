@@ -1,6 +1,6 @@
 import copy
 import random
-from grid import Grid
+from classes.grid import Grid
 
 class Depth_first():
     def __init__(self, grid):

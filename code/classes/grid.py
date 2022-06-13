@@ -7,7 +7,12 @@ class Grid():
         self._grid = []
         for i in range(size):
             self._grid.append(size * ['*'])
+        # dictionary of all the cars
         self._cars = {}
+
+        # keep track of the movement per car to compare grids
+        self._total_movements = []
+
         self._size = size
         self._last_car = ""
 
@@ -37,8 +42,6 @@ class Grid():
                 steps += 1
                 random_move = random.choice(moves)
                 self.move(random_car, random_move)
-                self.print_grid()
-                iterator += 1
             # pick a new random car
             random_car = random.choice(list(self._cars.keys()))
         # print(f"Yay, solved in {steps} steps and {time.time() - t} seconds")
@@ -283,9 +286,6 @@ class Grid():
 
                 self.move(car_name, car_distance)
                 iterator += 1
-
-        self.print_grid()
-        print(f"we have won after {iterator} moves")
 
         # self.print_grid()
         # print(f"we have won after {iterator} moves")
