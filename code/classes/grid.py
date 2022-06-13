@@ -14,6 +14,7 @@ class Grid():
         self._total_movements = []
         
         self._size = size
+        self._last_car = ""
 
     def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
@@ -42,7 +43,12 @@ class Grid():
                 steps += 1
                 random_move = random.choice(moves)
                 self.move(random_car, random_move)
+<<<<<<< HEAD:grid.py
+                self.print_grid()
+                iterator += 1
+=======
 
+>>>>>>> 0836da63f84c4266c4c52bc8596d4a264397f7ff:code/classes/grid.py
             # pick a new random car
             random_car = random.choice(list(self._cars.keys()))
         # print(f"Yay, solved in {steps} steps and {time.time() - t} seconds")
@@ -62,6 +68,7 @@ class Grid():
         random_move = random.choice(moves)
         self.move(random_car, random_move)
         return random_car + ',' + str(random_move)
+
 
     def move(self, name, distance):
         """Move a car a set distance, does not check if its a possible move"""
@@ -251,6 +258,10 @@ class Grid():
                     movable_neighbours[car] = car._name, j
                 break
 
+<<<<<<< HEAD:grid.py
+
+=======
+>>>>>>> 0836da63f84c4266c4c52bc8596d4a264397f7ff:code/classes/grid.py
         return movable_neighbours
 
     def give_empties(self):
@@ -276,6 +287,10 @@ class Grid():
 
         return total_coords
 
+<<<<<<< HEAD:grid.py
+
+=======
+>>>>>>> 0836da63f84c4266c4c52bc8596d4a264397f7ff:code/classes/grid.py
     def other_random_algorithm(self):
         iterator = 0
         while self.win() == False:
@@ -289,6 +304,12 @@ class Grid():
 
                 self.move(car_name, car_distance)
                 iterator += 1
+<<<<<<< HEAD:grid.py
+
+        self.print_grid()
+        print(f"we have won after {iterator} moves")
+=======
+>>>>>>> 0836da63f84c4266c4c52bc8596d4a264397f7ff:code/classes/grid.py
 
         # self.print_grid()
         # print(f"we have won after {iterator} moves")
