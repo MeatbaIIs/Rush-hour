@@ -22,6 +22,8 @@ def loader(input_file_name):
         # Skip over first line
         f.readline()
 
+        car_num = 0
+
         while True:
             line = f.readline().strip().split(",")
 
@@ -29,14 +31,17 @@ def loader(input_file_name):
                 break
 
             grid.add_car(line[0], line[1], int(line[2]) - 1,
-                         int(line[3]) - 1, int(line[4]))
+                         int(line[3]) - 1, int(line[4]), car_num)
+
+            car_num += 1
 
     return grid
 
+
 def save_solution(input_file_name):
-     # Find solution and output solution to csv file
+    # Find solution and output solution to csv file
     grid = loader(input_file_name)
-    
+
     filename = input_file_name.rstrip(".csv") + "_solution.csv"
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
@@ -48,7 +53,6 @@ def save_solution(input_file_name):
 
             # Write step to csv
             csvwriter.writerow(step.split(","))
-
 
 
 # if __name__ == "__main__":

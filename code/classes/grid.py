@@ -1,6 +1,7 @@
 from car import Car
 import random
 
+
 class Grid():
     def __init__(self, size=7):
         self._grid = []
@@ -9,9 +10,9 @@ class Grid():
         self._cars = {}
         self._size = size
 
-    def add_car(self, name, orientation, x, y, length):
+    def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
-        car = Car(name, orientation, x, y, length, self._size)
+        car = Car(name, orientation, x, y, length, self._size, car_num)
         self._cars[name] = car
 
         # change empty spaces to the right letter
@@ -241,7 +242,6 @@ class Grid():
                     movable_neighbours[car] = car._name, j
                 break
 
-        
         return movable_neighbours
 
     def give_empties(self):
@@ -267,7 +267,6 @@ class Grid():
 
         return total_coords
 
-    
     def other_random_algorithm(self):
         iterator = 0
         while self.win() == False:
@@ -281,7 +280,7 @@ class Grid():
 
                 self.move(car_name, car_distance)
                 iterator += 1
-        
+
         # self.print_grid()
         # print(f"we have won after {iterator} moves")
         return iterator
@@ -290,7 +289,6 @@ class Grid():
         for y in self._grid:
             print(''.join(y))
         print()
-
 
     def win(self):
         """Check if the red car can reach the end"""
