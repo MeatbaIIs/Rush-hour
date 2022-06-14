@@ -109,8 +109,8 @@ class Depth_first():
             self._previous_grids.append(copy.deepcopy(self._current_grid._grid))
             self._previous_steps.append([car, move])
             self._last_car = [car]
-            print(car)
-            self._current_grid.print_grid()
+            #print(car)
+            #self._current_grid.print_grid()
             new_state = True
             self._count = 0
             return new_state, True, i
