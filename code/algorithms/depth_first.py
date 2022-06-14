@@ -56,7 +56,6 @@ class Depth_first():
             if not moves:
                 continue
 
-
             # initialize check variable
             check = False
 

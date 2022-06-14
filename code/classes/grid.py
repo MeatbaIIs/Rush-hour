@@ -28,40 +28,6 @@ class Grid():
             elif orientation == 'V':
                 self._grid[y + i][x] = name
 
-    # def random_algorythm(self):
-    #     """Move a random car randomly and check for the win condition"""
-    #     random_car = random.choice(list(self._cars.keys()))
-
-    #     steps = 0
-    #     # t = time.time()
-    #     while not self.win():
-    #         # get the possible moves and pick a random one
-    #         moves = self.possible_moves(random_car)
-
-    #         if moves:
-    #             steps += 1
-    #             random_move = random.choice(moves)
-    #             self.move(random_car, random_move)
-    #         # pick a new random car
-    #         random_car = random.choice(list(self._cars.keys()))
-    #     # print(f"Yay, solved in {steps} steps and {time.time() - t} seconds")
-
-    #     return steps
-
-    def random_step(self):
-        """Move a random car randomly and check for the win condition"""
-        # auto's uit het
-        cars = self._cars
-        moves = []
-
-        while not moves:
-            random_car = random.choice(list(cars.keys()))
-            moves = self.possible_moves(random_car)
-
-        random_move = random.choice(moves)
-        self.move(random_car, random_move)
-        return random_car + ',' + str(random_move)
-
 
     def move(self, name, distance):
         """Move a car a set distance, does not check if its a possible move"""

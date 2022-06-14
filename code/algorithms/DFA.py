@@ -3,8 +3,8 @@ Anneloes'en Duncans wondercode
 """
 import copy
 from matplotlib.pyplot import cla
-from ..classes.grid import Grid
-from helpers import loader
+from code.classes.grid import Grid
+from code.helpers import loader
 
 class DepthFirst:
     def __init__(self, data_file) -> None:
@@ -41,16 +41,16 @@ class DepthFirst:
 
     #         # sla op wat de moves zijn in alle moves zodat we niet dezelfde configuratie hebben
     #         movement_nodes.append(node)
-        
+
     #     # bekijk eerst of er moves mogelijks zijn
     #     if len(moves) != 0:
     #         # update de vorige node naar huidige voordat we bewegen
     #         self.previous_node = self.current_node
     #         # beweeg de huidige node naar de volgende
     #         self._current_node =  self.grid.move(random.choice van moves)
-        
+
     #         moves.remove(move)
-        
+
     #         # we kijken of de nieuwe huidige node niet al bestaat in ons algoritmes geheugen
     #         if self._current_node in self.movement_nodes:
     #             # we voegen de huidige node niet toe aan de lijst omdat we een stap terug moeten
@@ -59,7 +59,7 @@ class DepthFirst:
     #             self.current_node.move(laatste element in de gedane stappen)
     #             # we zetten de previous node 2 stappen terug uit de exacte  movement lijst
     #             self.previous_node.move(laatste en enalaatste element in de gedane stappen)
-                
+
     #         # anders slaan we de node wel op
     #         else:
     #             self._movement_nodes.append(self._current_node)
@@ -70,13 +70,13 @@ class DepthFirst:
     #         # we zetten de previous node 2 stappen terug uit de exacte  movement lijst
     #         self.previous_node.move(laatste en enalaatste element in de gedane stappen)
 
-              
-    
+
+
     def run(self):
         # loopt tot de grid opgelost is
         while not win:
             self.step()
-    
+
 
 algorithm = DepthFirst("data/Rushhour6x6_1.csv")
 algorithm.step()
