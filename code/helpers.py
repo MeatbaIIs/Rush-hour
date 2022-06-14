@@ -4,8 +4,10 @@ Usage: loader.py [PUZZLE_NAME.CSV]
 """
 
 import csv
+from typing import Dict
 from .classes.grid import Grid
 import re
+from typing import List, Dict
 
 
 def loader(input_file_name):
@@ -36,6 +38,16 @@ def loader(input_file_name):
             car_num += 1
 
     return grid
+
+# function that returns true if 2 dictionaries of the grid movements per car are the same 
+def dict_compare(new_dict, list_of_grids: List[Dict]) -> bool:
+    for dict in list_of_grids:
+        if new_dict == dict:
+            return True
+    return False
+
+
+
 
 
 def save_solution(input_file_name):
