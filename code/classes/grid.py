@@ -127,7 +127,6 @@ class Grid():
                 possible_cars[car] = distance
                 print(car._name)
 
-        print(possible_cars)
         return possible_cars
 
     def possible_moves(self, name):
