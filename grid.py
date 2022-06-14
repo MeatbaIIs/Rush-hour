@@ -272,24 +272,6 @@ class Grid():
         return total_coords
 
 
-    def other_random_algorithm(self):
-        iterator = 0
-        while self.win() == False:
-            list_of_empties = self.give_empties()
-            empty = random.choice(list_of_empties)
-            possible_moves = self.movable_neighbours(empty[0], empty[1])
-
-            if len(possible_moves) != 0:
-                moving_car = random.choice(list(possible_moves.keys()))
-                car_name, car_distance = possible_moves[moving_car]
-
-                self.move(car_name, car_distance)
-                iterator += 1
-
-        self.print_grid()
-        print(f"we have won after {iterator} moves")
-
-
     def print_grid(self):
         for y in self._grid:
             print(''.join(y))
