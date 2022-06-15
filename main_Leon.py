@@ -21,7 +21,10 @@ def main(input_file_name):
     solution = depth_first.run()
 
     IA = Improving_algorithm(gridcopy, solution)
-    print(IA.run())
+    new_solution = IA.run()
+    print(new_solution)
+    print(len(new_solution))
+
 
     #histogram(input_file_name)
     # dfs.run(grid)
