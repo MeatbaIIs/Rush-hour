@@ -3,29 +3,38 @@ Code to make histograms from codes and alogrithms to dertemine what a feasable u
 
 """
 
-from helpers import loader
+from code.helpers import loader
 from matplotlib import pyplot as plt
+from code.algorithms.random import Random
+import copy
 
-
-file_name = "data/Rushhour12x12_7.csv"
-grid = loader(file_name)
-grid.print_grid()
-
-N = 100
-print(f"going to solve previous grid {N} times")
-
-counts = []
-counts_2 = []
-
-for i in range(N):
+def histogram(file_name):
+    #file_name = "data/Rushhour6x6_1.csv"
     grid = loader(file_name)
-    tries = grid.random_algorythm()
-    tries_2 = grid.other_random_algorithm()
+    grid.print_grid()
 
-    counts.append(tries)
-    counts_2.append(tries_2)
+    N = 1000
+    print(f"going to solve previous grid {N} times")
 
-fig, ax = plt.subplots(figsize =(10, 7))
-ax.hist(counts, bins=20)
-plt.show()
+    counts = []
+    # counts_2 = []
 
+    for i in range(N):
+        # grid = loader(file_name)
+        gridcopy = copy.deepcopy(grid)
+        algorithm = Random(gridcopy)
+
+        tries = algorithm.random_algorithm()
+        # grid = loader(file_name)
+        # algorithm = Random(grid)
+        # tries_2 = algorithm.other_random_algorithm()
+        counts.append(tries)
+        # counts_2.append(tries_2)
+        if i % 10== 0:
+            print(i)
+
+    fig, ax = plt.subplots(figsize =(10, 7))
+    ax.hist(counts, bins=100)
+    print(min(counts))
+    plt.show()
+    plt.savefig("histogram_random.png")
