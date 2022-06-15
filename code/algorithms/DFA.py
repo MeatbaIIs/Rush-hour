@@ -38,11 +38,11 @@ class DepthFirst:
     def step(self):
         # check what the moves possible are from the current grid node
         possible_moves = self._grid.poss_move_cars()
-        print(f"possible_moves before node checking are {possible_moves}")
+        # print(f"possible_moves before node checking are {possible_moves}")
 
         # update what the possible grid configurations are when considering the possible moves and return remaining possible moves
         possible_moves = self.update_nodes(possible_moves)
-        print(f"after nodes is {possible_moves}")
+        # print(f"after nodes is {possible_moves}")
 
         # check that there are still moves possible
         if possible_moves:
@@ -54,16 +54,19 @@ class DepthFirst:
             distance = random.choice(possible_moves[car_name])
 
             # change the current grid and the node configuration
-            self._grid.move(car_name, distance=distance)
             print(f"{car_name} is moving a distance {distance}")
-            self._grid.print_grid()
+            self._grid.move(car_name, distance=distance)
 
+            # update the current node
             new_node = copy.deepcopy(self._current_node)
             new_node[car_name] += distance
-            self._current_node = copy.deepcopy(new_node)
+            self._current_node = new_node
+            print(f"current node is {self._current_node}")
+            
+            self._grid.print_grid()
 
             
-            # keep track of which movents have been done
+            # keep track of whih movents have been done
             self._done_movements.append([car_name, distance])
         
         # if there are no possible movements, go back to a previous node untill 
@@ -75,25 +78,24 @@ class DepthFirst:
                 # move back the last done movement
                 car_name, distance = self._done_movements[-1]
 
-                print(f"{car_name} is moving back { -distance}")
-                distance = -1 *  distance
+                print(f"{car_name} is moving back with distance {distance}")
 
                 # move the previous car backwards!
-                self._grid.move(car_name, distance)
+                self._grid.move(car_name, - distance)
+                
                 self._fut_prev_node = copy.deepcopy(self._previous_node)
 
                 # change the grid node so that the car moved back aswell
-                self._fut_prev_node[car_name] = distance
+                self._fut_prev_node[car_name] -= distance
 
                 # change the current and previous nodes accordingly
                 self._current_node = copy.deepcopy(self._previous_node)
+                print(f"current node after backwards is {self._current_node}")
                 self._previous_node = copy.deepcopy(self._fut_prev_node)
 
                 # remove the last move from the movements as we returned
                 self._done_movements.pop()
                 self._n_backtracks += 1
-
-        print(f"the current node is {self._current_node} and last one was {self._previous_node} \n")
     
     """
     Function to update the upcoming dict nodes of the grid configurations based on current possible moves
@@ -103,30 +105,30 @@ class DepthFirst:
         # loop over all values in every cars possible movement
         for car_name in list(possible_moves.keys()):
             for i in range(len(possible_moves[car_name])):
-                distance = possible_moves[car_name][i]
+                iterator = 0
+                distance = possible_moves[car_name][iterator]
                 # deepcopy as to not destroy current dictionary of moves and update what it would be when moved
                 future_node = copy.deepcopy(self._current_node)
                 future_node[car_name] += distance
-                print(f"were comparing dictionary {future_node} with move {car_name} {distance}")
+                # print(f"were comparing dictionary {future_node} with move {car_name} {distance}")
 
-                # check that the future node is not already in the list or remove the possible movement
-                for dic in self._movement_nodes:
-                    print(dic)
-                    if future_node == dic:
-                        print(f"same")
-                        break
+                # # check that the future node is not already in the list or remove the possible movement
+                # for dic in self._movement_nodes:
+                #     # print(dic)
+                #     if future_node == dic:
+                #         # print(f"same")
+                #         break
                 
                 if dict_compare(future_node, self._movement_nodes) == True:
                     
                     # if multiple movements are possible for one car just remove the distance that has been moved before
                     if len(possible_moves[car_name]) > 1:
-                        print(f"deleting distance {distance} from car {car_name}")
+                        # print(f"deleting distance {distance} from car {car_name}")
                         possible_moves[car_name].remove(distance)
-                        i = i - 1
                     # if no movements for the car allowed, remove entire key
                     else:
                         # remove the possible move from the dict of possible moves
-                        print(f"deleting {car_name}")
+                        # print(f"deleting {car_name}")
                         del possible_moves[car_name]
                     # free the deepcopy memory
                     # del future_node
@@ -134,7 +136,7 @@ class DepthFirst:
                 else:
                     self._movement_nodes.append(future_node)
                     # if no value is removed we iterate to the next dict item
-                    i = i + 1
+                    iterator += 1
 
         return possible_moves
 
@@ -149,7 +151,6 @@ class DepthFirst:
             print(f"step is {step_number}")
             self.step()
             step_number += 1
-            print(self._done_movements)
         self._grid.print_grid()
         
         print(f"Yay, solved in {step_number} steps and {time.time() - t} seconds, while taking {len(self._done_movements)}")
