@@ -2,14 +2,11 @@ import copy
 import random
 from code.classes.grid import Grid
 
-grid = loader()
-dfs = Depth_first(grid)
-dfs.run()
 
 class Depth_first():
     def __init__(self, grid):
         self._current_grid = grid
-        self._previous_grids = set(copy.deepcopy(grid._grid)
+        self._previous_grids = [copy.deepcopy(grid._grid)]
         self._previous_steps = []
         self._last_car = []
         self._count = 0
@@ -80,10 +77,10 @@ class Depth_first():
 
             # check whether the game has been won, and print al steps
             if self._current_grid.win():
-                for step in self._previous_steps:
-                    step[1] = str(step[1])
-                    print(", ".join(step))
-                    #break
+                # for step in self._previous_steps:
+                #     step[1] = str(step[1])
+                #     print(", ".join(step))
+                break
 
         # if no car could move for a new state, go back to previous states
         # if not new_state and self._count < 3:
@@ -109,7 +106,7 @@ class Depth_first():
         # if a new state is a achieved, add it to the list
         else:
             i += 1
-            self._previous_grids.add(copy.deepcopy(self._current_grid._grid))
+            self._previous_grids.append(copy.deepcopy(self._current_grid._grid))
             self._previous_steps.append([car, move])
             #self._last_car = [car]
             #print(car)
