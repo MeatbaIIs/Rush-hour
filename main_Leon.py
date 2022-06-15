@@ -14,6 +14,7 @@ from code.algorithms.improving_algorithm import Improving_algorithm
 import argparse
 import copy
 
+
 def main(input_file_name):
     grid = loader(input_file_name)
     gridcopy = copy.deepcopy(grid)
@@ -25,14 +26,11 @@ def main(input_file_name):
     print(new_solution)
     print(len(new_solution))
 
-
-    #histogram(input_file_name)
+    # histogram(input_file_name)
     # dfs.run(grid)
     # print('found a solution!')
     #algorithm = Random(grid)
-    #print(algorithm.other_random_algorithm())
-
-
+    # print(algorithm.other_random_algorithm())
 
 
 if __name__ == "__main__":

@@ -13,13 +13,12 @@ class Grid():
         # keep track of the movement per car to compare grids
         self._total_movements = {}
 
-        
         self._size = size
         self._last_car = ""
 
     def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
-        car = Car(name, orientation, x, y, length, self._size) #car_num)
+        car = Car(name, orientation, x, y, length, self._size)  # car_num)
         self._cars[name] = car
 
         # the cars have 0 movement done at the start
@@ -31,7 +30,6 @@ class Grid():
                 self._grid[y][x + i] = name
             elif orientation == 'V':
                 self._grid[y + i][x] = name
-
 
     def move(self, name, distance):
         """Move a car a set distance, does not check if its a possible move"""
@@ -169,9 +167,6 @@ class Grid():
             if moves:
                 total_moves[car_name] = moves
         return total_moves
-            
-
-            
 
     def movable_neighbours(self, x, y):
         """
@@ -261,7 +256,7 @@ class Grid():
             list_of_moves = self.give_all_possible_moves()
             moving_car = random.choice(list(list_of_moves.keys()))
             car_name, car_distance = list_of_moves[moving_car]
-        
+
             self.move(car_name, car_distance)
             iterator += 1
 
@@ -273,6 +268,9 @@ class Grid():
         for y in self._grid:
             print(''.join(y))
         print()
+
+    def get_grid(self):
+        return self._grid
 
     def win(self):
         """Check if the red car can reach the end"""
