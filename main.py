@@ -5,6 +5,8 @@ Usage: main.py [PUZZLE_NAME.CSV]
 
 import csv
 from code.algorithms.depth_first import Depth_first as dfs
+from code.algorithms.DFA import DepthFirst as DF
+
 from code.classes.car import Car
 from code.helpers import loader, save_solution
 from code.classes.grid import Grid
@@ -16,7 +18,11 @@ def main(input_file_name):
 
     # dfs.run(grid)
     # print('found a solution!')
-    algorithm = dfs(grid)
+    # algorithm = dfs(grid)
+    # algorithm.run()
+
+    
+    algorithm = DF("data/Rushhour6x6_1.csv")
     algorithm.run()
 
 
