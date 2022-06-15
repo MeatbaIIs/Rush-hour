@@ -2,6 +2,7 @@ import copy
 import random
 from code.classes.grid import Grid
 
+
 class Depth_first():
     def __init__(self, grid):
         self._current_grid = grid
@@ -14,7 +15,6 @@ class Depth_first():
         """Gets a new state for the grid"""
 
         # check whether a new state has been found
-        new_state = False
 
         # check the moves for every car
         # for car in self._current_grid._cars.keys():
@@ -47,6 +47,7 @@ class Depth_first():
         #         if check:
         #             break
 
+        new_state = False
 
         # check the moves for every car
         for car in self._current_grid._cars.keys():
@@ -76,10 +77,10 @@ class Depth_first():
 
             # check whether the game has been won, and print al steps
             if self._current_grid.win():
-                for step in self._previous_steps:
-                    step[1] = str(step[1])
-                    print(", ".join(step))
-                    #break
+                # for step in self._previous_steps:
+                #     step[1] = str(step[1])
+                #     print(", ".join(step))
+                break
 
         # if no car could move for a new state, go back to previous states
         # if not new_state and self._count < 3:
@@ -88,8 +89,8 @@ class Depth_first():
             last_step = self._previous_steps.pop(-1)
             self._current_grid.move(last_step[0], -1 * last_step[1])
             i -= 1
-            self._count = 0
-            self._last_car = []
+            # self._count = 0
+            # self._last_car = []
 
         return i
 
@@ -107,11 +108,11 @@ class Depth_first():
             i += 1
             self._previous_grids.append(copy.deepcopy(self._current_grid._grid))
             self._previous_steps.append([car, move])
-            self._last_car = [car]
+            #self._last_car = [car]
             #print(car)
             #self._current_grid.print_grid()
             new_state = True
-            self._count = 0
+            #self._count = 0
             return new_state, True, i
 
     def run(self):
@@ -120,3 +121,5 @@ class Depth_first():
         while not self._current_grid.win():
             i = self.step(i)
         print(f"won in {i} steps")
+
+        return self._previous_steps
