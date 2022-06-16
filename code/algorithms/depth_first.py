@@ -50,6 +50,7 @@ class Depth_first():
         new_state = False
 
         # check the moves for every car
+        # maak functie die alle autos geeft ipv access
         for car in self._current_grid._cars.keys():
 
             # get the moves of a car and check whether any moves are possible
@@ -120,6 +121,7 @@ class Depth_first():
         i = 0
         while not self._current_grid.win():
             i = self.step(i)
+            self._current_grid.print_grid()
         print(f"won in {i} steps")
 
         return self._previous_steps

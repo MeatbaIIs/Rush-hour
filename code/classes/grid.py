@@ -10,10 +10,10 @@ class Grid():
         # dictionary of all the cars
         self._cars = {}
 
-        # keep track of the movement per car to compare grids
+        # keep track of the movement per car to compare grids for DFA
+        # zo annpassen
         self._total_movements = {}
 
-        
         self._size = size
         self._last_car = ""
 
@@ -292,3 +292,5 @@ class Grid():
     # # grid.print_grid()
     # # print(grid.possible_moves('X'))
     # grid.random_algorythm()
+
+# coordinaten x,y zijn constant voor H en V dus we kunnen dat extern opslaan voor breadth
