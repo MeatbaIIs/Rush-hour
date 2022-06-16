@@ -13,36 +13,42 @@ import time
 class DepthFirst:
     def __init__(self, data_file) -> None:
         grid = loader(data_file)
-
         self._grid = grid
-        # make a copy of the total displacement of every car in the grid
-        # the dictionary is {A:0, B:0, ... , X: 0} at the start
-        self._movement_nodes = [copy.deepcopy(self._grid._total_movements)]
-        self._current_node = copy.deepcopy(self._grid._total_movements)
 
+        # load the first grid configuration as a function of how many steps each car has
+        # moved from the starting position
+        self._current_configuration = {}
+        for car_name in self._grid._cars:
+            self._current_configuration[car_name] = 0
+
+        # the dictionary is {A:0, B:0, ... , X: 0} at the start
+        self._grid_configurations = [copy.deepcopy(self._current_configuration)]
+        
         # remember the exact moves that have been done for the current node
         # dit is bijvoorbeeld [A 1, X -2, B 3, G 1, H -1, etc...]
         self._done_movements = []
 
+        # calculate how many times 
         self._n_backtracks = 0
 
     """
     Function that does a step in the depth first algorithm. It calculates all possible nodes (grids in Rushhour)
     from the current possible moves and then takes a random possible move.
     If there are no possible moves because the next nodes are already saved in the database we go back a step
-    If the grid is a win condition we set that as the maximum length of steps to look at
     """
     def step(self):
         # check what the moves possible are from the current grid node
         possible_moves = self._grid.poss_move_cars()
         print(f"possible_moves before node checking are {possible_moves}")
 
-        # update what the possible grid configurations are when considering the possible moves and return remaining possible moves
+        # check which configurations we already have before we start updating the nodes
+        for config in self._grid_configurations:
+            print(config)
+
+        # calculates the grid configurations for the possible moves
+        # also remove possible moves when the grid configuration is already in the list of movement nodes
         possible_moves = self.update_nodes(possible_moves)
         print(f"after nodes is {possible_moves}")
-
-        for node in self._movement_nodes:
-            print(node)
 
         # check that there are still moves possible
         if possible_moves:
@@ -56,10 +62,10 @@ class DepthFirst:
             self._grid.move(car_name, distance=distance)
 
             # update the current node
-            new_node = copy.deepcopy(self._current_node)
+            new_node = copy.deepcopy(self._current_configuration)
             new_node[car_name] += distance
-            self._current_node = new_node
-            print(f"current node is {self._current_node}")
+            self._current_configuration = new_node
+            print(f"current node is {self._current_configuration}")
             
             self._grid.print_grid()
 
@@ -81,9 +87,9 @@ class DepthFirst:
                 print(f"{car_name} is moving back with distance {distance}")
 
                 # change the current and previous nodes accordingly
-                previous_node = copy.deepcopy(self._current_node)
+                previous_node = copy.deepcopy(self._current_configuration)
                 previous_node[car_name] -= distance
-                self._current_node = previous_node
+                self._current_configuration = previous_node
                 
                 # remove the last move from the movements as we returned
                 self._done_movements.pop()
@@ -103,12 +109,12 @@ class DepthFirst:
                 distance = possible_moves[car_name][iterator]
                 # deepcopy as to not destroy current dictionary of moves and update what it would be when moved
 
-                future_node = copy.deepcopy(self._current_node)
+                future_node = copy.deepcopy(self._current_configuration)
                 future_node[car_name] += distance
                 new_node = True
                 
-                # if dict_compare(future_node, self._movement_nodes) == True:
-                for known_dicts in self._movement_nodes:
+                # if dict_compare(future_node, self._grid_configurations) == True:
+                for known_dicts in self._grid_configurations:
                     if known_dicts == future_node:
                         new_node = False
                         print(f"for {car_name} {distance} were comparing dictionary {known_dicts} with move {future_node}")
@@ -126,7 +132,7 @@ class DepthFirst:
 
                 # if it's a new possible grid configuration save it to all possible grids
                 if new_node == True:
-                    self._movement_nodes.append(future_node)
+                    self._grid_configurations.append(future_node)
                     # if no value is removed we iterate to the next dict item
                     iterator += 1
 

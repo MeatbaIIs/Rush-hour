@@ -10,10 +10,6 @@ class Grid():
         # dictionary of all the cars
         self._cars = {}
 
-        # keep track of the movement per car to compare grids for DFA
-        # zo annpassen
-        self._total_movements = {}
-
         self._size = size
         self._last_car = ""
 
@@ -21,9 +17,6 @@ class Grid():
         """Add a car to the grid"""
         car = Car(name, orientation, x, y, length, self._size)  # car_num)
         self._cars[name] = car
-
-        # the cars have 0 movement done at the start
-        self._total_movements[name] = 0
 
         # change empty spaces to the right letter
         for i in range(length):
