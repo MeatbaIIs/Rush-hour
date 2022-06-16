@@ -39,7 +39,7 @@ class DepthFirst:
     def step(self):
         # check what the moves possible are from the current grid node
         possible_moves = self._grid.poss_move_cars()
-        print(f"possible_moves before node checking are {possible_moves}")
+        print(f"possible_moves before checking configs {possible_moves}")
 
 
         print("the current configurations know to the depth search are:")
@@ -51,7 +51,7 @@ class DepthFirst:
         # calculates the grid configurations for the possible moves
         # also remove possible moves when the grid configuration is already in the list of movement nodes
         possible_moves = self.update_nodes(possible_moves)
-        print(f"after nodes is {possible_moves}")
+        print(f" possible moves after checking configs is {possible_moves}")
 
         # check that there are still moves possible
         if possible_moves:
