@@ -251,19 +251,19 @@ class Grid():
 
         return total_coords
 
-    def other_random_algorithm(self):
-        iterator = 0
-        while self.win() == False:
-            list_of_moves = self.give_all_possible_moves()
-            moving_car = random.choice(list(list_of_moves.keys()))
-            car_name, car_distance = list_of_moves[moving_car]
+    # def other_random_algorithm(self):
+    #     iterator = 0
+    #     while self.win() == False:
+    #         list_of_moves = self.give_all_possible_moves()
+    #         moving_car = random.choice(list(list_of_moves.keys()))
+    #         car_name, car_distance = list_of_moves[moving_car]
 
-            self.move(car_name, car_distance)
-            iterator += 1
+    #         self.move(car_name, car_distance)
+    #         iterator += 1
 
-        # self.print_grid()
-        # print(f"we have won after {iterator} moves")
-        return iterator
+    #     # self.print_grid()
+    #     # print(f"we have won after {iterator} moves")
+    #     return iterator
 
     def print_grid(self):
         for y in self._grid:
@@ -309,15 +309,3 @@ class Grid():
         if self._grid[y][x + 2:self._size] == (self._size - x - 2) * ["*"]:
             return True
         return False
-
-
-# if __name__ == '__main__':
-    # grid = Grid()
-    # grid.add_car('X', 'H', 2, 3, 2)
-    # grid.print_grid()
-    # #grid.move('X', 3)
-    # # grid.print_grid()
-    # # print(grid.possible_moves('X'))
-    # grid.random_algorythm()
-
-# coordinaten x,y zijn constant voor H en V dus we kunnen dat extern opslaan voor breadth
