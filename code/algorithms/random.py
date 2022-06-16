@@ -3,6 +3,7 @@ import copy
 from code.classes.grid import Grid
 from code.classes.car import Car
 
+
 class Random():
     def __init__(self, grid):
         self._grid = grid
@@ -18,7 +19,7 @@ class Random():
         while not self._grid.win():
             # get the possible moves and pick a random one
             moves = self._grid.possible_moves(random_car)
-            #print(random_car,moves)
+            # print(random_car,moves)
 
             if moves and random_car != self._last_car:
                 steps += 1
@@ -64,10 +65,9 @@ class Random():
                 else:
                     max_move = min(moves)
 
-                random_move = random.choice([min_move,max_move])
+                random_move = random.choice([min_move, max_move])
                 self._grid.move(random_car, random_move)
                 self._last_car = random_car
-
 
             # pick a new random car
             random_car = random.choice(list(self._grid._cars.keys()))
@@ -125,7 +125,7 @@ class Random():
                 self._grid.move(car_name, car_distance)
                 iterator += 1
 
-        #self._grid.print_grid()
+        # self._grid.print_grid()
         return iterator
         #print(f"we have won after {iterator} moves")
 

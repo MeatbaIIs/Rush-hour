@@ -55,7 +55,7 @@ def main(solution_file_name, steps):
     # Make custom color map
     colors_list = [(1, 1, 1)]
     for i in range(color-1):
-        hsv = (random.randrange(10, 1000)/1000, 1, random.randrange(7, 11)/10)
+        hsv = (i/color, 1, random.randrange(7, 11)/10)
         rgb = hsv_to_rgb(hsv)
         colors_list.append(rgb)
     colors_list.append((1, 0, 0))
@@ -98,10 +98,10 @@ def main(solution_file_name, steps):
                 im = ax.imshow(state, cmap=custom_colors, animated=True)
                 ims.append([im])
     ani = animation.ArtistAnimation(
-        fig, ims, interval=50, blit=True)
+        fig, ims, interval=200, blit=True, repeat_delay=2000)
 
     output_file_name = solution_file_name.rstrip('.csv') + ".gif"
-    ani.save(output_file_name, writer=animation.PillowWriter(fps=20))
+    ani.save(output_file_name, writer=animation.PillowWriter(fps=2))
 
     plt.show()
 

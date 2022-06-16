@@ -1,4 +1,4 @@
-from car import Car
+from .car import Car
 import random
 
 
@@ -19,11 +19,8 @@ class Grid():
 
     def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
-        car = Car(name, orientation, x, y, length, self._size) #car_num)
+        car = Car(name, orientation, x, y, length, self._size)  # car_num)
         self._cars[name] = car
-
-        # the cars have 0 movement done at the start
-        self._total_movements[name] = 0
 
         # change empty spaces to the right letter
         for i in range(length):
@@ -31,7 +28,6 @@ class Grid():
                 self._grid[y][x + i] = name
             elif orientation == 'V':
                 self._grid[y + i][x] = name
-
 
     def move(self, name, distance):
         """Move a car a set distance, does not check if its a possible move"""
@@ -170,9 +166,6 @@ class Grid():
                 total_moves[car_name] = moves
         return total_moves
 
-
-
-
     def movable_neighbours(self, x, y):
         """
         gives the cars that can move to a certain sport given their orientation and that
@@ -261,6 +254,37 @@ class Grid():
             print(''.join(y))
         print()
 
+    def get_grid(self):
+        return self._grid
+
+    def set_grid(self, new_state):
+        self._grid = new_state
+        return
+
+    def get_car_names(self):
+        return list(self._cars.keys())
+
+    def get_car_x(self, car_name):
+        return self._cars[car_name].get_x()
+
+    def get_car_y(self, car_name):
+        return self._cars[car_name].get_y()
+
+    def set_car_x(self, car_name, x):
+        return self._cars[car_name].set_x(x)
+
+    def set_car_y(self, car_name, y):
+        return self._cars[car_name].set_y(y)
+
+    def get_car_orientation(self, car_name):
+        return self._cars[car_name].get_orientation()
+
+    def get_car_length(self, car_name):
+        return self._cars[car_name].get_length()
+
+    def get_size(self):
+        return self._size
+
     def win(self):
         """Check if the red car can reach the end"""
         x, y = self._cars['X'].coordinates()
@@ -269,13 +293,3 @@ class Grid():
         if self._grid[y][x + 2:self._size] == (self._size - x - 2) * ["*"]:
             return True
         return False
-
-
-# if __name__ == '__main__':
-    # grid = Grid()
-    # grid.add_car('X', 'H', 2, 3, 2)
-    # grid.print_grid()
-    # #grid.move('X', 3)
-    # # grid.print_grid()
-    # # print(grid.possible_moves('X'))
-    # grid.random_algorythm()

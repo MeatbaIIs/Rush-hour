@@ -1,5 +1,5 @@
 class Car():
-    def __init__(self, name, orientation, x, y, length, grid_size, car_num) -> None:
+    def __init__(self, name, orientation, x, y, length, grid_size):
         self._name = name
         self._orientation = orientation
         self._x = x
@@ -7,7 +7,6 @@ class Car():
         self._length = length
         # give the columns of the grid for the win condition
         self._grid_size = grid_size
-        self._car_num = car_num
 
     def coordinates(self):
         """ gives the coordinates of the car as a list of (x, y) """
@@ -19,26 +18,20 @@ class Car():
         self._x = new_x
         self._y = new_y
 
-    # def can_move_to(self, x, y):
-    #     """ Check whether the car can move to the given coordinates. """
-    #     if
-    #     if self._orientation == 'H':
+    def get_x(self):
+        return self._x
 
-    #         if not self._y == y:
-    #             return False
+    def get_y(self):
+        return self._y
 
-    #         for i in range(self._x + self._length-1, x):
-    #             if not i == '*':
-    #                 return False
-    #         return True
+    def set_x(self, x):
+        self._x = x
 
-    #     # If the car is vertical
-    #     if not self._x == x:
-    #         return False
+    def set_y(self, y):
+        self._y = y
 
-    #     pass
-# # possibly a subclass for a red car is quicker as we only loop over 1 car rather than all cars
-# # depends on our grid model for checking the win condition
-# class RedCar(Car):
-#     def __init__(self, name, orientation, col, y, length, grid_size) -> None:
-#         super().__init__(name, orientation, col, y, length, grid_size)
+    def get_orientation(self):
+        return self._orientation
+
+    def get_length(self):
+        return self._length
