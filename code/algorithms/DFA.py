@@ -41,10 +41,13 @@ class DepthFirst:
         possible_moves = self._grid.poss_move_cars()
         print(f"possible_moves before node checking are {possible_moves}")
 
+
+        print("the current configurations know to the depth search are:")
         # check which configurations we already have before we start updating the nodes
         for config in self._grid_configurations:
             print(config)
 
+        print("we're looping over the moves to check if they are possible")
         # calculates the grid configurations for the possible moves
         # also remove possible moves when the grid configuration is already in the list of movement nodes
         possible_moves = self.update_nodes(possible_moves)
@@ -115,10 +118,10 @@ class DepthFirst:
                 for known_dicts in self._grid_configurations:
                     if known_dicts == future_node:
                         new_node = False
-                        print(f"for {car_name} {distance} were comparing dictionary {known_dicts} with move {future_node}")
+                        print(f"{car_name} {distance} is in the known configurations. Known dict: {known_dicts}, Future move: {future_node}")
                         # if multiple movements are possible for one car just remove the distance that has been moved before
                         if len(possible_moves[car_name]) > 1:
-                            print(f"{car_name} has {len(possible_moves[car_name])} moves and removing {distance}")
+                            print(f"{car_name} has {len(possible_moves[car_name])} moves and delete {distance} from moves")
                             # print(f"deleting distance {distance} from car {car_name}")
                             possible_moves[car_name].remove(distance)
                         # if no movements for the car allowed, remove entire key
