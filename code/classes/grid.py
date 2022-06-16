@@ -1,4 +1,4 @@
-from car import Car
+from .car import Car
 import random
 
 
@@ -271,6 +271,34 @@ class Grid():
 
     def get_grid(self):
         return self._grid
+
+    def set_grid(self, new_state):
+        self._grid = new_state
+        return
+
+    def get_car_names(self):
+        return list(self._cars.keys())
+
+    def get_car_x(self, car_name):
+        return self._cars[car_name].get_x()
+
+    def get_car_y(self, car_name):
+        return self._cars[car_name].get_y()
+
+    def set_car_x(self, car_name, x):
+        return self._cars[car_name].set_x(x)
+
+    def set_car_y(self, car_name, y):
+        return self._cars[car_name].set_y(y)
+
+    def get_car_orientation(self, car_name):
+        return self._cars[car_name].get_orientation()
+
+    def get_car_length(self, car_name):
+        return self._cars[car_name].get_length()
+
+    def get_size(self):
+        return self._size
 
     def win(self):
         """Check if the red car can reach the end"""
