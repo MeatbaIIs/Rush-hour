@@ -52,7 +52,6 @@ class DepthFirst:
 
         # check that there are still moves possible
         if possible_moves:
-
             # get a random car that moves with a random distnace
             car_name = random.choice(list(possible_moves.keys()))
             distance = random.choice(possible_moves[car_name])
@@ -101,7 +100,6 @@ class DepthFirst:
     """
     def update_nodes(self, possible_moves):
         # loop over all values in every cars possible movement
-        
         for car_name in list(possible_moves.keys()):
             # loop over the possible distances per car
             for i in range(len(possible_moves[car_name])):
