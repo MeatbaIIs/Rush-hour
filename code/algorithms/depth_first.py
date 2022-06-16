@@ -82,6 +82,7 @@ class Depth_first():
                 #     step[1] = str(step[1])
                 #     print(", ".join(step))
                 break
+            self._current_grid.print_grid()
 
         # if no car could move for a new state, go back to previous states
         # if not new_state and self._count < 3:

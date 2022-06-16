@@ -23,10 +23,12 @@ class Improving_algorithm():
             distance = move[1]
             if distance in gridcopy.possible_moves(car):
                 gridcopy.move(car, distance)
-
             else:
                 return False
-        return True
+        if gridcopy.win():
+            return True
+
+        return False
 
 
     def step(self, i):
@@ -40,11 +42,20 @@ class Improving_algorithm():
 
         if self.check_solution():
             self._solution = copy.deepcopy(self._test_solution)
+            return True
+
+        return False
 
 
 
     def run(self):
         """ Check for every move if it can be removed from the solution and return the optimized solution """
-        for i in range(len(self._solution)):
-            self.step(i)
+        do = True
+        while do:
+            do = False
+            for i in range(len(self._solution)):
+                if self.step(i):
+                    do = True
+                    break
+
         return self._solution
