@@ -17,8 +17,10 @@ import copy
 def main(input_file_name):
     grid = loader(input_file_name)
     gridcopy = copy.deepcopy(grid)
-    depth_first = dfs(grid)
-    solution = depth_first.run()
+    #depth_first = dfs(grid)
+    rand = Random(grid)
+    solution = rand.random_algorithm()
+    print(f"random solution in {len(solution)} steps")
 
     IA = Improving_algorithm(gridcopy, solution)
     new_solution = IA.run()

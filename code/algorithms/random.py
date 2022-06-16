@@ -7,6 +7,7 @@ class Random():
     def __init__(self, grid):
         self._grid = grid
         self._last_car = ""
+        self._previous_steps = []
 
     def random_algorithm(self):
         """Move a random car randomly and check for the win condition"""
@@ -33,12 +34,13 @@ class Random():
 
                 random_move = random.choice(moves)
                 self._grid.move(random_car, random_move)
+                self._previous_steps.append([random_car, random_move])
             # pick a new random car
             self._last_car = random_car
             random_car = random.choice(list(self._grid._cars.keys()))
         # print(f"Yay, solved in {steps} steps and {time.time() - t} seconds")
 
-        return steps
+        return self._previous_steps
 
     def random_algorithm_max_move(self):
         """Move a random car randomly and check for the win condition"""

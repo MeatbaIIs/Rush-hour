@@ -18,13 +18,18 @@ class Improving_algorithm():
     def check_solution(self):
         """ Returns True if test_solution is a valid solution. """
         gridcopy = copy.deepcopy(self._grid)
+
         for move in self._test_solution:
             car = move[0]
             distance = move[1]
+
             if distance in gridcopy.possible_moves(car):
                 gridcopy.move(car, distance)
+
             else:
                 return False
+
+
         if gridcopy.win():
             return True
 
@@ -50,12 +55,14 @@ class Improving_algorithm():
 
     def run(self):
         """ Check for every move if it can be removed from the solution and return the optimized solution """
-        do = True
+        found_optimization = True
+
         while do:
-            do = False
+            found_optimization = False
+
             for i in range(len(self._solution)):
                 if self.step(i):
-                    do = True
+                    found_optimization = True
                     break
 
         return self._solution

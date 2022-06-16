@@ -13,7 +13,7 @@ class Grid():
         # keep track of the movement per car to compare grids
         self._total_movements = {}
 
-        
+
         self._size = size
         self._last_car = ""
 
@@ -169,9 +169,9 @@ class Grid():
             if moves:
                 total_moves[car_name] = moves
         return total_moves
-            
 
-            
+
+
 
     def movable_neighbours(self, x, y):
         """
@@ -255,19 +255,6 @@ class Grid():
 
         return total_coords
 
-    def other_random_algorithm(self):
-        iterator = 0
-        while self.win() == False:
-            list_of_moves = self.give_all_possible_moves()
-            moving_car = random.choice(list(list_of_moves.keys()))
-            car_name, car_distance = list_of_moves[moving_car]
-        
-            self.move(car_name, car_distance)
-            iterator += 1
-
-        # self.print_grid()
-        # print(f"we have won after {iterator} moves")
-        return iterator
 
     def print_grid(self):
         for y in self._grid:
