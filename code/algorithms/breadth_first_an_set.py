@@ -2,6 +2,18 @@
 Example usage:
 python3 main_an.py data/Rushhour6x6_2.csv
 python3 code/visualization/visualization.py data/Rushhour6x6_2_solution.csv
+
+Door: 
+- Maar één keer een leeg grid te initializen
+- self._visited is a set of tuples instead of list of lists
+
+Puzzel 1: around 0.0 minutes
+Puzzel 2: around 0.01 minutes
+Puzzel 3: around 0.02 minutes
+Puzzel 4: duurt ongeveer 2,35 minuten (6,32 met leeg grid vaak op te bouwen)
+Puzzel 5: killed
+Puzzel 6: killed
+
 """
 
 import copy
@@ -11,20 +23,20 @@ import numpy as np
 
 class BreadthFirst():
     def __init__(self, grid):
-        self._depth = 30
+        self._depth = 100
+
+        # Queue is a queue of lists of lists
         self._queue = queue.Queue()
         self._grid = grid
         self._cars = grid.get_car_names()
-
-        self._empty_grid = []
-        for _ in range(grid.get_size()):
-            self._empty_grid.append(grid.get_size() * ['*'])
-
         self._initial_x = {}
         self._initial_y = {}
         self._orientation = {}
         self._lengths = {}
-        self._visited = []
+
+        # Visited is a set of tuples
+        self._visited = set()
+        self._visited.add(tuple([0 for i in range(len(self._cars))]))
 
         # Make dictionaries with info about all cars on the given grid
         for name in self._cars:
@@ -34,7 +46,6 @@ class BreadthFirst():
             self._lengths[name] = grid.get_car_length(name)
 
         self._queue.put([[0 for i in range(len(self._cars))]])
-        self._visited.append([[0 for i in range(len(self._cars))]])
 
     def possible_next_lists(self, current_list):
         """ Gives the possible lists after one move on the grid that can be made with the given list """
@@ -60,7 +71,11 @@ class BreadthFirst():
 
     def list_to_grid(self, list):
         """ Given a list with the total moved distance from the start position for each car, draws a list of lists that represents the grid """
-        grid = copy.deepcopy(self._empty_grid)
+        grid = []
+
+        # Construct the grid
+        for i in range(self._grid.get_size()):
+            grid.append(self._grid.get_size() * ['*'])
 
         # Add cars
         for i in range(len(self._cars)):
@@ -134,11 +149,11 @@ class BreadthFirst():
 
                 # Look for possible new grid representations and add them to queue if not encountered before.
                 for new_list in self.possible_next_lists(last_list):
-
-                    if new_list in self._visited:
+                    new_tuple = tuple(new_list)
+                    if new_tuple in self._visited:
                         continue
 
-                    self._visited.append(new_list)
+                    self._visited.add(new_tuple)
                     child = copy.deepcopy(state)
                     child.append(new_list)
                     self._queue.put(child)
