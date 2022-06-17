@@ -48,8 +48,8 @@ class DepthFirst:
         # print(f" possible moves after checking configs is {possible_moves}")
 
         # move backwards if there are no possible moves or if the current state moves beyond
-        # a preset maximum moves
-        if not possible_moves or len(self._done_movements) > self._win_max:
+        # a preset maximum moves or the board has won
+        if not possible_moves or len(self._done_movements) > self._win_max or self._grid.win():
             # move back the last done movement
             car_name, distance = self._done_movements[-1]
             # move the previous car backwards!
@@ -82,7 +82,7 @@ class DepthFirst:
             self._visited_configurations.append(self._current_configuration)
             # print(f"current node is {self._current_configuration}")
             
-            self._grid.print_grid()
+            # self._grid.print_grid()
             
             # keep track of whih movents have been done
             self._done_movements.append([car_name, distance])
@@ -138,7 +138,7 @@ class DepthFirst:
         while self._grid.win() == False:
             step_number += 1
             self.step()
-        
+        # return
         self._grid.print_grid()
         print(f"Yay, solved in {step_number} steps and {time.time() - t} seconds, while taking {len(self._done_movements)}")
         # return
@@ -156,7 +156,7 @@ class DepthFirst:
             if self._grid.win():
                 self._win_max = len(self._done_movements)
                 self._min_win_moves = self._done_movements
-                print(self._win_max, self._min_win_moves)
+                print(self._win_max)
                 
                 
         
