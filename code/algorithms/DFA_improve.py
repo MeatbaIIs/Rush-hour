@@ -5,7 +5,8 @@ import copy
 from dis import dis
 from math import dist
 from shutil import move
-from matplotlib.pyplot import cla, step
+from turtle import distance
+from matplotlib.pyplot import cla, grid, step
 from code.classes.grid import Grid
 from code.helpers import loader, dict_compare
 import random
@@ -16,6 +17,9 @@ class DepthFirst:
         grid = loader(data_file)
         self._grid = grid
 
+        # keep track of a start grid to reuse when backtracking
+        self._start_grid = grid
+
         self._win_max = 1000
         # load the first grid configuration as a function of how many steps each car has
         # moved from the starting position
@@ -23,14 +27,15 @@ class DepthFirst:
         for car_name in self._grid._cars:
             self._current_configuration[car_name] = 0
 
-        # the dictionary is {A:0, B:0, ... , X: 0} at the start
-        self._visited_configurations = [copy.deepcopy(self._current_configuration)]
-        
         # remember the exact moves that have been done for the current node
         # dit is bijvoorbeeld [A 1, X -2, B 3, G 1, H -1, etc...]
         self._done_movements = []
 
-        # calculate how many times 
+        # the dictionary is {A:0, B:0, ... , X: 0} at the start
+        # save all the grid configurations in a dictionary together with the moves that hvae been done
+        self._visited_configurations = [(copy.deepcopy(self._current_configuration), self._done_movements)]        
+
+        # calculate how many times we moved back
         self._n_backtracks = 0
 
     """
@@ -41,31 +46,23 @@ class DepthFirst:
     def step(self):
         # check what the moves possible are from the current grid node
         possible_moves = self._grid.poss_move_cars()
-        # print(f"possible_moves before checking configs {possible_moves}")
 
         # checks if the possible moves go to visited configurations or and removes them
         possible_moves = self.update_nodes(possible_moves)
-        # print(f" possible moves after checking configs is {possible_moves}")
 
         # move backwards if there are no possible moves or if the current state moves beyond
         # a preset maximum moves or the board has won. Also move back when won
         if not possible_moves or len(self._done_movements) > self._win_max or self._grid.win():
-            
-            # move back the last done movement
-            car_name, distance = self._done_movements[-1]
-            # move the previous car backwards!
-            self._grid.move(car_name, - distance)
-
-            # change the current and previous nodes accordingly
-            previous_config = copy.deepcopy(self._current_configuration)
-            previous_config[car_name] -= distance
-            self._current_configuration = previous_config
-            
-            # remove the last move from the movements as we returned
-            self._done_movements.pop()
-            self._n_backtracks += 1
+            print("doing stupid stuff")
+            # check if config key is already in the visited dict
+            for grid_config in self._visited_configurations:
+                if grid_config == self._current_configuration:
+                    # move to the current grid configuration that required the least moves
+                    self.least_move_config(grid_config)
+                    
         # make a random move if other moves are possible
         else:
+            print(f"moves possible are {possible_moves}")
             # get a random car that moves with a random distnace
             car_name = random.choice(list(possible_moves))
             distance = random.choice(possible_moves[car_name])
@@ -79,20 +76,46 @@ class DepthFirst:
             new_node = copy.deepcopy(self._current_configuration)
             new_node[car_name] += distance
             self._current_configuration = new_node
-            # add to visited nodes
-            self.backtrack()
 
-            self._visited_configurations.append(self._current_configuration)
-            
-            # keep track of whih movents have been done
+            # keep track of whih movents have been done and which grids are visited
             self._done_movements.append([car_name, distance])
+            self._visited_configurations.append((self._current_configuration, self._done_movements))
+            
+        
+    """ 
+    Function that moves the grid to a configuration with the least moves when the current configuration 
+    is a match with a previously known configuration
+    
+    """
+    def least_move_config(self, prev_config):
+        # get the moves to get to the previous config 
+        previous_moves = []
+        # get done movements for the config that we are comparing current config with
+        for config in self._visited_configurations:
+            if config[0] == prev_config:
+                previous_moves = config[1]
+                break
 
-        # print(self._done_movements)
-       
-        
-        # if there are no possible movements, go back to a previous node untill 
-        # there are movements possible again
-        
+        # if the current config has more steps, we remove everything it did form memory and go to the earlier node
+        if len(self._done_movements) > previous_moves:
+            # keep moving back until the least move config is reached, then carry on or the algorithm
+            # has a chance to move back up the tree for future moves
+            while len(self._done_movements) > len(previous_moves):
+                car_name, distance = self._done_movements[-1]
+                self._current_configuration = self.update_move(car_name, distance, self._current_configuration)
+                # delete config from memory
+                self._visited_configurations.remove((self._current_configuration, self._done_movements))
+                self._done_movements.pop()
+            
+            # now we start again with the starting grid moving to the new node
+            self._done_movements = previous_moves
+            # copy the starting grid and make it the new grid while updating with the done moves
+            self._grid = copy.deepcopy(self._start_grid)
+            for move in previous_moves:
+                car_name, distance = move
+                self._grid.move(car_name, distance)
+
+            self._current_configuration = prev_config
 
 
     """
@@ -117,10 +140,9 @@ class DepthFirst:
                 new_config = True
 
                 # if dict_compare(future_node, self._grid_configurations) == True:
-                for known_dicts in self._visited_configurations:
-                    if known_dicts == future_node:
-                        new_config = False
-                        # print(f"{car_name} {distance} is in the known configurations")
+                if future_node in [config for config in self._visited_configurations[0]]:
+                    new_config = False
+                    print(f"{car_name} {distance} is in the known configurations")
 
                 # if it's a new possible grid configuration allow the movement to be possible
                 if new_config == True:
@@ -132,24 +154,18 @@ class DepthFirst:
 
         return move_dict
 
-    # function that moves back to a previous configuration and doesn't save the done steps
-    def backtrack(self):
-        if self._current_configuration in self._visited_configurations and len(self._done_movements) > 0:
-            print("backtracking")
-            destination_config = self._current_configuration
-            current_config = copy.deepcopy(self._current_configuration)
-            car_name, distance = self._done_movements[-1]
-            # move back one step
-            current_config[car_name] -= distance
-            self._done_movements.pop()
 
-            while current_config != destination_config:
-                current_config = copy.deepcopy(self._current_configuration)
-                car_name, distance = self._done_movements[-1]
-                # move back one step
-                current_config[car_name] -= distance
-                self._done_movements.pop()
 
+    def update_move(self, car_name, distance, node):
+        self._grid.move(car_name, distance=distance)
+        # update the current node
+        new_node = copy.deepcopy(node)
+        self._visited_configurations.remove(node)
+        new_node[car_name] += distance
+
+        current_configuration = new_node
+
+        return current_configuration
 
 
     """
@@ -158,9 +174,11 @@ class DepthFirst:
     def run(self):
         step_number = 0
         t = time.time()
-        while self._grid.win() == False:
+        # while self._grid.win() == False:
+        for i in range(10):
             step_number += 1
             self.step()
+            print(step_number, self._current_configuration, len(self._done_movements))
         # return
         self._grid.print_grid()
         print(f"Yay, solved in {step_number} steps and {time.time() - t} seconds, while taking {len(self._done_movements)}")
@@ -171,15 +189,15 @@ class DepthFirst:
         self._min_win_moves = self._done_movements
 
         step_number_2 = 0
-        # update the max allowed steps when another win is detected
-        t = time.time()
-        while self._done_movements:
-            self.step()
-            step_number_2 += 1
-            if self._grid.win():
-                self._win_max = len(self._done_movements)
-                self._min_win_moves = self._done_movements
-                print(self._win_max)
+        # # update the max allowed steps when another win is detected
+        # t = time.time()
+        # while self._done_movements:
+        #     self.step()
+        #     step_number_2 += 1
+        #     if self._grid.win():
+        #         self._win_max = len(self._done_movements)
+        #         self._min_win_moves = self._done_movements
+        #         print(self._win_max)
                 
                 
         

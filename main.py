@@ -5,7 +5,7 @@ Usage: main.py [PUZZLE_NAME.CSV]
 
 import csv
 from code.algorithms.depth_first import Depth_first as dfs
-from code.algorithms.DFA import DepthFirst as DF
+from code.algorithms.DFA_improve import DepthFirst as DF
 
 from code.classes.car import Car
 from code.helpers import loader, save_solution
