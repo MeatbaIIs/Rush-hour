@@ -1,7 +1,7 @@
 """
 Runs a breadth first algorithm with an added heuristic on a Rush hour puzzle. 
-Heuristic: when selecting moves, the move with the furthest distance is tried before the other moves.
-
+Heuristic: instead of saving all possible moves, it only saves one (of the) move(s) with the furthest distance.
+           solutions might not be the best solution, but the algorithm works faster than the original breadth first.
 
 How to use:
 -   first load the grid with the initial state, using the loader function:
@@ -10,11 +10,11 @@ How to use:
     breadth_first = BreadthFirstFurthest(grid)
     solution = breadth_first.run()
 
-Puzzle 1: around  minutes, solution of 21 steps
-Puzzle 2: around  minutes, solution of 15 steps
-Puzzle 3: around  minutes, solution of 33 steps
-Puzzle 4: around  minutes
-Puzzle 5: turned off after more than 10 minutes.
+Puzzle 1: around 0.0 minutes, solution of 21 steps
+Puzzle 2: around 0.0 minutes, solution of 15 steps
+Puzzle 3: around 0.02 minutes, solution of 33 steps
+Puzzle 4: around 1 minutes, solution of 28 steps
+Puzzle 5: stopped after more than 10 minutes
 Puzzle 6: 
 """
 
@@ -22,11 +22,11 @@ import copy
 import queue
 import numpy as np
 import time
+import random
 
 
-class BreadthFirst():
+class BreadthFirstFurthest():
     def __init__(self, grid):
-        self._depth = 100
         # Queue is a queue of lists of lists
         self._queue = queue.Queue()
         self._empty_grid = []
@@ -66,24 +66,26 @@ class BreadthFirst():
 
             moves = self._grid.possible_moves(self._cars[i])
 
-            for distance in moves:
+            if not moves:
+                continue
 
-                # Write each move as a new list and collect all possible new lists
-                next_list = copy.deepcopy(current_list)
-                next_list[i] += distance
-                next_lists.append(next_list)
+            # Select (one of the) move(s) with furthest distance
+            if abs(moves[0]) > abs(moves[-1]):
+                distance = moves[0]
+            elif abs(moves[-1]) > abs(moves[0]):
+                distance = moves[-1]
+            else:
+                distance = random.choice([moves[0], moves[-1]])
+
+            next_list = copy.deepcopy(current_list)
+            next_list[i] += distance
+            next_lists.append(next_list)
 
         return next_lists
 
     def list_to_grid(self, list):
         """ Given a list with the total moved distance from the start position for each car, draws a list of lists that represents the grid """
         grid = copy.deepcopy(self._empty_grid)
-
-        # grid = []
-
-        # # Construct the grid
-        # for i in range(self._grid.get_size()):
-        #     grid.append(self._grid.get_size() * ['*'])
 
         # Add cars
         for i in range(len(self._cars)):
@@ -154,18 +156,16 @@ class BreadthFirst():
             # Get list representation of the grid after the last step
             last_list = state[-1]
 
-            if len(state) < self._depth:
+            # Look for possible new grid representations and add them to queue if not encountered before.
+            for new_list in self.possible_next_lists(last_list):
+                new_tuple = tuple(new_list)
+                if new_tuple in self._visited:
+                    continue
 
-                # Look for possible new grid representations and add them to queue if not encountered before.
-                for new_list in self.possible_next_lists(last_list):
-                    new_tuple = tuple(new_list)
-                    if new_tuple in self._visited:
-                        continue
-
-                    self._visited.add(new_tuple)
-                    child = copy.deepcopy(state)
-                    child.append(new_list)
-                    self._queue.put(child)
+                self._visited.add(new_tuple)
+                child = copy.deepcopy(state)
+                child.append(new_list)
+                self._queue.put(child)
 
         time_taken = et - st
         return solution, time_taken

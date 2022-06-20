@@ -6,6 +6,7 @@ Usage: main.py [PUZZLE_NAME.CSV]
 import csv
 from code.algorithms.depth_first import Depth_first as dfs
 from code.algorithms.breadth_first import BreadthFirst
+from code.algorithms.breadth_first_furthest import BreadthFirstFurthest
 from code.algorithms.DFA import DepthFirst
 from code.algorithms.take_out_loops import TakeOutLoops
 from code.algorithms.random import Random
@@ -32,6 +33,10 @@ def main(input_file_name):
     # breadth first
     breadth_first = BreadthFirst(grid)
     solution = breadth_first.run()
+
+    # breadth first furthest
+    # breadth_first = BreadthFirstFurthest(grid)
+    # solution = breadth_first.run()
 
     # depth first Duncan
     # depth_first = DepthFirst('data/Rushhour6x6_1.csv')
