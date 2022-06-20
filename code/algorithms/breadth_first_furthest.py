@@ -141,14 +141,14 @@ class BreadthFirstFurthest():
     def run(self):
         """ Runs a breadth first algorithm """
 
-        print('looking for a solution of max ' + str(self._depth) + ' steps')
         st = time.time()
+        et = 0
         while not self._queue.empty():
 
             state = self._queue.get()
 
             if self.is_solution(state):
-                print('found a solution of ' + str(len(state)-1) + ' steps.')
+                # print('found a solution of ' + str(len(state)-1) + ' steps.')
                 solution = self.solution_list_to_steps(state)
                 et = time.time()
                 break

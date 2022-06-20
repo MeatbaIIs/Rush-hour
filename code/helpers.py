@@ -9,11 +9,15 @@ from .classes.grid_clean import Grid
 import re
 from typing import List, Dict
 import copy
-from .algorithms.breadth_first_an import BreadthFirst as BF
-from .algorithms.breadth_first_furthest import BreadthFirst as BFF
+from .algorithms.breadth_first import BreadthFirst as BF
+from .algorithms.breadth_first_furthest import BreadthFirstFurthest as BFF
 from .algorithms.depth_first import Depth_first as DF
 from .algorithms.random import Random 
 
+class MethodInputError(Exception):
+    """Raised when a method input is wrong for batchrunner"""
+    """possible inputs are 'DF', 'BF', 'BFF', 'Random' and 'MaxRandom'"""
+    pass
 
 def loader(input_file_name):
     # Get grid size from the input file name
@@ -71,11 +75,20 @@ It returns the total moves done, the steps for all the moves and the time it too
 """
 def batchrunner(file: str, method: str, N_times: int):
     grid = loader(file)
-    total_steps = []
+    # keep track of number of moves until solution (not number of steps!)
+    total_moves = []
+    # the exact moves done
     total_movement_list = []
+    # time it took for solve
     total_times = []
+
+    # batchrun the algorithm N times
     for i in range(N_times):
+        # copy the greed so it remains unsolved every iteration
         input_grid = copy.deepcopy(grid)
+        done_steps = []
+        time_taken = 0
+        # translate the method to the algorithms
         if method == "Random":
             algorithm = Random(input_grid)
             done_steps, time_taken = algorithm.run("random_not_prev")
@@ -91,13 +104,17 @@ def batchrunner(file: str, method: str, N_times: int):
         elif method == "BFF":
             algorithm = BFF(input_grid)
             done_steps, time_taken = algorithm.run()
+        # return an error if method is incorrect
+        # if more methods are added like breath-first then depth first, make sure an elif statement is added
+        else:
+            raise MethodInputError
             
-
+        # add the info per algorithm iteration to total batchrun data
         total_movement_list.append(done_steps)
-        total_steps.append(len(done_steps))
+        total_moves.append(len(done_steps))
         total_times.append(time_taken)  
 
-    return total_steps, total_movement_list, total_times  
+    return total_moves, total_movement_list, total_times  
 
     
 

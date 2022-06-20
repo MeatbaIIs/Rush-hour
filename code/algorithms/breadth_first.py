@@ -16,9 +16,11 @@ Puzzle 5: turned it off after more than 10 minutes.
 Puzzle 6: 
 """
 
+from cmath import e
 import copy
 import queue
 import numpy as np
+import time
 
 
 class BreadthFirst():
@@ -129,14 +131,14 @@ class BreadthFirst():
     def run(self):
         """ Runs a breadth first algorithm """
 
-        print('looking for a solution')
-
+        # print('looking for a solution')
+        st = time.time()
         while not self._queue.empty():
 
             state = self._queue.get()
 
             if self.is_solution(state):
-                print('found a solution of ' + str(len(state)-1) + ' steps.')
+                # print('found a solution of ' + str(len(state)-1) + ' steps.')
                 solution = self.solution_list_to_steps(state)
                 break
 
@@ -153,5 +155,6 @@ class BreadthFirst():
                 child = copy.deepcopy(state)
                 child.append(new_list)
                 self._queue.put(child)
-
-        return solution
+        et = time.time()
+        time_taken = et - st
+        return solution, time_taken

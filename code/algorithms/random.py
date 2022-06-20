@@ -4,6 +4,10 @@ from code.classes.grid import Grid
 from code.classes.car import Car
 import time
 
+class MethodInputError(Exception):
+    """Raised when a method input is wrong for Random.run()"""
+    """possible inputs are 'max_random' and 'random_not_prev' """
+    pass
 
 class Random():
     def __init__(self, grid):
@@ -96,5 +100,7 @@ class Random():
         elif method == "random_not_prev":
             previous_steps, time_taken = self.random_algorithm()
             return previous_steps, time_taken
+        else:
+            raise MethodInputError
 
 
