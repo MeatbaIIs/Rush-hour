@@ -8,6 +8,11 @@ from typing import Dict
 from .classes.grid_clean import Grid
 import re
 from typing import List, Dict
+import copy
+from .algorithms.breadth_first_an import BreadthFirst as BF
+from .algorithms.breadth_first_furthest import BreadthFirst as BFF
+from .algorithms.depth_first import Depth_first as DF
+from .algorithms.random import Random 
 
 
 def loader(input_file_name):
@@ -60,15 +65,39 @@ def solution_to_csv(solution, input_file_name):
             # Write step to csv
             csvwriter.writerow(step)
 
-# if __name__ == "__main__":
-#     # set-up parsing command line arguments
-#     parser = argparse.ArgumentParser(description="Solve a Rush hour puzzle.")
+"""
+Runs a certain algorithm for a certain file N times
+It returns the total moves done, the steps for all the moves and the time it took to run per iteration
+"""
+def batchrunner(file: str, method: str, N_times: int):
+    grid = loader(file)
+    total_steps = []
+    total_movement_list = []
+    total_times = []
+    for i in range(N_times):
+        input_grid = copy.deepcopy(grid)
+        if method == "Random":
+            algorithm = Random(input_grid)
+            done_steps, time_taken = algorithm.run("random_not_prev")
+        elif method == "MaxRandom":
+            algorithm = Random(input_grid)
+            done_steps, time_taken = algorithm.run("max_random")
+        elif method == "DF":
+            algorithm = DF(input_grid)
+            done_steps, time_taken = algorithm.run()
+        elif method == "BF":
+            algorithm = BF(input_grid)
+            done_steps, time_taken = algorithm.run()
+        elif method == "BFF":
+            algorithm = BFF(input_grid)
+            done_steps, time_taken = algorithm.run()
+            
 
-#     # adding arguments
-#     parser.add_argument("input", help="input file (csv)")
+        total_movement_list.append(done_steps)
+        total_steps.append(len(done_steps))
+        total_times.append(time_taken)  
 
-#     # read arguments from command line
-#     args = parser.parse_args()
+    return total_steps, total_movement_list, total_times  
 
-#     # run main with provided arguments
-#     loader(args.input)
+    
+

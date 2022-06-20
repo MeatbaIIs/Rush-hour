@@ -85,7 +85,6 @@ class DepthFirst:
     """ 
     Function that moves the grid to a configuration with the least moves when the current configuration 
     is a match with a previously known configuration
-    
     """
     def least_move_config(self, prev_config):
         # get the moves to get to the previous config 
@@ -154,8 +153,20 @@ class DepthFirst:
 
         return move_dict
 
+    """
+    Give the possible moves of all cars in the current configuration
+    """
+    def poss_move_cars(self):
+        total_moves = {}
+        for car_name in list(self._grid._cars.keys()):
+            moves = self._grid.possible_moves(car_name)
+            if moves:
+                total_moves[car_name] = moves
+        return total_moves
 
-
+    """
+    move the grid and configuration after a car moves a certain distance
+    """
     def update_move(self, car_name, distance, node):
         self._grid.move(car_name, distance=distance)
         # update the current node

@@ -4,26 +4,21 @@ Usage: main.py [PUZZLE_NAME.CSV]
 """
 
 import csv
-from code.algorithms.depth_first import Depth_first as dfs
-from code.algorithms.DFA_improve import DepthFirst as DF
-
+from code.algorithms.breadth_first_an import BreadthFirst as BF
+from code.algorithms.breadth_first_furthest import BreadthFirst as BFF
+from code.algorithms.depth_first import Depth_first as DF
+from code.algorithms.random import Random 
 from code.classes.car import Car
-from code.helpers import loader, save_solution
+from code.helpers import loader, batchrunner
 from code.classes.grid import Grid
 import argparse
 
 
 def main(input_file_name):
-    grid = loader(input_file_name)
+    method = "BF"
+    total_steps, total_movement_list, total_times = batchrunner(input_file_name, method, 10)
+    print(total_steps, total_movement_list, total_times)
 
-    # dfs.run(grid)
-    # print('found a solution!')
-    # algorithm = dfs(grid)
-    # algorithm.run()
-
-    
-    algorithm = DF("data/Rushhour6x6_1.csv")
-    algorithm.run()
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ python3 code/visualization/visualization.py data/Rushhour6x6_2_solution.csv
 import copy
 import queue
 import numpy as np
+import time
 
 
 class BreadthFirst():
@@ -117,7 +118,7 @@ class BreadthFirst():
         """ Runs a breadth first algorithm """
 
         print('looking for a solution of max ' + str(self._depth) + ' steps')
-
+        st = time.time()
         while not self._queue.empty():
 
             state = self._queue.get()
@@ -142,5 +143,6 @@ class BreadthFirst():
                     child = copy.deepcopy(state)
                     child.append(new_list)
                     self._queue.put(child)
-
-        return solution
+        et = time.time()
+        time_taken = et - st
+        return solution, time_taken

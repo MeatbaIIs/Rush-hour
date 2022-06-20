@@ -1,6 +1,7 @@
 import copy
 import random
 from code.classes.grid import Grid
+import time
 
 
 class Depth_first():
@@ -120,9 +121,10 @@ class Depth_first():
     def run(self):
         """run the algorithm"""
         i = 0
+        st = time.time()
         while not self._current_grid.win():
             i = self.step(i)
-            self._current_grid.print_grid()
-        print(f"won in {i} steps")
-
-        return self._previous_steps
+        
+        et = time.time()
+        time_taken = et- st
+        return self._previous_steps, time_taken
