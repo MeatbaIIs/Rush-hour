@@ -48,8 +48,9 @@ class DepthFirst:
         # print(f" possible moves after checking configs is {possible_moves}")
 
         # move backwards if there are no possible moves or if the current state moves beyond
-        # a preset maximum moves or the board has won
+        # a preset maximum moves or the board has won. Also move back when won
         if not possible_moves or len(self._done_movements) > self._win_max or self._grid.win():
+            
             # move back the last done movement
             car_name, distance = self._done_movements[-1]
             # move the previous car backwards!
@@ -79,13 +80,15 @@ class DepthFirst:
             new_node[car_name] += distance
             self._current_configuration = new_node
             # add to visited nodes
+            self.backtrack()
+
             self._visited_configurations.append(self._current_configuration)
-            # print(f"current node is {self._current_configuration}")
-            
-            # self._grid.print_grid()
             
             # keep track of whih movents have been done
             self._done_movements.append([car_name, distance])
+
+        # print(self._done_movements)
+       
         
         # if there are no possible movements, go back to a previous node untill 
         # there are movements possible again
@@ -129,6 +132,26 @@ class DepthFirst:
 
         return move_dict
 
+    # function that moves back to a previous configuration and doesn't save the done steps
+    def backtrack(self):
+        if self._current_configuration in self._visited_configurations and len(self._done_movements) > 0:
+            print("backtracking")
+            destination_config = self._current_configuration
+            current_config = copy.deepcopy(self._current_configuration)
+            car_name, distance = self._done_movements[-1]
+            # move back one step
+            current_config[car_name] -= distance
+            self._done_movements.pop()
+
+            while current_config != destination_config:
+                current_config = copy.deepcopy(self._current_configuration)
+                car_name, distance = self._done_movements[-1]
+                # move back one step
+                current_config[car_name] -= distance
+                self._done_movements.pop()
+
+
+
     """
     Run the code until the grid is won
     """
@@ -162,11 +185,3 @@ class DepthFirst:
         
         print(f"Yay, solved in {step_number_2} steps and {time.time() - t} seconds, while taking {self._win_max}")
         print(self._first_win, self._win_max)
-
-
-# bugs zijn de movements na terug gaan
-# ook runt die soms oneindig
-# dus er worden teveel random gekke borden gecreeerd!!
-# gebruik zo print grid
-            
-    
