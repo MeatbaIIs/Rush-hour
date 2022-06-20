@@ -5,11 +5,10 @@ Usage: main.py [PUZZLE_NAME.CSV]
 
 import csv
 from code.algorithms.depth_first import Depth_first as dfs
-from code.algorithms.breadth_first_an import BreadthFirst
-from code.algorithms.DFA import DepthFirst as DF
+from code.algorithms.breadth_first_an_set import BreadthFirst
+from code.algorithms.DFA import DepthFirst
 from code.algorithms.random import Random
-from code.classes.car import Car
-from code.helpers import loader, save_solution
+from code.helpers import loader, solution_to_csv
 from code.classes.grid import Grid
 from code.algorithms.improving_algorithm import Improving_algorithm
 import argparse
@@ -32,6 +31,11 @@ def main(input_file_name):
     breadth_first = BreadthFirst(grid)
     start_time = time.perf_counter()
     solution = breadth_first.run()
+
+    # depth first Duncan
+    # depth_first = DepthFirst('data/Rushhour6x6_1.csv')
+    # solution = depth_first
+
     end_time = time.perf_counter()
     print(solution)
     duration = round((end_time - start_time)/60, 2)
@@ -56,14 +60,7 @@ def main(input_file_name):
     # algorithm = DF("data/Rushhour6x6_1.csv")
     # algorithm.run()
 
-    filename = input_file_name.rstrip(".csv") + "_solution.csv"
-    with open(filename, 'w') as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter=',')
-        csvwriter.writerow(['car', 'move'])
-
-        for step in solution:
-            # Write step to csv
-            csvwriter.writerow(step)
+    solution_to_csv(solution, input_file_name)
 
 
 if __name__ == "__main__":

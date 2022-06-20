@@ -5,7 +5,7 @@ Usage: loader.py [PUZZLE_NAME.CSV]
 
 import csv
 from typing import Dict
-from .classes.grid import Grid
+from .classes.grid_clean import Grid
 import re
 from typing import List, Dict
 
@@ -39,7 +39,9 @@ def loader(input_file_name):
 
     return grid
 
-# function that returns true if 2 dictionaries of the grid movements per car are the same 
+# function that returns true if 2 dictionaries of the grid movements per car are the same
+
+
 def dict_compare(new_dict, list_of_grids: List[Dict]) -> bool:
     for dict in list_of_grids:
         if new_dict == dict:
@@ -47,25 +49,16 @@ def dict_compare(new_dict, list_of_grids: List[Dict]) -> bool:
     return False
 
 
-
-
-
-def save_solution(input_file_name):
-    # Find solution and output solution to csv file
-    grid = loader(input_file_name)
-
+def solution_to_csv(solution, input_file_name):
+    """ takes a solution formatted as a list of steps and outputs this to a csv file """
     filename = input_file_name.rstrip(".csv") + "_solution.csv"
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
         csvwriter.writerow(['car', 'move'])
 
-        while not grid.win():
-            # Take step in algorith
-            step = grid.random_step()
-
+        for step in solution:
             # Write step to csv
-            csvwriter.writerow(step.split(","))
-
+            csvwriter.writerow(step)
 
 # if __name__ == "__main__":
 #     # set-up parsing command line arguments
