@@ -7,6 +7,7 @@ import csv
 from code.algorithms.depth_first import Depth_first as dfs
 from code.algorithms.breadth_first_an_set import BreadthFirst
 from code.algorithms.DFA import DepthFirst
+from code.algorithms.take_out_loops import TakeOutLoops
 from code.algorithms.random import Random
 from code.helpers import loader, solution_to_csv
 from code.classes.grid import Grid
@@ -18,34 +19,41 @@ import time
 
 def main(input_file_name):
     grid = loader(input_file_name)
+    start_time = time.perf_counter()
 
     # depth first
     # depth_first = dfs(grid)
     # solution = depth_first.run()
 
     # random
-    # random_alg = Random(grid)
-    # solution = random_alg.random_algorithm()
+    random_alg = Random(grid)
+    solution = random_alg.random_algorithm()
 
     # breadth first
-    breadth_first = BreadthFirst(grid)
-    start_time = time.perf_counter()
-    solution = breadth_first.run()
+    # breadth_first = BreadthFirst(grid)
+    # solution = breadth_first.run()
 
     # depth first Duncan
     # depth_first = DepthFirst('data/Rushhour6x6_1.csv')
     # solution = depth_first
 
     end_time = time.perf_counter()
-    print(solution)
+    # print(solution)
+    sol_len = len(solution)
     duration = round((end_time - start_time)/60, 2)
 
-    print(f'Algorithm took around {duration} minutes')
+    print(
+        f'Algorithm took around {duration} minutes and found solution of {sol_len} steps')
 
     # IA = Improving_algorithm(grid, solution)
     # new_solution = IA.run()
+    # print(
+    #     f'Improving algorithm lead to a solution of {len(new_solution)} steps.')
 
-    # print(len(new_solution))
+    # Take out loops
+    tol = TakeOutLoops(grid, solution)
+    new_solution = tol.run()
+    print(f'solution length after take out loops: {len(new_solution)}')
 
     # histogram(input_file_name)
     # dfs.run(grid)
