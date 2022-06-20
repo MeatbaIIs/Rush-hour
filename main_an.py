@@ -5,7 +5,7 @@ Usage: main.py [PUZZLE_NAME.CSV]
 
 import csv
 from code.algorithms.depth_first import Depth_first as dfs
-from code.algorithms.breadth_first_an_set import BreadthFirst
+from code.algorithms.breadth_first import BreadthFirst
 from code.algorithms.DFA import DepthFirst
 from code.algorithms.take_out_loops import TakeOutLoops
 from code.algorithms.random import Random
@@ -26,12 +26,12 @@ def main(input_file_name):
     # solution = depth_first.run()
 
     # random
-    random_alg = Random(grid)
-    solution = random_alg.random_algorithm()
+    # random_alg = Random(grid)
+    # solution = random_alg.random_algorithm()
 
     # breadth first
-    # breadth_first = BreadthFirst(grid)
-    # solution = breadth_first.run()
+    breadth_first = BreadthFirst(grid)
+    solution = breadth_first.run()
 
     # depth first Duncan
     # depth_first = DepthFirst('data/Rushhour6x6_1.csv')
@@ -51,9 +51,9 @@ def main(input_file_name):
     #     f'Improving algorithm lead to a solution of {len(new_solution)} steps.')
 
     # Take out loops
-    tol = TakeOutLoops(grid, solution)
-    new_solution = tol.run()
-    print(f'solution length after take out loops: {len(new_solution)}')
+    # tol = TakeOutLoops(grid, solution)
+    # new_solution = tol.run()
+    # print(f'solution length after take out loops: {len(new_solution)}')
 
     # histogram(input_file_name)
     # dfs.run(grid)

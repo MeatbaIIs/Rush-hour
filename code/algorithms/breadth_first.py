@@ -1,80 +1,166 @@
+"""
+Runs a breadth first algorithm on a Rush hour puzzle.
+
+How to use:
+-   first load the grid with the initial state, using the loader function:
+    grid = loader(input_file_name)
+-   then use the algorithm to get a solution:
+    breadth_first = BreadthFirst(grid)
+    solution = breadth_first.run()
+
+Puzzle 1: around 0.0 minutes, solution of 21 steps
+Puzzle 2: around 0.01 minutes, solution of 15 steps
+Puzzle 3: around 0.03 minutes, solution of 33 steps
+Puzzle 4: around 2,5 minutes, solution of 27 steps
+Puzzle 5: turned it off after more than 10 minutes.
+Puzzle 6: 
+"""
+
 import copy
-import random
-from code.classes.grid import Grid
+import queue
+import numpy as np
 
 
-class Depth_first():
+class BreadthFirst():
     def __init__(self, grid):
-        self._current_grid = grid
-        self._previous_grids = [copy.deepcopy(grid)]
-        self._previous_steps = []
-        self._new_state = False
+        self._depth = 100
+        # Queue is a queue of lists of lists
+        self._queue = queue.Queue()
+        self._empty_grid = []
+        for _ in range(grid.get_size()):
+            self._empty_grid.append(grid.get_size() * ['*'])
 
+        self._grid = grid
+        self._cars = grid.get_car_names()
+        self._initial_x = {}
+        self._initial_y = {}
+        self._orientation = {}
+        self._lengths = {}
 
-    def step(self, i):
-        """Gets a new state for the grid"""
+        # Visited is a set of tuples
+        self._visited = set()
+        self._visited.add(tuple([0 for i in range(len(self._cars))]))
 
-        # check the moves for every car
-        i = 0
-        for original_grid in self._previous_grids:
-            self._previous_grids.remove(original_grid)
-            i += 1
+        # Make dictionaries with info about all cars on the given grid
+        for name in self._cars:
+            self._initial_x[name] = grid.get_car_x(name)
+            self._initial_y[name] = grid.get_car_y(name)
+            self._orientation[name] = grid.get_car_orientation(name)
+            self._lengths[name] = grid.get_car_length(name)
 
-            for car in grid._cars.keys():
+        self._queue.put([[0 for i in range(len(self._cars))]])
 
-                # get the moves of a car and check whether any moves are possible
-                moves = grid.possible_moves(car)
+    def possible_next_lists(self, current_list):
+        """ Gives the possible lists after one move on the grid that can be made with the given list """
 
-                if not moves:
-                    continue
+        # Write the list to a grid and set this as current grid.
+        grid = self.list_to_grid(current_list)
+        self._grid.set_grid(grid)
+        next_lists = []
 
-                for move in moves:
-                    self.check_move(grid, car, move, i)
+        # For each car see what moves are possible
+        for i in range(len(self._cars)):
 
-                # initialize check variable
-                #check = False
+            moves = self._grid.possible_moves(self._cars[i])
 
-                # first try the furthest moving moves
-                # if max(moves) > 0:
-                #     check, i = self.check_move(car, max(moves), i)
-                #     moves.remove(max(moves))
-                # if moves and min(moves) < 0 and not check:
-                #     check, i = self.check_move(car, min(moves), i)
-                #     moves.remove(min(moves))
+            for distance in moves:
 
+                # Write each move as a new list and collect all possible new lists
+                next_list = copy.deepcopy(current_list)
+                next_list[i] += distance
+                next_lists.append(next_list)
 
+        return next_lists
 
-                # check whether the game has been won, and print al steps
-                if grid.win():
-                    print(i)
-                    break
+    def list_to_grid(self, list):
+        """ Given a list with the total moved distance from the start position for each car, draws a list of lists that represents the grid """
+        grid = copy.deepcopy(self._empty_grid)
 
-                # grid.print_grid()
+        # grid = []
 
-            # if no car could move for a new state, go back to previous states
-            # if not self._new_state:
-            #     pass
+        # # Construct the grid
+        # for i in range(self._grid.get_size()):
+        #     grid.append(self._grid.get_size() * ['*'])
 
-                # last_step = self._previous_steps.pop(-1)
-                # self._current_grid.move(last_step[0], -1 * last_step[1])
-                # i -= 1
+        # Add cars
+        for i in range(len(self._cars)):
+            car = self._cars[i]
+            x = self._initial_x[car]
+            y = self._initial_y[car]
+            length = self._lengths[car]
 
-    def check_move(self, grid, car, move, i):
-        """checks whether a move is feasible"""
-        grid.move(car, move)
+            if self._orientation[car] == 'H':
+                x += list[i]
+                for j in range(length):
+                    grid[y][x + j] = car
+            else:
+                y += list[i]
+                for j in range(length):
+                    grid[y + j][x] = car
 
-        # if the new state is has already been, move back
-        if grid not in self._previous_grids:
-            # we hebbben duncan's wondercode nog nodig hier
-            self._previous_grids.append(copy.deepcopy(self._current_grid._grid))
-            # self._previous_moves[i].append([car, move])
-            self._new_state = True
+            # Update coordinates in each Car object
+            self._grid.set_car_x(car, x)
+            self._grid.set_car_y(car, y)
+
+        return grid
+
+    def is_solution(self, state):
+        """ Checks whether the given state is a solution """
+
+        if state[-1][-1] + self._initial_x['X'] == self._grid.get_size() - 2:
+            return True
+
+        return False
+
+    def solution_list_to_steps(self, state):
+        """ 
+        Given a list of lists of total moved distances for each car, e.g. [-2, 0, 5, 1]
+        rewrite this as steps, e.g. [X, 2]
+        """
+        steps = []
+        previous_state = state[0]
+
+        for next_state in state[1:]:
+
+            for i in range(len(previous_state)):
+
+                if not next_state[i] == previous_state[i]:
+                    car = self._cars[i]
+                    distance = next_state[i] - previous_state[i]
+
+            steps.append([car, distance])
+            previous_state = next_state
+
+        return steps
 
     def run(self):
-        """run the algorithm"""
-        i = 0
-        while not self._current_grid.win():
-            i = self.step(i)
-        print(f"won in {i} steps")
+        """ Runs a breadth first algorithm """
 
-        return self._previous_steps
+        print('looking for a solution of max ' + str(self._depth) + ' steps')
+
+        while not self._queue.empty():
+
+            state = self._queue.get()
+
+            if self.is_solution(state):
+                print('found a solution of ' + str(len(state)-1) + ' steps.')
+                solution = self.solution_list_to_steps(state)
+                break
+
+            # Get list representation of the grid after the last step
+            last_list = state[-1]
+
+            if len(state) < self._depth:
+
+                # Look for possible new grid representations and add them to queue if not encountered before.
+                for new_list in self.possible_next_lists(last_list):
+                    new_tuple = tuple(new_list)
+                    if new_tuple in self._visited:
+                        continue
+
+                    self._visited.add(new_tuple)
+                    child = copy.deepcopy(state)
+                    child.append(new_list)
+                    self._queue.put(child)
+
+        return solution

@@ -1,19 +1,21 @@
 """
-Example usage:
-python3 main_an.py data/Rushhour6x6_2.csv
-python3 code/visualization/visualization.py data/Rushhour6x6_2_solution.csv
+Runs a breadth first algorithm with an added heuristic on a Rush hour puzzle. 
+Heuristic: when selecting moves, the move with the furthest distance is tried before the other moves.
 
-Door: 
-- Maar één keer een leeg grid te initializen
-- self._visited is a set of tuples instead of list of lists
 
-Puzzel 1: around 0.0 minutes
-Puzzel 2: around 0.01 minutes
-Puzzel 3: around 0.02 minutes
-Puzzel 4: duurt ongeveer 2,35 minuten
-Puzzel 5: killed
-Puzzel 6: killed
+How to use:
+-   first load the grid with the initial state, using the loader function:
+    grid = loader(input_file_name)
+-   then use the algorithm to get a solution:
+    breadth_first = BreadthFirstFurthest(grid)
+    solution = breadth_first.run()
 
+Puzzle 1: around  minutes, solution of 21 steps
+Puzzle 2: around  minutes, solution of 15 steps
+Puzzle 3: around  minutes, solution of 33 steps
+Puzzle 4: around  minutes
+Puzzle 5: turned off after more than 10 minutes.
+Puzzle 6: 
 """
 
 import copy
@@ -24,7 +26,6 @@ import numpy as np
 class BreadthFirst():
     def __init__(self, grid):
         self._depth = 100
-
         # Queue is a queue of lists of lists
         self._queue = queue.Queue()
         self._empty_grid = []
