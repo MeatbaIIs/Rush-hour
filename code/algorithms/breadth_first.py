@@ -21,6 +21,7 @@ import numpy as np
 
 class BreadthFirst():
     def __init__(self, grid):
+        # print("Running Breadth First algorithm")
         # Queue is a queue of lists of lists
         self._queue = queue.Queue()
         self._empty_grid = []
@@ -127,14 +128,14 @@ class BreadthFirst():
     def run(self):
         """ Runs a breadth first algorithm """
 
-        print('looking for a solution')
+        # print('looking for a solution')
 
         while not self._queue.empty():
 
             state = self._queue.get()
 
             if self.is_solution(state):
-                print('found a solution of ' + str(len(state)-1) + ' steps.')
+                # print('found a solution of ' + str(len(state)-1) + ' steps.')
                 solution = self.solution_list_to_steps(state)
                 break
 

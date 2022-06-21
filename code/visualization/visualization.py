@@ -12,9 +12,11 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import hsv_to_rgb
 import random
 
+
 def main(solution_file_name, steps):
     # Get puzzle
-    puzzle_name = solution_file_name.rstrip("_solution.csv") + ".csv"
+    puzzle_name = re.search(
+        "data/Rushhour.+x.+_+\d", solution_file_name).group() + ".csv"
 
     # Get puzzle size
     size = int(re.search(

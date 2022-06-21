@@ -13,9 +13,11 @@ from code.algorithms.random import Random
 from code.helpers import loader, solution_to_csv
 from code.classes.grid import Grid
 from code.algorithms.improving_algorithm import Improving_algorithm
+from code.algorithms.randopt import RandOpt
 import argparse
 import copy
 import time
+import pandas as pd
 
 
 def main(input_file_name):
@@ -28,11 +30,15 @@ def main(input_file_name):
 
     # random
     # random_alg = Random(grid)
-    # solution = random_alg.random_algorithm()
+    # solution, time_sth = random_alg.random_algorithm()
 
     # breadth first
-    breadth_first = BreadthFirst(grid)
-    solution = breadth_first.run()
+    # breadth_first = BreadthFirst(grid)
+    # solution = breadth_first.run()
+
+    # Random optimizing
+    randopt = RandOpt(input_file_name)
+    solution = randopt.run()
 
     # breadth first furthest
     # breadth_first = BreadthFirstFurthest(grid)
@@ -43,7 +49,6 @@ def main(input_file_name):
     # solution = depth_first
 
     end_time = time.perf_counter()
-    # print(solution)
     sol_len = len(solution)
     duration = round((end_time - start_time)/60, 2)
 
@@ -74,6 +79,28 @@ def main(input_file_name):
     # algorithm.run()
 
     solution_to_csv(solution, input_file_name)
+
+    # First algorithm
+    # N = 1
+    # stable_grid = loader(input_file_name)
+    # results = pd.DataFrame(columns=["steps", "time"])
+    # for i in range(N):
+    #     grid = copy.deepcopy(stable_grid)
+    #     start_time = time.perf_counter()
+
+    #     breadth_first = BreadthFirstFurthest(grid)
+    #     solution = breadth_first.run()
+    #     end_time = time.perf_counter()
+
+    #     duration = end_time - start_time
+    #     steps = len(solution)
+    #     results.loc[len(results)] = [steps, duration]
+
+    # print(results)
+    # average_time = results["time"].mean()
+    # print(f'average time was {average_time}')
+    # average_steps = results["steps"].mean()
+    # print(f'average steps was {average_steps}')
 
 
 if __name__ == "__main__":

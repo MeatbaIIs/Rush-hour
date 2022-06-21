@@ -2,14 +2,12 @@
 Runs a breadth first algorithm with an added heuristic on a Rush hour puzzle. 
 Heuristic: instead of saving all possible moves, it only saves one (of the) move(s) with the furthest distance.
            solutions might not be the best solution, but the algorithm works faster than the original breadth first.
-
 How to use:
 -   first load the grid with the initial state, using the loader function:
     grid = loader(input_file_name)
 -   then use the algorithm to get a solution:
     breadth_first = BreadthFirstFurthest(grid)
     solution = breadth_first.run()
-
 Puzzle 1: around 0.0 minutes, solution of 21 steps
 Puzzle 2: around 0.0 minutes, solution of 15 steps
 Puzzle 3: around 0.02 minutes, solution of 33 steps
@@ -21,7 +19,6 @@ Puzzle 6:
 import copy
 import queue
 import numpy as np
-import time
 import random
 
 
@@ -141,8 +138,8 @@ class BreadthFirstFurthest():
     def run(self):
         """ Runs a breadth first algorithm """
 
-        st = time.time()
-        et = 0
+        # print('looking for a solution')
+
         while not self._queue.empty():
 
             state = self._queue.get()
@@ -150,7 +147,6 @@ class BreadthFirstFurthest():
             if self.is_solution(state):
                 # print('found a solution of ' + str(len(state)-1) + ' steps.')
                 solution = self.solution_list_to_steps(state)
-                et = time.time()
                 break
 
             # Get list representation of the grid after the last step
@@ -167,5 +163,4 @@ class BreadthFirstFurthest():
                 child.append(new_list)
                 self._queue.put(child)
 
-        time_taken = et - st
-        return solution, time_taken
+        return solution

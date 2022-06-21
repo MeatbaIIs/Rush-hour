@@ -13,7 +13,6 @@ class Grid():
         # keep track of the movement per car to compare grids
         self._total_movements = {}
 
-
         self._size = size
         self._last_car = ""
 
@@ -189,5 +188,11 @@ class Grid():
 
         # check whether every space before the red car is empty
         if self._grid[y][x + 2:self._size] == (self._size - x - 2) * ["*"]:
+            return True
+        return False
+
+    def win_an(self):
+        """Check if the red car has reached the end"""
+        if self._cars['X'].get_x() + 2 == self._size:
             return True
         return False
