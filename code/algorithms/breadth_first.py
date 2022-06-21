@@ -1,13 +1,11 @@
 """
 Runs a breadth first algorithm on a Rush hour puzzle.
-
 How to use:
 -   first load the grid with the initial state, using the loader function:
     grid = loader(input_file_name)
 -   then use the algorithm to get a solution:
     breadth_first = BreadthFirst(grid)
     solution = breadth_first.run()
-
 Puzzle 1: around 0.0 minutes, solution of 21 steps
 Puzzle 2: around 0.01 minutes, solution of 15 steps
 Puzzle 3: around 0.03 minutes, solution of 33 steps
@@ -16,11 +14,9 @@ Puzzle 5: turned it off after more than 10 minutes.
 Puzzle 6: 
 """
 
-from cmath import e
 import copy
 import queue
 import numpy as np
-import time
 
 
 class BreadthFirst():
@@ -131,14 +127,14 @@ class BreadthFirst():
     def run(self):
         """ Runs a breadth first algorithm """
 
-        # print('looking for a solution')
-        st = time.time()
+        print('looking for a solution')
+
         while not self._queue.empty():
 
             state = self._queue.get()
 
             if self.is_solution(state):
-                # print('found a solution of ' + str(len(state)-1) + ' steps.')
+                print('found a solution of ' + str(len(state)-1) + ' steps.')
                 solution = self.solution_list_to_steps(state)
                 break
 
@@ -155,6 +151,5 @@ class BreadthFirst():
                 child = copy.deepcopy(state)
                 child.append(new_list)
                 self._queue.put(child)
-        et = time.time()
-        time_taken = et - st
-        return solution, time_taken
+
+        return solution
