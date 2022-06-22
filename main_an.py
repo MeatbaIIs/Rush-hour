@@ -33,12 +33,12 @@ def main(input_file_name):
     # solution, time_sth = random_alg.random_algorithm()
 
     # breadth first
-    # breadth_first = BreadthFirst(grid)
-    # solution = breadth_first.run()
+    breadth_first = BreadthFirst(grid)
+    solution = breadth_first.run()
 
     # Random optimizing
-    randopt = RandOpt(input_file_name)
-    solution = randopt.run()
+    # randopt = RandOpt(input_file_name)
+    # solution = randopt.run()
 
     # breadth first furthest
     # breadth_first = BreadthFirstFurthest(grid)
