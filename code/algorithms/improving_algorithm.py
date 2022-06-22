@@ -57,7 +57,7 @@ class Improving_algorithm():
         """ Check for every move if it can be removed from the solution and return the optimized solution """
         found_optimization = True
 
-        while do:
+        while found__optimization:
             found_optimization = False
 
             for i in range(len(self._solution)):

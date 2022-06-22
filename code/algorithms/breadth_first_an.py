@@ -92,7 +92,7 @@ class BreadthFirst():
         return False
 
     def solution_list_to_steps(self, state):
-        """ 
+        """
         Given a list of lists of total moved distances for each car, e.g. [-2, 0, 5, 1]
         rewrite this as steps, e.g. [X, 2]
         """
@@ -128,6 +128,7 @@ class BreadthFirst():
 
             # Get list representation of the grid after the last step
             last_list = state[-1]
+            print(state)
 
             if len(state) < self._depth:
 

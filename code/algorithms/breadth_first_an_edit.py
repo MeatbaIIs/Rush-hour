@@ -44,7 +44,7 @@ class BreadthFirst():
         next_lists = []
 
         # For each car see what moves are possible
-        for car in self._cars:
+        for car, i in enumerate(self._cars):
 
             moves = self._grid.possible_moves(car)
 
