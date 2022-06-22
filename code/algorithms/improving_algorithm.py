@@ -1,11 +1,11 @@
 import copy
 
+
 class Improving_algorithm():
     def __init__(self, grid, solution):
         self._grid = grid
         self._solution = solution
-        self._test_solution = []#copy.deepcopy(self._solution)
-
+        self._test_solution = []  # copy.deepcopy(self._solution)
 
     def correct_later_moves(self, car, distance, step):
         """ correct the next move of car 'car' after step 'step' for the given distance. """
@@ -13,7 +13,6 @@ class Improving_algorithm():
             if self._test_solution[i][0] == car:
                 self._test_solution[i][1] -= distance
                 break
-
 
     def check_solution(self):
         """ Returns True if test_solution is a valid solution. """
@@ -29,12 +28,10 @@ class Improving_algorithm():
             else:
                 return False
 
-
         if gridcopy.win():
             return True
 
         return False
-
 
     def step(self, i):
         """ Remove move at index i from solution, correct the next move of that car, and modify the solution if the new solution is valid. """
@@ -51,13 +48,11 @@ class Improving_algorithm():
 
         return False
 
-
-
     def run(self):
         """ Check for every move if it can be removed from the solution and return the optimized solution """
         found_optimization = True
 
-        while do:
+        while found_optimization:
             found_optimization = False
 
             for i in range(len(self._solution)):

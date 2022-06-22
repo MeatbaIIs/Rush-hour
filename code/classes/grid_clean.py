@@ -182,7 +182,7 @@ class Grid():
     def get_size(self):
         return self._size
 
-    def win(self):
+    def win_leon(self):
         """Check if the red car can reach the end"""
         x, y = self._cars['X'].coordinates()
 
@@ -191,7 +191,7 @@ class Grid():
             return True
         return False
 
-    def win_an(self):
+    def win(self):
         """Check if the red car has reached the end"""
         if self._cars['X'].get_x() + 2 == self._size:
             return True
