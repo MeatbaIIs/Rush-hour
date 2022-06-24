@@ -102,5 +102,3 @@ class Random():
             return previous_steps, time_taken
         else:
             raise MethodInputError
-
-

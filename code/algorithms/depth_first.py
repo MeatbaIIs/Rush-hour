@@ -5,7 +5,7 @@ from copy import copy
 
 
 # misschien overerven van breadth first
-class Depth_first():
+class DeptFirst():
     def __init__(self, grid, best_solution = float('inf'), solutions = []):
         self._initial_grid = deepcopy(grid)
         self._grid = deepcopy(grid)
