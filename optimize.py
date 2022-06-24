@@ -42,11 +42,11 @@ def main(input_file_name):
     print(
         f'After deleting useless steps the solution is {len(solution)} steps.')
 
-    print('Iterating with Breadth First')
-    BFI = BreadthFirstIter(grid, solution)
-    solution = BFI.run()
-    print(
-        f'After iterating with breadth first the solution {len(solution)} steps.')
+    # print('Iterating with Breadth First')
+    # BFI = BreadthFirstIter(grid, solution)
+    # solution = BFI.run()
+    # print(
+    #     f'After iterating with breadth first the solution {len(solution)} steps.')
 
     print('Writing optimized solution to a csv file')
     filename = input_file_name.rstrip(".csv") + "_optimized.csv"
