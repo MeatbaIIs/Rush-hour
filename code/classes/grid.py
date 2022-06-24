@@ -155,7 +155,6 @@ class Grid():
                     moves.append(distance)
                 else:
                     break
-        #print(name, moves)
         return moves
 
     def print_grid(self):

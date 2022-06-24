@@ -11,12 +11,8 @@ class Improving_algorithm():
         """ correct the next move of car 'car' after step 'step' for the given distance. """
         for i in range(step, len(self._test_solution)):
             if self._test_solution[i][0] == car:
-                if self._test_solution[i][1] == -distance:
-                    self._test_solution.pop(i)
-                    return
-                else:
-                    self._test_solution[i][1] += distance
-                    return
+                self._test_solution[i][1] -= distance
+                break
 
     def check_solution(self):
         """ Returns True if test_solution is a valid solution. """
@@ -48,7 +44,6 @@ class Improving_algorithm():
 
         if self.check_solution():
             self._solution = copy.deepcopy(self._test_solution)
-
             return True
 
         return False
@@ -57,11 +52,7 @@ class Improving_algorithm():
         """ Check for every move if it can be removed from the solution and return the optimized solution """
         found_optimization = True
 
-<<<<<<< HEAD
-        while found__optimization:
-=======
         while found_optimization:
->>>>>>> f6196a79503b7d8796c770fdaf119a222cdc798d
             found_optimization = False
 
             for i in range(len(self._solution)):

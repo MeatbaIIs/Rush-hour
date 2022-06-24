@@ -226,6 +226,39 @@ class Grid():
 
         return self._grid
 
+
+    def route_to_state(self, route):
+        state = copy(self._empty_state)
+        for move in route:
+            car = move[0]
+            distance = move[1]
+            state[car] = distance
+
+        return state
+
+
+    def solution_list_to_steps(self, state):
+        """
+        Given a list of lists of total moved distances for each car, e.g. [-2, 0, 5, 1]
+        rewrite this as steps, e.g. [X, 2]
+        """
+        steps = []
+        previous_state = state[0]
+
+        for next_state in state[1:]:
+
+            for i in range(len(previous_state)):
+
+                if next_state[i] != previous_state[i]:
+                    car = self._car_names[i]
+                    distance = next_state[i] - previous_state[i]
+
+            steps.append([car, distance])
+            previous_state = next_state
+
+        return steps
+
+
     def print_grid(self):
         for y in self._grid:
             print(''.join(y))

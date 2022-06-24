@@ -1,129 +1,220 @@
-import copy
-import random
 from code.classes.grid import Grid
-import time
+from copy import deepcopy
+from copy import copy
+#import stack
 
 
+# misschien overerven van breadth first
 class Depth_first():
-    def __init__(self, grid):
-        self._current_grid = grid
-        self._previous_grids = [copy.deepcopy(grid._grid)]
-        self._previous_steps = []
-        self._last_car = []
-        self._count = 0
+    def __init__(self, grid, best_solution = float('inf'), solutions = []):
+        self._initial_grid = deepcopy(grid)
+        self._grid = deepcopy(grid)
+        self._empty_grid = []
+        self._stack = []
+        for _ in range(grid.get_size()):
+            self._empty_grid.append(grid.get_size() * ['*'])#deepcopy(grid.get_grid())
 
-    def step(self, i):
-        """Gets a new state for the grid"""
+        self._grid = grid
+        self._cars = grid.get_car_names()
+        self._initial_x = {}
+        self._initial_y = {}
+        self._orientation = {}
+        self._lengths = {}
+        self._visited = {}
+        self._empty_state = {}
+        self._last_car = ""
 
-        # check whether a new state has been found
+        # Make dictionaries with info about all cars on the given grid
+        for name in self._cars:
+            self._empty_state[name] = 0
+            self._initial_x[name] = grid.get_car_x(name)
+            self._initial_y[name] = grid.get_car_y(name)
+            self._orientation[name] = grid.get_car_orientation(name)
+            self._lengths[name] = grid.get_car_length(name)
 
-        # check the moves for every car
-        # for car in self._current_grid._cars.keys():
 
-        # get the moves of a car and check whether any moves are possible
-        # moves = []
-        # counter = 0
-        # while (not moves or car in self._last_car) and counter < 10:
-        #     car = random.choice(list(self._current_grid._cars.keys()))
-        #     moves = self._current_grid.possible_moves(car)
-        #     counter += 1
-        #
-        # self._last_car.append(car)
-        #
-        # # initialize check variable
-        # check = False
-        #
-        # # first try the furthest moving moves
-        # if moves and max(moves) > 0:
-        #     new_state, check, i = self.check_move(car, max(moves), new_state, i)
-        #     moves.remove(max(moves))
-        # if moves and min(moves) < 0 and not check:
-        #     new_state, check, i = self.check_move(car, min(moves), new_state, i)
-        #     moves.remove(min(moves))
-        #
-        # # if the furthest moves dont deliver a new state, try the other moves
-        # if not check:
-        #     for move in moves:
-        #         new_state, check, i = self.check_move(car, move, new_state, i)
-        #         if check:
-        #             break
+        #self._queue.put([[0 for i in range(len(self._cars))]])
+        self._stack.append([[0 for i in range(len(self._cars))]])
+        self._visited[tuple([0 for i in range(len(self._cars))])] = 0
+        self._len_visited = [0]
+        for solution in solutions:
+            for i, state in enumerate(solution):
+                self._visited[tuple(state)] =  i
+        self._solutions = solutions
+        self._best_solution = best_solution
 
-        new_state = False
+    def possible_next_lists(self, current_list):
+        """ Gives the possible lists after one move on the grid that can be made with the given list """
 
-        # check the moves for every car
-        # maak functie die alle autos geeft ipv access
-        for car in self._current_grid._cars.keys():
+        # Write the list to a grid and set this as current grid.
 
-            # get the moves of a car and check whether any moves are possible
-            moves = self._current_grid.possible_moves(car)
-            if not moves:
-                continue
+        grid = self.list_to_grid(current_list)
+        self._grid.set_grid(grid)
+        next_lists = []
 
-            # initialize check variable
-            check = False
+        # For each car see what moves are possible
+        for i, car in enumerate(self._cars):
 
-            # first try the furthest moving moves
-            if max(moves) > 0:
-                new_state, check, i = self.check_move(car, max(moves), new_state, i)
-                moves.remove(max(moves))
-            if moves and min(moves) < 0 and not check:
-                new_state, check, i = self.check_move(car, min(moves), new_state, i)
-                moves.remove(min(moves))
 
-            # if the furthest moves dont deliver a new state, try the other moves
-            if not check:
-                for move in moves:
-                    new_state, check, i = self.check_move(car, move, new_state, i)
-                    if check:
-                        break
+            moves = self._grid.possible_moves(car)
 
-            # check whether the game has been won, and print al steps
-            if self._current_grid.win():
-                # for step in self._previous_steps:
-                #     step[1] = str(step[1])
-                #     print(", ".join(step))
-                break
+            if moves and max(moves) > 0:
+                distance = max(moves)
+                next_list = copy(current_list)
+                next_list[i] += distance
+                next_lists.append(next_list)
 
-        # if no car could move for a new state, go back to previous states
-        # if not new_state and self._count < 3:
-        #     self._count += 1
-        if not new_state:
-            last_step = self._previous_steps.pop(-1)
-            self._current_grid.move(last_step[0], -1 * last_step[1])
-            i -= 1
-            # self._count = 0
-            # self._last_car = []
+            if moves and min(moves) < 0:
+                distance = min(moves)
+                next_list = copy(current_list)
+                next_list[i] += distance
+                next_lists.append(next_list)
 
-        return i
+        return next_lists
 
-    def check_move(self, car, move, new_state, i):
-        """checks whether a move is feasible"""
-        self._current_grid.move(car, move)
 
-        # if the new state is has already been, move back
-        if self._current_grid._grid in self._previous_grids:
-            self._current_grid.move(car, -1 * move)
-            return new_state, False, i
+    def route_to_state(self, route):
+        state = copy(self._empty_state)
+        for move in route:
+            car = move[0]
+            distance = move[1]
+            state[car] = distance
 
-        # if a new state is a achieved, add it to the list
-        else:
-            i += 1
-            self._previous_grids.append(copy.deepcopy(self._current_grid._grid))
-            self._previous_steps.append([car, move])
-            #self._last_car = [car]
-            #print(car)
-            #self._current_grid.print_grid()
-            new_state = True
-            #self._count = 0
-            return new_state, True, i
+        return state
+
+    def list_to_grid(self, current_list):
+        """ Given a list with the total moved distance from the start position for each car, draws a list of lists that represents the grid """
+        grid = deepcopy(self._empty_grid)
+
+        # Add cars
+        for i, car  in enumerate(self._cars):
+            x = self._initial_x[car]
+            y = self._initial_y[car]
+            length = self._lengths[car]
+
+            if self._orientation[car] == 'H':
+                x += current_list[i]
+                for j in range(length):
+                    grid[y][x + j] = car
+            else:
+                y += current_list[i]
+                for j in range(length):
+                    grid[y + j][x] = car
+
+            # Update coordinates in each Car object
+            self._grid.set_car_x(car, x)
+            self._grid.set_car_y(car, y)
+
+        return grid
+
+
+
+    def is_solution(self, state):
+        """ Checks whether the given state is a solution """
+        if state[-1][-1] + self._initial_x['X'] == self._grid.get_size() - 2:
+            return True
+
+        return False
+
+    def remove_long_visited(self, length):
+        for key in self._visited:
+            if self._visited[key] > length:
+                self._visited[key].pop()
+
+
+    def check_for_better_solution(self, new_list, current_solution):
+        # als hij deze wel sneller doet kan het zijn dat die state al in een vorige oplossing is gevonden, als dit zo is is dit een snelleren oplossing
+        for i, solution in enumerate(self._solutions):
+            for j, config in enumerate(solution):
+
+                # als de huidige staat sneller bereikt is dan in de huidige oplossing wordt dat stuk van de oplossing vervangen
+                if new_list == config:
+                    solution[:j] = state + [new_list]
+
+                    # als dit beter is dan be beste oplossing wardt dat opgeslagen
+                    if len(solution) < self._best_solution:
+                        self._best_solution = len(solution) - 1
+                        print(f'found solution of {len(solution) - 2} steps')
+                        self.remove_long_visited(self._best_solution)
+
+    def pick_best_solution(self):
+        for solution in self._solutions:
+            if len(solution) - 1 == self._best_solution:
+                return self._grid.solution_list_to_steps(solution)
+
+    def get_next_state(self, new_list, state):
+        self._new_state = True
+        self._visited[tuple(new_list)] = len(state) - 1
+        child = deepcopy(state)
+        child.append(new_list)
+        self._stack.append(child)
+
 
     def run(self):
-        """run the algorithm"""
-        i = 0
-        st = time.time()
-        while not self._current_grid.win():
-            i = self.step(i)
-        
-        et = time.time()
-        time_taken = et- st
-        return self._previous_steps, time_taken
+        """
+        TO DO:
+        Check of de stack goed aangevuld wordt
+        Misschien alleen code van breadth_first gebruiken (hooguit 6 stappen)
+        zorg dat de oplossingen opgeslagen worden
+        Zorg dat vorige states opgeslagen worden
+        """
+
+        current_list = deepcopy(self._empty_state)
+
+        while self._stack:
+
+            state = self._stack.pop()
+
+            # pak de laatste configuratie van de huidige staat
+            last_list = state[-1]
+            self._grid.set_configuration_from_list(last_list)
+
+            if self._grid.win():
+                print('found a solution of ' + str(len(state) - 2) + ' steps.')
+                self._solutions.append(state)
+                self._best_solution = len(state) - 1
+                self.remove_long_visited(self._best_solution)
+
+
+            self._new_state = False
+
+            # zorg dat er niet verder wordt gezocht dan de lengte van de beste oplossing
+            if len(state) < self._best_solution - 1:
+
+                # maak een set van alle bezochte staten
+                current_steps = len(state)
+
+                # check voor elke auto of er zetten mogelijk zijn en pak er een die naar een nieuwe state leidt
+                for i, car in enumerate(self._cars):
+
+                    moves = self._grid.possible_moves(car)
+
+                    for move in moves:
+
+                        # make a copy of the last list to add a move
+                        new_list = copy(last_list)
+
+                        # get the maximum move
+                        if move == max(moves) and move > 0:
+                            new_list[i] += move
+
+                        elif move = min(moves) and move < 0:
+                            new_list[i] += move
+
+                        if tuple(new_list) in self._visited and self._visited[tuple(new_list)] < current_steps:
+                            continue
+
+                        # als deze configuratie  al een keer bereikt is en hij deze keer niet sneller is dan de vorige keer slaan we hem over
+                        if tuple(new_list) in self._visited and self._visited[tuple(new_list)] > current_steps:
+                            self.check_for_better_solution(new_list)
+
+
+                        self.get_next_state(new_list, state)
+                        break
+
+            # check of het algoritme nog wel een nieuwe staat kan bereiken, anders wordt er een stap terug gedaan
+            if not self._new_state and len(state) > 1:
+                state.pop()
+                self._stack.append(state)
+
+        return self.pick_best_solution()

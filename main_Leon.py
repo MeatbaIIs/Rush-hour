@@ -6,12 +6,12 @@ Usage: main.py [PUZZLE_NAME.CSV]
 import csv
 #from code.algorithms.depth_first import Depth_first as dfs
 #from code.algorithms.breadth_first import BreadthFirst
-from code.algorithms.depth_first_real import Depth_first
+from code.algorithms.depth_first import Depth_first
 #from code.algorithms.DFA import DepthFirst as DF
 #from code.algorithms.random import Random
 from code.classes.car import Car
 from code.helpers import loader, solution_to_csv
-from code.classes.grid import Grid
+from code.classes.grid_clean import Grid
 #from code.algorithms.improving_algorithm import Improving_algorithm
 from code.visualization.visualization import main as visual
 import argparse
@@ -33,9 +33,11 @@ def main(input_file_name):
     # breadth first
     #breadth_first = BreadthFirst(grid)
     grid.print_grid()
-    dfs = Depth_first(grid)
+    dfs = Depth_first(grid, best_solution = 29)
     start_time = time.perf_counter()
     solution = dfs.run()
+    #print(grid.solution_list_to_steps(solution))
+    #print(len(solution))
     end_time = time.perf_counter()
     print(solution)
     # print(solution)
