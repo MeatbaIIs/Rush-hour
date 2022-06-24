@@ -15,7 +15,8 @@ import random
 
 def main(solution_file_name, steps):
     # Get puzzle
-    puzzle_name = solution_file_name.rstrip("_solution.csv") + ".csv"
+    puzzle_name = re.search(
+        "data/Rushhour.+x.+_+\d", solution_file_name).group() + ".csv"
 
     # Get puzzle size
     size = int(re.search(
@@ -64,6 +65,8 @@ def main(solution_file_name, steps):
     # Visualize steps
     fig, ax = plt.subplots()
     ims = [[ax.imshow(state, cmap=custom_colors, animated=True)]]
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
 
     with open(solution_file_name, 'r') as f:
         file_reader = reader(f)

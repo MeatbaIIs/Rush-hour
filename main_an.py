@@ -5,20 +5,24 @@ Usage: main.py [PUZZLE_NAME.CSV]
 
 import csv
 from code.algorithms.depth_first import Depth_first as dfs
-from code.algorithms.breadth_first_an import BreadthFirst
-from code.algorithms.DFA import DepthFirst as DF
+from code.algorithms.breadth_first import BreadthFirst
+from code.algorithms.breadth_first_furthest import BreadthFirstFurthest
+from code.algorithms.DFA import DepthFirst
+from code.algorithms.take_out_loops import TakeOutLoops
 from code.algorithms.random import Random
-from code.classes.car import Car
-from code.helpers import loader, save_solution
+from code.helpers import loader, solution_to_csv
 from code.classes.grid import Grid
 from code.algorithms.improving_algorithm import Improving_algorithm
+from code.algorithms.randopt import RandOpt
 import argparse
 import copy
 import time
+import pandas as pd
 
 
 def main(input_file_name):
     grid = loader(input_file_name)
+    start_time = time.perf_counter()
 
     # depth first
     # depth_first = dfs(grid)
@@ -26,22 +30,40 @@ def main(input_file_name):
 
     # random
     # random_alg = Random(grid)
-    # solution = random_alg.random_algorithm()
+    # solution, time_sth = random_alg.random_algorithm()
 
     # breadth first
     breadth_first = BreadthFirst(grid)
-    start_time = time.perf_counter()
     solution = breadth_first.run()
+
+    # Random optimizing
+    # randopt = RandOpt(input_file_name)
+    # solution = randopt.run()
+
+    # breadth first furthest
+    # breadth_first = BreadthFirstFurthest(grid)
+    # solution = breadth_first.run()
+
+    # depth first Duncan
+    # depth_first = DepthFirst('data/Rushhour6x6_1.csv')
+    # solution = depth_first
+
     end_time = time.perf_counter()
-    print(solution)
+    sol_len = len(solution)
     duration = round((end_time - start_time)/60, 2)
 
-    print(f'Algorithm took around {duration} minutes')
+    print(
+        f'Algorithm took around {duration} minutes and found solution of {sol_len} steps')
 
     # IA = Improving_algorithm(grid, solution)
     # new_solution = IA.run()
+    # print(
+    #     f'Improving algorithm lead to a solution of {len(new_solution)} steps.')
 
-    # print(len(new_solution))
+    # Take out loops
+    # tol = TakeOutLoops(grid, solution)
+    # new_solution = tol.run()
+    # print(f'solution length after take out loops: {len(new_solution)}')
 
     # histogram(input_file_name)
     # dfs.run(grid)
@@ -56,14 +78,29 @@ def main(input_file_name):
     # algorithm = DF("data/Rushhour6x6_1.csv")
     # algorithm.run()
 
-    filename = input_file_name.rstrip(".csv") + "_solution.csv"
-    with open(filename, 'w') as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter=',')
-        csvwriter.writerow(['car', 'move'])
+    solution_to_csv(solution, input_file_name)
 
-        for step in solution:
-            # Write step to csv
-            csvwriter.writerow(step)
+    # First algorithm
+    # N = 1
+    # stable_grid = loader(input_file_name)
+    # results = pd.DataFrame(columns=["steps", "time"])
+    # for i in range(N):
+    #     grid = copy.deepcopy(stable_grid)
+    #     start_time = time.perf_counter()
+
+    #     breadth_first = BreadthFirstFurthest(grid)
+    #     solution = breadth_first.run()
+    #     end_time = time.perf_counter()
+
+    #     duration = end_time - start_time
+    #     steps = len(solution)
+    #     results.loc[len(results)] = [steps, duration]
+
+    # print(results)
+    # average_time = results["time"].mean()
+    # print(f'average time was {average_time}')
+    # average_steps = results["steps"].mean()
+    # print(f'average steps was {average_steps}')
 
 
 if __name__ == "__main__":

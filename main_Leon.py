@@ -4,14 +4,15 @@ Usage: main.py [PUZZLE_NAME.CSV]
 """
 
 import csv
-from code.algorithms.depth_first import Depth_first as dfs
-from code.algorithms.breadth_first_an_edit import BreadthFirst
-from code.algorithms.DFA import DepthFirst as DF
-from code.algorithms.random import Random
+#from code.algorithms.depth_first import Depth_first as dfs
+#from code.algorithms.breadth_first import BreadthFirst
+from code.algorithms.depth_first_real import Depth_first
+#from code.algorithms.DFA import DepthFirst as DF
+#from code.algorithms.random import Random
 from code.classes.car import Car
-from code.helpers import loader, save_solution
+from code.helpers import loader, solution_to_csv
 from code.classes.grid import Grid
-from code.algorithms.improving_algorithm import Improving_algorithm
+#from code.algorithms.improving_algorithm import Improving_algorithm
 from code.visualization.visualization import main as visual
 import argparse
 import copy
@@ -30,11 +31,14 @@ def main(input_file_name):
     # solution = random_alg.random_algorithm()
 
     # breadth first
-    breadth_first = BreadthFirst(grid)
+    #breadth_first = BreadthFirst(grid)
+    grid.print_grid()
+    dfs = Depth_first(grid)
     start_time = time.perf_counter()
-    solution = breadth_first.run()
+    solution = dfs.run()
     end_time = time.perf_counter()
     print(solution)
+    # print(solution)
     duration = round((end_time - start_time)/60, 2)
 
     print(f'Algorithm took around {duration} minutes')
@@ -56,17 +60,17 @@ def main(input_file_name):
 
     # algorithm = DF("data/Rushhour6x6_1.csv")
     # algorithm.run()
-
-    filename = input_file_name.rstrip(".csv") + "_solution.csv"
-    with open(filename, 'w') as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter=',')
-        csvwriter.writerow(['car', 'move'])
-
-        for step in solution:
-            # Write step to csv
-            csvwriter.writerow(step)
-
-    visual(filename, 100)
+    #
+    # filename = input_file_name.rstrip(".csv") + "_solution.csv"
+    # with open(filename, 'w') as csvfile:
+    #     csvwriter = csv.writer(csvfile, delimiter=',')
+    #     csvwriter.writerow(['car', 'move'])
+    #
+    #     for step in solution:
+    #         # Write step to csv
+    #         csvwriter.writerow(step)
+    #
+    # visual(filename, 100)
 
 if __name__ == "__main__":
     # set-up parsing command line arguments

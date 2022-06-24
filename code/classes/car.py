@@ -3,7 +3,9 @@ class Car():
         self._name = name
         self._orientation = orientation
         self._x = x
+        self._initial_x = x
         self._y = y
+        self._initial_y = y
         self._length = length
         # give the columns of the grid for the win condition
         self._grid_size = grid_size
@@ -21,8 +23,14 @@ class Car():
     def get_x(self):
         return self._x
 
+    def get_initial_x(self):
+        return self._initial_x
+
     def get_y(self):
         return self._y
+
+    def get_initial_y(self):
+        return self._initial_y
 
     def set_x(self, x):
         self._x = x
