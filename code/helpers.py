@@ -12,7 +12,7 @@ import copy
 from .algorithms.breadth_first import BreadthFirst as BF
 from .algorithms.breadth_first_furthest import BreadthFirstFurthest as BFF
 from .algorithms.depth_first import Depth_first as DF
-from .algorithms.random import Random 
+from .algorithms.random import Random
 
 class MethodInputError(Exception):
     """Raised when a method input is wrong for batchrunner"""
@@ -60,14 +60,24 @@ def dict_compare(new_dict, list_of_grids: List[Dict]) -> bool:
 
 def solution_to_csv(solution, input_file_name):
     """ takes a solution formatted as a list of steps and outputs this to a csv file """
-    filename = input_file_name.rstrip(".csv") + "_solution.csv"
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
         csvwriter.writerow(['car', 'move'])
 
         for step in solution:
+
             # Write step to csv
             csvwriter.writerow(step)
+
+def load_solution(filename):
+    solution = []
+    # Load solution in list of lists
+    with open(input_file_name, 'r') as f:
+        file_reader = reader(f)
+        next(file_reader)
+        for line in file_reader:
+            solution.append([line[0], int(line[1])])
+    return solution
 
 """
 Runs a certain algorithm for a certain file N times
@@ -108,13 +118,10 @@ def batchrunner(file: str, method: str, N_times: int):
         # if more methods are added like breath-first then depth first, make sure an elif statement is added
         else:
             raise MethodInputError
-            
+
         # add the info per algorithm iteration to total batchrun data
         total_movement_list.append(done_steps)
         total_moves.append(len(done_steps))
-        total_times.append(time_taken)  
+        total_times.append(time_taken)
 
-    return total_moves, total_movement_list, total_times  
-
-    
-
+    return total_moves, total_movement_list, total_times
