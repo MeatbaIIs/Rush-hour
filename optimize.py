@@ -4,9 +4,9 @@ Usage: optimize.py [SOLUTION_FILE.CSV]
 """
 
 import csv
+from code.helpers import loader, solution_to_csv, load_solution
 from code.algorithms.take_out_loops import TakeOutLoops
 from code.algorithms.breadth_first_iter import BreadthFirstIter
-from code.helpers import loader, solution_to_csv
 from code.algorithms.improving_algorithm import Improving_algorithm
 import argparse
 import pandas as pd
@@ -16,16 +16,11 @@ import re
 
 def main(input_file_name):
 
-    solution = []
-    # Load solution in list of lists
-    with open(input_file_name, 'r') as f:
-        file_reader = reader(f)
-        next(file_reader)
-        for line in file_reader:
-            solution.append([line[0], int(line[1])])
+    solution = load_solution(input_file_name)
 
     puzzle_name = re.search(
         "data/Rushhour\d+x\d+_\d+", input_file_name).group() + ".csv"
+
     print(puzzle_name)
     grid = loader(puzzle_name)
 
@@ -50,13 +45,7 @@ def main(input_file_name):
 
     print('Writing optimized solution to a csv file')
     filename = input_file_name.rstrip(".csv") + "_optimized.csv"
-    with open(filename, 'w') as csvfile:
-        csvwriter = csv.writer(csvfile, delimiter=',')
-        csvwriter.writerow(['car', 'move'])
-
-        for step in solution:
-            # Write step to csv
-            csvwriter.writerow(step)
+    solution_to_csv(filename)
 
 
 if __name__ == "__main__":

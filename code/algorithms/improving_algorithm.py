@@ -1,7 +1,7 @@
 import copy
 
 
-class Improving_algorithm():
+class ImprovingAlgorithm():
     def __init__(self, grid, solution):
         self._grid = grid
         self._solution = solution
