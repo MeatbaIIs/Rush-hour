@@ -16,7 +16,7 @@ import random
 def main(solution_file_name, steps):
     # Get puzzle
     puzzle_name = re.search(
-        "data/Rushhour.+x.+_+\d", solution_file_name).group() + ".csv"
+        "data/Rushhour\d+x\d+_\d+", solution_file_name).group() + ".csv"
 
     # Get puzzle size
     size = int(re.search(

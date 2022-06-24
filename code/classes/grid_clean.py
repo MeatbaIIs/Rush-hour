@@ -151,6 +151,36 @@ class Grid():
                     break
         return moves
 
+    def furthest_possible_moves(self, car):
+        moves = self.possible_moves(car)
+        if not moves:
+            return moves
+
+        if abs(moves[0]) > abs(moves[-1]):
+            return [moves[0]]
+
+        if abs(moves[-1]) > abs(moves[0]):
+            return [moves[-1]]
+
+        return [random.choice([moves[0], moves[-1]])]
+
+    def furthest_next_lists(self, current_list):
+        self.set_configuration_from_list(current_list)
+        next_lists = []
+
+        # For each car see what moves are possible
+        for i, name in enumerate(self._car_names):
+
+            moves = self.furthest_possible_moves(name)
+
+            for distance in moves:
+
+                # Write each move as a new list and collect all possible new lists
+                next_list = copy.deepcopy(current_list)
+                next_list[i] += distance
+                next_lists.append(next_list)
+        return next_lists
+
     def possible_next_lists(self, current_list):
         """ Gives the possible lists after one move on the grid that can be made with the given list """
 
@@ -173,7 +203,7 @@ class Grid():
 
     def set_configuration_from_list(self, given_list):
         """ Given a list with the total moved distance from the start position for each car, changes to this configuration """
-        self.set_grid(copy.deepcopy(self._empty_grid))
+        self._grid = copy.deepcopy(self._empty_grid)
 
         for i, name in enumerate(self._car_names):
             car = self._cars[name]
