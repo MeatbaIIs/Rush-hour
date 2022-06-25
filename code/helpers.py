@@ -5,19 +5,21 @@ Usage: loader.py [PUZZLE_NAME.CSV]
 
 import csv
 from typing import Dict
-from .classes.grid_clean import Grid
+from .classes.grid import Grid
 import re
 from typing import List, Dict
 import copy
 from .algorithms.breadth_first import BreadthFirst as BF
-from .algorithms.breadth_first_furthest import BreadthFirstFurthest as BFF
-from .algorithms.depth_first import Depth_first as DF
+from .algorithms.beam_search import BeamSearch as BFF
+from .algorithms.depth_first import DepthFirst as DF
 from .algorithms.random import Random
+
 
 class MethodInputError(Exception):
     """Raised when a method input is wrong for batchrunner"""
     """possible inputs are 'DF', 'BF', 'BFF', 'Random' and 'MaxRandom'"""
     pass
+
 
 def loader(input_file_name):
     # Get grid size from the input file name
@@ -58,7 +60,7 @@ def dict_compare(new_dict, list_of_grids: List[Dict]) -> bool:
     return False
 
 
-def solution_to_csv(solution, input_file_name):
+def solution_to_csv(solution, filename):
     """ takes a solution formatted as a list of steps and outputs this to a csv file """
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
@@ -69,7 +71,8 @@ def solution_to_csv(solution, input_file_name):
             # Write step to csv
             csvwriter.writerow(step)
 
-def load_solution(filename):
+
+def load_solution(input_file_name):
     solution = []
     # Load solution in list of lists
     with open(input_file_name, 'r') as f:
@@ -79,11 +82,12 @@ def load_solution(filename):
             solution.append([line[0], int(line[1])])
     return solution
 
-"""
-Runs a certain algorithm for a certain file N times
-It returns the total moves done, the steps for all the moves and the time it took to run per iteration
-"""
+
 def batchrunner(file: str, method: str, N_times: int):
+    """
+    Runs a certain algorithm for a certain file N times
+    It returns the total moves done, the steps for all the moves and the time it took to run per iteration
+    """
     grid = loader(file)
     # keep track of number of moves until solution (not number of steps!)
     total_moves = []

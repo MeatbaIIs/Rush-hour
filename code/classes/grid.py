@@ -1,5 +1,6 @@
 from .car import Car
 import random
+import copy
 
 
 class Grid():
@@ -7,12 +8,14 @@ class Grid():
         self._grid = []
         for i in range(size):
             self._grid.append(size * ['*'])
+        self._empty_grid = copy.deepcopy(self._grid)
         # dictionary of all the cars
         self._cars = {}
 
+        self._car_names = []
+
         # keep track of the movement per car to compare grids
         self._total_movements = {}
-
 
         self._size = size
         self._last_car = ""
@@ -21,6 +24,7 @@ class Grid():
         """Add a car to the grid"""
         car = Car(name, orientation, x, y, length, self._size)  # car_num)
         self._cars[name] = car
+        self._car_names.append(name)
 
         # change empty spaces to the right letter
         for i in range(length):
@@ -56,40 +60,15 @@ class Grid():
 
         # same as horizontal orientation
         elif orientation == 'V':
+
             new_y = y + distance
             for i in range(length):
                 self._grid[y+i][x] = "*"
+
             for i in range(length):
                 self._grid[new_y + i][x] = name
+
             car.set_coordinates(x, new_y)
-
-        # print(name + ',', distance)
-
-    def possible_cars(self, x, y):
-        """ Generates a set of cars that could move to given coordinates. """
-        if not self._grid[y][x] == '*':
-            return {}
-        possible_cars = {}
-        for car in self._cars.values():
-            grid_values = []
-            if car._orientation == 'H' and car._y == y:
-                distance = x-car._x
-                if x < car._x:
-                    grid_values = self._grid[y][x:car._x+1]
-                elif x > car._x:
-                    grid_values = self._grid[y][car._x:x+1]
-            elif car._orientation == 'V' and car._x == x:
-                distance = y-car._y
-                if y < car._y:
-                    grid_values = self._grid[y: car._y+1][x]
-                elif y > car._y:
-                    grid_values = self._grid[car._y: y+1][x]
-
-            if grid_values and all(value in ['*', car._name] for value in grid_values):
-                possible_cars[car] = distance
-                print(car._name)
-
-        return possible_cars
 
     def possible_moves(self, name):
         """Gives the possible moves of a given car"""
@@ -107,41 +86,55 @@ class Grid():
         # check orientation and then checks the empty spaces in front and behind the car
         if orientation == 'H':
             distance = 0
+
             # go through spaces in front of car
             for i in range(x + 1, self._size - length + 1):
                 space = True
 
                 # check if the space is big enough for the car
                 for j in range(length):
+
                     if not (self._grid[y][i + j] == '*' or self._grid[y][i + j] == name):
                         space = False
                         break
 
+                # if there is enough space add the distacne
                 if space:
                     distance += 1
                     moves.append(distance)
+
+                # if there is not enough space there is no need to look further
                 else:
                     break
 
+            # set distance back to zero to look behind the car
             distance = 0
 
             # go through spaces behind the car. No need to check for size, since coordinates are back of the car
             for i in range(x - 1, -1, -1):
+
+                # check if spaces behind the car are empty
                 if self._grid[y][i] == '*' or self._grid[y][i] == name:
                     distance -= 1
                     moves.append(distance)
+
+                # if a space is not free there is no need to look further
                 else:
                     break
 
-        # same as horizontal orientation
+        # same structure as horizontal orientation
         elif orientation == 'V':
             distance = 0
+
             for i in range(y + 1, self._size - length + 1):
                 space = True
+
                 for j in range(length):
+
                     if not (self._grid[i + j][x] == '*' or self._grid[i + j][x] == name):
                         space = False
                         break
+
                 if space:
                     distance += 1
                     moves.append(distance)
@@ -149,6 +142,7 @@ class Grid():
                     break
 
             distance = 0
+
             for i in range(y - 1, -1, -1):
                 if self._grid[i][x] == '*' or self._grid[i][x] == name:
                     distance -= 1
@@ -156,6 +150,111 @@ class Grid():
                 else:
                     break
         return moves
+
+    def furthest_possible_moves(self, car):
+        moves = self.possible_moves(car)
+        if not moves:
+            return moves
+
+        if abs(moves[0]) > abs(moves[-1]):
+            return [moves[0]]
+
+        if abs(moves[-1]) > abs(moves[0]):
+            return [moves[-1]]
+
+        return [random.choice([moves[0], moves[-1]])]
+
+    def furthest_next_lists(self, current_list):
+        self.set_configuration_from_list(current_list)
+        next_lists = []
+
+        # For each car see what moves are possible
+        for i, name in enumerate(self._car_names):
+
+            moves = self.furthest_possible_moves(name)
+
+            for distance in moves:
+
+                # Write each move as a new list and collect all possible new lists
+                next_list = copy.deepcopy(current_list)
+                next_list[i] += distance
+                next_lists.append(next_list)
+        return next_lists
+
+    def possible_next_lists(self, current_list):
+        """ Gives the possible lists after one move on the grid that can be made with the given list """
+
+        self.set_configuration_from_list(current_list)
+        next_lists = []
+
+        # For each car see what moves are possible
+        for i, name in enumerate(self._car_names):
+
+            moves = self.possible_moves(name)
+
+            for distance in moves:
+
+                # Write each move as a new list and collect all possible new lists
+                next_list = copy.deepcopy(current_list)
+                next_list[i] += distance
+                next_lists.append(next_list)
+
+        return next_lists
+
+    def set_configuration_from_list(self, given_list):
+        """ Given a list with the total moved distance from the start position for each car, changes to this configuration """
+        self._grid = copy.deepcopy(self._empty_grid)
+
+        for i, name in enumerate(self._car_names):
+            car = self._cars[name]
+            x = car.get_initial_x()
+            y = car.get_initial_y()
+            length = car.get_length()
+
+            if car.get_orientation() == 'H':
+                x += given_list[i]
+                for j in range(length):
+                    self._grid[y][x + j] = name
+            else:
+                y += given_list[i]
+                for j in range(length):
+                    self._grid[y+j][x] = name
+
+            # Update coordinates in each Car object
+            car.set_x(x)
+            car.set_y(y)
+
+        return self._grid
+
+    def route_to_state(self, route):
+        state = copy(self._empty_state)
+        for move in route:
+            car = move[0]
+            distance = move[1]
+            state[car] = distance
+
+        return state
+
+    def solution_list_to_steps(self, state):
+        """
+        Given a list of lists of total moved distances for each car, e.g. [-2, 0, 5, 1]
+        rewrite this as steps, e.g. [X, 2]
+        """
+        steps = []
+        previous_state = state[0]
+
+        for next_state in state[1:]:
+
+            for i in range(len(previous_state)):
+
+                if next_state[i] != previous_state[i]:
+                    car = self._car_names[i]
+                    distance = next_state[i] - previous_state[i]
+
+            steps.append([car, distance])
+            previous_state = next_state
+
+        return steps
 
     def print_grid(self):
         for y in self._grid:
@@ -170,7 +269,7 @@ class Grid():
         return
 
     def get_car_names(self):
-        return list(self._cars.keys())
+        return self._car_names
 
     def get_car_x(self, car_name):
         return self._cars[car_name].get_x()
@@ -193,11 +292,17 @@ class Grid():
     def get_size(self):
         return self._size
 
-    def win(self):
+    def win_leon(self):
         """Check if the red car can reach the end"""
         x, y = self._cars['X'].coordinates()
 
         # check whether every space before the red car is empty
         if self._grid[y][x + 2:self._size] == (self._size - x - 2) * ["*"]:
+            return True
+        return False
+
+    def win(self):
+        """Check if the red car has reached the end"""
+        if self._cars['X'].get_x() + 2 == self._size:
             return True
         return False
