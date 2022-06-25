@@ -1,7 +1,7 @@
 import copy
 
 
-class ImprovingAlgorithm():
+class RemoveUseless():
     def __init__(self, grid, solution):
         self._grid = grid
         self._solution = solution

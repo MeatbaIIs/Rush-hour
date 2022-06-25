@@ -61,6 +61,9 @@ class BreadthFirst():
 
         return steps
 
+    def get_next_lists(self, last_list):
+        return self._grid.possible_next_lists(last_list)
+
     def run(self):
         """ Runs a breadth first algorithm """
 
@@ -79,7 +82,7 @@ class BreadthFirst():
             last_list = state[-1]
 
             # Look for possible new grid representations and add them to queue if not encountered before.
-            for new_list in self._grid.possible_next_lists(last_list):
+            for new_list in self.get_next_lists(last_list):
                 new_tuple = tuple(new_list)
                 if new_tuple in self._visited:
                     continue

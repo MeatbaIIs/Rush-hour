@@ -4,16 +4,15 @@ Usage: main.py [PUZZLE_NAME.CSV]
 """
 
 import csv
-from code.algorithms.depth_first import Depth_first as dfs
+from code.algorithms.depth_first import DepthFirst
 from code.algorithms.breadth_first import BreadthFirst
-from code.algorithms.breadth_first_furthest import BreadthFirstFurthest
-from code.algorithms.DFA import DepthFirst
+from code.algorithms.beam_search import BeamSearch
 from code.algorithms.take_out_loops import TakeOutLoops
 from code.algorithms.random import Random
 from code.helpers import loader, solution_to_csv
 from code.classes.grid import Grid
-from code.algorithms.improving_algorithm import Improving_algorithm
-from code.algorithms.randopt import RandOpt
+from code.algorithms.remove_useless import RemoveUseless
+from code.algorithms.improving_random import ImprovingRandom
 import argparse
 import copy
 import time
@@ -33,16 +32,16 @@ def main(input_file_name):
     # solution, time_sth = random_alg.random_algorithm()
 
     # breadth first
-    breadth_first = BreadthFirst(grid)
-    solution = breadth_first.run()
+    # breadth_first = BreadthFirst(grid)
+    # solution = breadth_first.run()
 
     # Random optimizing
     # randopt = ImprovingRandom(input_file_name)
     # solution = randopt.run()
 
-    # breadth first furthest
-    # breadth_first = BreadthFirstFurthest(grid)
-    # solution = breadth_first.run()
+    # Beam Search
+    beam_search = BeamSearch(grid)
+    solution = beam_search.run()
 
     # depth first Duncan
     # depth_first = DepthFirst('data/Rushhour6x6_1.csv')

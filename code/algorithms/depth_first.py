@@ -2,14 +2,17 @@ from code.classes.grid import Grid
 from copy import deepcopy, copy
 
 
+
+# misschien overerven van breadth first
 class DepthFirst():
-    def __init__(self, grid, best_solution = float('inf'), solutions = []):
+    def __init__(self, grid, best_solution=float('inf'), solutions=[]):
         self._initial_grid = deepcopy(grid)
         self._grid = deepcopy(grid)
         self._empty_grid = []
         self._stack = []
         for _ in range(grid.get_size()):
-            self._empty_grid.append(grid.get_size() * ['*'])#deepcopy(grid.get_grid())
+            # deepcopy(grid.get_grid())
+            self._empty_grid.append(grid.get_size() * ['*'])
 
         self._grid = grid
         self._cars = grid.get_car_names()
@@ -28,7 +31,6 @@ class DepthFirst():
             self._initial_y[name] = grid.get_car_y(name)
             self._orientation[name] = grid.get_car_orientation(name)
             self._lengths[name] = grid.get_car_length(name)
-
 
         #self._queue.put([[0 for i in range(len(self._cars))]])
         self._stack.append([[0 for i in range(len(self._cars))]])
@@ -53,7 +55,6 @@ class DepthFirst():
         # For each car see what moves are possible
         for i, car in enumerate(self._cars):
 
-
             moves = self._grid.possible_moves(car)
 
             if moves and max(moves) > 0:
@@ -70,7 +71,6 @@ class DepthFirst():
 
         return next_lists
 
-
     def route_to_state(self, route):
         state = copy(self._empty_state)
         for move in route:
@@ -85,7 +85,7 @@ class DepthFirst():
         grid = deepcopy(self._empty_grid)
 
         # Add cars
-        for i, car  in enumerate(self._cars):
+        for i, car in enumerate(self._cars):
             x = self._initial_x[car]
             y = self._initial_y[car]
             length = self._lengths[car]
@@ -105,8 +105,6 @@ class DepthFirst():
 
         return grid
 
-
-
     def is_solution(self, state):
         """ Checks whether the given state is a solution """
         if state[-1][-1] + self._initial_x['X'] == self._grid.get_size() - 2:
@@ -118,7 +116,6 @@ class DepthFirst():
         for key in self._visited:
             if self._visited[key] > length:
                 self._visited[key].pop()
-
 
     def check_for_better_solution(self, new_list, current_solution):
         # als hij deze wel sneller doet kan het zijn dat die state al in een vorige oplossing is gevonden, als dit zo is is dit een snelleren oplossing
@@ -167,7 +164,7 @@ class DepthFirst():
         elif move == min(moves) and move < 0:
             return True
 
-        return Falsea
+        return False
 
     def run(self):
         """
@@ -184,6 +181,7 @@ class DepthFirst():
             self._grid.set_configuration_from_list(last_list)
 
             self.check_for_solution(state)
+
 
             self._new_state = False
 
