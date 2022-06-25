@@ -117,7 +117,7 @@ class DepthFirst():
             if self._visited[key] > length:
                 self._visited[key].pop()
 
-    def check_for_better_solution(self, new_list, current_solution):
+    def check_for_better_solution(self, new_list):
         # als hij deze wel sneller doet kan het zijn dat die state al in een vorige oplossing is gevonden, als dit zo is is dit een snelleren oplossing
         for i, solution in enumerate(self._solutions):
 
@@ -220,6 +220,6 @@ class DepthFirst():
                         break
 
             # check of het algoritme nog wel een nieuwe staat kan bereiken, anders wordt er een stap terug gedaan
-            state = self.check_for_new_state(sate)
+            state = self.check_for_new_state(state)
 
         return self.pick_best_solution()

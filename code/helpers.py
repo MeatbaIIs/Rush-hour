@@ -10,11 +10,7 @@ import re
 from typing import List, Dict
 import copy
 from .algorithms.breadth_first import BreadthFirst as BF
-<<<<<<< HEAD
-from .algorithms.breadth_first_furthest import BreadthFirstFurthest as BFF
-=======
 from .algorithms.beam_search import BeamSearch as BFF
->>>>>>> bdd329e9139484e4f16b288d382121323f29e8d9
 from .algorithms.depth_first import DepthFirst as DF
 from .algorithms.random import Random
 
@@ -76,7 +72,7 @@ def solution_to_csv(solution, filename):
             csvwriter.writerow(step)
 
 
-def load_solution(input_file_name):
+def load_solution(filename):
     solution = []
     # Load solution in list of lists
     with open(filename, 'r') as f:
