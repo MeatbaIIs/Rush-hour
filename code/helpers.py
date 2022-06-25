@@ -5,13 +5,13 @@ Usage: loader.py [PUZZLE_NAME.CSV]
 
 import csv
 from typing import Dict
-from .classes.grid_clean import Grid
+from .classes.grid import Grid
 import re
 from typing import List, Dict
 import copy
 from .algorithms.breadth_first import BreadthFirst as BF
 from .algorithms.breadth_first_furthest import BreadthFirstFurthest as BFF
-from .algorithms.depth_first import Depth_first as DF
+from .algorithms.depth_first import DepthFirst as DF
 from .algorithms.random import Random
 
 class MethodInputError(Exception):
@@ -72,8 +72,8 @@ def solution_to_csv(solution, input_file_name):
 def load_solution(filename):
     solution = []
     # Load solution in list of lists
-    with open(input_file_name, 'r') as f:
-        file_reader = reader(f)
+    with open(filename, 'r') as f:
+        file_reader = csv.reader(f)
         next(file_reader)
         for line in file_reader:
             solution.append([line[0], int(line[1])])

@@ -1,11 +1,8 @@
 from code.classes.grid import Grid
-from copy import deepcopy
-from copy import copy
-#import stack
+from copy import deepcopy, copy
 
 
-# misschien overerven van breadth first
-class DeptFirst():
+class DepthFirst():
     def __init__(self, grid, best_solution = float('inf'), solutions = []):
         self._initial_grid = deepcopy(grid)
         self._grid = deepcopy(grid)
@@ -36,10 +33,11 @@ class DeptFirst():
         #self._queue.put([[0 for i in range(len(self._cars))]])
         self._stack.append([[0 for i in range(len(self._cars))]])
         self._visited[tuple([0 for i in range(len(self._cars))])] = 0
-        self._len_visited = [0]
+
         for solution in solutions:
             for i, state in enumerate(solution):
                 self._visited[tuple(state)] =  i
+
         self._solutions = solutions
         self._best_solution = best_solution
 
@@ -125,6 +123,7 @@ class DeptFirst():
     def check_for_better_solution(self, new_list, current_solution):
         # als hij deze wel sneller doet kan het zijn dat die state al in een vorige oplossing is gevonden, als dit zo is is dit een snelleren oplossing
         for i, solution in enumerate(self._solutions):
+
             for j, config in enumerate(solution):
 
                 # als de huidige staat sneller bereikt is dan in de huidige oplossing wordt dat stuk van de oplossing vervangen
@@ -149,14 +148,29 @@ class DeptFirst():
         child.append(new_list)
         self._stack.append(child)
 
+    def check_for_new_state(self, state):
+        if not self._new_state and len(state) > 1:
+            state.pop()
+            self._stack.append(state)
+
+    def check_for_solution(self, state):
+        if self._grid.win():
+            print('found a solution of ' + str(len(state) - 2) + ' steps.')
+            self._solutions.append(state)
+            self._best_solution = len(state) - 1
+            self.remove_long_visited(self._best_solution)
+
+    def check_for_max_move(self, move, moves):
+        if move == max(moves) and move > 0:
+            return True
+
+        elif move == min(moves) and move < 0:
+            return True
+
+        return Falsea
 
     def run(self):
         """
-        TO DO:
-        Check of de stack goed aangevuld wordt
-        Misschien alleen code van breadth_first gebruiken (hooguit 6 stappen)
-        zorg dat de oplossingen opgeslagen worden
-        Zorg dat vorige states opgeslagen worden
         """
 
         current_list = deepcopy(self._empty_state)
@@ -169,12 +183,7 @@ class DeptFirst():
             last_list = state[-1]
             self._grid.set_configuration_from_list(last_list)
 
-            if self._grid.win():
-                print('found a solution of ' + str(len(state) - 2) + ' steps.')
-                self._solutions.append(state)
-                self._best_solution = len(state) - 1
-                self.remove_long_visited(self._best_solution)
-
+            self.check_for_solution(state)
 
             self._new_state = False
 
@@ -195,11 +204,12 @@ class DeptFirst():
                         new_list = copy(last_list)
 
                         # get the maximum move
-                        if move == max(moves) and move > 0:
+                        if self.check_for_max_move(move, moves):
                             new_list[i] += move
 
-                        elif move = min(moves) and move < 0:
-                            new_list[i] += move
+                        else:
+                            continue
+
 
                         if tuple(new_list) in self._visited and self._visited[tuple(new_list)] < current_steps:
                             continue
@@ -208,13 +218,10 @@ class DeptFirst():
                         if tuple(new_list) in self._visited and self._visited[tuple(new_list)] > current_steps:
                             self.check_for_better_solution(new_list)
 
-
                         self.get_next_state(new_list, state)
                         break
 
             # check of het algoritme nog wel een nieuwe staat kan bereiken, anders wordt er een stap terug gedaan
-            if not self._new_state and len(state) > 1:
-                state.pop()
-                self._stack.append(state)
+            state = self.check_for_new_state(sate)
 
         return self.pick_best_solution()

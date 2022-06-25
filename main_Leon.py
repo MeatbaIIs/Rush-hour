@@ -6,12 +6,12 @@ Usage: main.py [PUZZLE_NAME.CSV]
 import csv
 #from code.algorithms.depth_first import Depth_first as dfs
 #from code.algorithms.breadth_first import BreadthFirst
-from code.algorithms.depth_first import Depth_first
+from code.algorithms.depth_first import DepthFirst
 #from code.algorithms.DFA import DepthFirst as DF
 #from code.algorithms.random import Random
 from code.classes.car import Car
-from code.helpers import loader, solution_to_csv
-from code.classes.grid_clean import Grid
+from code.helpers import loader, solution_to_csv, load_solution
+from code.classes.grid import Grid
 #from code.algorithms.improving_algorithm import Improving_algorithm
 from code.visualization.visualization import main as visual
 import argparse
@@ -33,7 +33,9 @@ def main(input_file_name):
     # breadth first
     #breadth_first = BreadthFirst(grid)
     grid.print_grid()
-    dfs = Depth_first(grid, best_solution = 29)
+    #solution = load_solution("data/Rushhour12x12_7_randopt_solution_optimized.csv")
+    solution = load_solution("data/Rushhour6x6_1_solution.csv")
+    dfs = DepthFirst(grid, best_solution = 29, solutions = [solution])
     start_time = time.perf_counter()
     solution = dfs.run()
     #print(grid.solution_list_to_steps(solution))
@@ -44,35 +46,6 @@ def main(input_file_name):
     duration = round((end_time - start_time)/60, 2)
 
     print(f'Algorithm took around {duration} minutes')
-
-    # IA = Improving_algorithm(grid, solution)
-    # new_solution = IA.run()
-
-    # print(len(new_solution))
-
-    # histogram(input_file_name)
-    # dfs.run(grid)
-    # print('found a solution!')
-    #algorithm = Random(grid)
-    # print(algorithm.other_random_algorithm())
-    # dfs.run(grid)
-    # print('found a solution!')
-    # algorithm = dfs(grid)
-    # algorithm.run()
-
-    # algorithm = DF("data/Rushhour6x6_1.csv")
-    # algorithm.run()
-    #
-    # filename = input_file_name.rstrip(".csv") + "_solution.csv"
-    # with open(filename, 'w') as csvfile:
-    #     csvwriter = csv.writer(csvfile, delimiter=',')
-    #     csvwriter.writerow(['car', 'move'])
-    #
-    #     for step in solution:
-    #         # Write step to csv
-    #         csvwriter.writerow(step)
-    #
-    # visual(filename, 100)
 
 if __name__ == "__main__":
     # set-up parsing command line arguments
