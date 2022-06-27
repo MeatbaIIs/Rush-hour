@@ -12,11 +12,9 @@ from code.algorithms.improving_random import ImprovingRandom as IR
 from code.algorithms.remove_useless import RemoveUseless as RU
 from code.algorithms.random import Random
 from code.algorithms.take_out_loops import TakeOutLoops as TOL
+from code.helpers import loader, solution_to_csv, check_filename, ask_for_solution, load_solution
+from code.visualization.visualization import main as visual
 
-# from code.classes.car import Car
-from code.helpers import loader, solution_to_csv, check_filename, ask_for_solution
-# from code.classes.grid import Grid
-# from code.visualization.histogram import histogram_and_plot
 import argparse
 import os
 import time
@@ -67,17 +65,18 @@ TakeOutLoops (TOL) ")
             answer = input("Would you like to give a solution to quicken the process? (yes/no) ").upper()
 
             if answer == "YES" or answer == 'Y':
-                old_solution = ask_for_solution()
-                if old_solution[5:] not in files:
+                filename = ask_for_solution()
+                if filename[5:] not in files:
                     print("\nNo such file\n")
                     time.sleep(1)
                     continue
 
-                df = DF(grid, best_solution == len(old_solution) -1, solutions = [old_solution])
+                old_solution = load_solution(filename)
+                df = DF(grid, best_solution = len(old_solution) -1, solutions = [old_solution])
                 solution = df.run()
                 print(solution)
 
-            elif answer == "NO" or answer == "N":
+            else:
                 DepthFirst = DF(grid)
                 solution = DepthFirst.run()
                 print(solution)
@@ -99,33 +98,38 @@ random_not_prev")
             print(solution)
 
         elif algorithm == "BREADTHFIRSTITERATING" or algorithm == "BFI":
-            old_solution = ask_for_solution()
-            if old_solution[5:] not in files:
+            filename = ask_for_solution()
+            if filename[5:] not in files:
                 print("\nNo such file\n")
                 time.sleep(1)
                 continue
+
+            old_solution = load_solution(filename)
 
             bfi = BFI(grid, old_solution)
             solution = bfi.run()
 
         elif algorithm == "REMOVEUSELESS" or algorithm == "RU":
-            old_solution = ask_for_solution()
-            if old_solution[5:] not in files:
+            filename = ask_for_solution()
+            if filename[5:] not in files:
                 print("\nNo such file\n")
                 time.sleep(1)
                 continue
+
+            old_solution = load_solution(filename)
 
             ru = RU(grid, old_solution)
             solution = ru.run()
             print(solution)
 
         elif algorithm == "TAKEOUTLOOPS" or algorithm == "TOL":
-            old_solution = ask_for_solution()
-            if old_solution[5:] not in files:
+            filename = ask_for_solution()
+            if filename[5:] not in files:
                 print("\nNo such file\n")
                 time.sleep(1)
                 continue
 
+            old_solution = load_solution(filename)
             tol = TOL(grid, old_solution)
             solution = tol.run()
             print(solution)
@@ -137,14 +141,25 @@ random_not_prev")
 
         save_file = input("Would you like to save the file? (yes/no)").upper()
 
-        if save_file == "YES" or save_file =='Y':
+        while save_file == "YES" or save_file == 'Y':
             save_filename = input("What name would you choose for your save file? ")
             save_filename = check_filename(save_filename)
-            if save_filename[5:] not in files:
+            if save_filename[5:] in files:
                 answer = input("File already exists, are you sure? ").upper()
                 if answer == "YES" or answer == "Y":
                     solution_to_csv(solution, save_filename)
+                    break
+                else:
+                    save_file = input("Want to pick a new name? (yes/no)").upper()
 
+            else:
+                solution_to_csv(solution, save_filename)
+                break
+
+        if save_file == "YES" or save_file == 'Y':
+            answer = input("Do you want a visual of the solution? (yes/no)").upper()
+            if answer == "YES" or answer == "Y":
+                visual(save_filename, len(solution), input_filename)
 
 if __name__ == "__main__":
     main()

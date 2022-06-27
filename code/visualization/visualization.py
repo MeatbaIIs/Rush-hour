@@ -13,10 +13,10 @@ from matplotlib.colors import hsv_to_rgb
 import random
 
 
-def main(solution_file_name, steps):
+def main(solution_file_name, steps, puzzle_name):
     # Get puzzle
-    puzzle_name = re.search(
-        "data/Rushhour\d+x\d+_\d+", solution_file_name).group() + ".csv"
+    # puzzle_name = re.search(
+    #     "data/Rushhour\d+x\d+_\d+", solution_file_name).group() + ".csv"
 
     # Get puzzle size
     size = int(re.search(
