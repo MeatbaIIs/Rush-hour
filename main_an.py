@@ -40,8 +40,8 @@ def main(input_file_name):
     # solution = randopt.run()
 
     # Beam Search
-    beam_search = BeamSearch(grid)
-    solution = beam_search.run()
+    # beam_search = BeamSearch(grid)
+    # solution = beam_search.run()
 
     # depth first Duncan
     # depth_first = DepthFirst('data/Rushhour6x6_1.csv')

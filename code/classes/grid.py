@@ -9,6 +9,8 @@ class Grid():
         for i in range(size):
             self._grid.append(size * ['*'])
         self._empty_grid = copy.deepcopy(self._grid)
+        self._empty_state = []
+
         # dictionary of all the cars
         self._cars = {}
 
@@ -25,6 +27,7 @@ class Grid():
         car = Car(name, orientation, x, y, length, self._size)  # car_num)
         self._cars[name] = car
         self._car_names.append(name)
+        self._empty_state.append(0)
 
         # change empty spaces to the right letter
         for i in range(length):
@@ -227,13 +230,16 @@ class Grid():
         return self._grid
 
     def route_to_state(self, route):
-        state = copy(self._empty_state)
+        state = copy.copy(self._empty_state)
+        states = [copy.copy(state)]
         for move in route:
-            car = move[0]
-            distance = move[1]
-            state[car] = distance
+            for i, car in enumerate(self._cars):
+                if car == move[0]:
+                    distance = move[1]
+                    state[i] += distance
+                    states.append(copy.copy(state))
 
-        return state
+        return states
 
     def solution_list_to_steps(self, state):
         """

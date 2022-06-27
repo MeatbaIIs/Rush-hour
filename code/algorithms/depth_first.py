@@ -1,7 +1,6 @@
 from code.classes.grid import Grid
-from copy import deepcopy
-from copy import copy
-#import stack
+from copy import deepcopy, copy
+
 
 
 # misschien overerven van breadth first
@@ -36,10 +35,11 @@ class DepthFirst():
         #self._queue.put([[0 for i in range(len(self._cars))]])
         self._stack.append([[0 for i in range(len(self._cars))]])
         self._visited[tuple([0 for i in range(len(self._cars))])] = 0
-        self._len_visited = [0]
+
         for solution in solutions:
             for i, state in enumerate(solution):
-                self._visited[tuple(state)] = i
+                self._visited[tuple(state)] =  i
+
         self._solutions = solutions
         self._best_solution = best_solution
 
@@ -113,13 +113,18 @@ class DepthFirst():
         return False
 
     def remove_long_visited(self, length):
+        to_remove = []
         for key in self._visited:
             if self._visited[key] > length:
-                self._visited[key].pop()
+                to_remove.append(key)
 
-    def check_for_better_solution(self, new_list, current_solution):
+        for key in to_remove:
+            del self._visited[key]
+
+    def check_for_better_solution(self, new_list, state):
         # als hij deze wel sneller doet kan het zijn dat die state al in een vorige oplossing is gevonden, als dit zo is is dit een snelleren oplossing
         for i, solution in enumerate(self._solutions):
+
             for j, config in enumerate(solution):
 
                 # als de huidige staat sneller bereikt is dan in de huidige oplossing wordt dat stuk van de oplossing vervangen
@@ -131,11 +136,16 @@ class DepthFirst():
                         self._best_solution = len(solution) - 1
                         print(f'found solution of {len(solution) - 2} steps')
                         self.remove_long_visited(self._best_solution)
+                        print(self._grid.solution_list_to_steps(solution))
+
 
     def pick_best_solution(self):
+        best_solution_len = 99999
+        best_solution_steps = []
         for solution in self._solutions:
-            if len(solution) - 1 == self._best_solution:
-                return self._grid.solution_list_to_steps(solution)
+            if len(solution) < best_solution_len:
+                best_solution_steps = self._grid.solution_list_to_steps(solution)
+        return best_solution_steps
 
     def get_next_state(self, new_list, state):
         self._new_state = True
@@ -144,13 +154,30 @@ class DepthFirst():
         child.append(new_list)
         self._stack.append(child)
 
+    def check_for_new_state(self, state):
+        if not self._new_state and len(state) > 1:
+            state.pop()
+            self._stack.append(state)
+
+    def check_for_solution(self, state):
+        if self._grid.win():
+            print('found a solution of ' + str(len(state) - 2) + ' steps.')
+            self._solutions.append(state)
+            self._best_solution = len(state) - 1
+            self.remove_long_visited(self._best_solution)
+            print(self._grid.solution_list_to_steps(state))
+
+    def check_for_max_move(self, move, moves):
+        if move == max(moves) and move > 0:
+            return True
+
+        elif move == min(moves) and move < 0:
+            return True
+
+        return False
+
     def run(self):
         """
-        TO DO:
-        Check of de stack goed aangevuld wordt
-        Misschien alleen code van breadth_first gebruiken (hooguit 6 stappen)
-        zorg dat de oplossingen opgeslagen worden
-        Zorg dat vorige states opgeslagen worden
         """
 
         current_list = deepcopy(self._empty_state)
@@ -163,16 +190,13 @@ class DepthFirst():
             last_list = state[-1]
             self._grid.set_configuration_from_list(last_list)
 
-            if self._grid.win():
-                print('found a solution of ' + str(len(state) - 2) + ' steps.')
-                self._solutions.append(state)
-                self._best_solution = len(state) - 1
-                self.remove_long_visited(self._best_solution)
+            self.check_for_solution(state)
+
 
             self._new_state = False
 
             # zorg dat er niet verder wordt gezocht dan de lengte van de beste oplossing
-            if len(state) < self._best_solution - 1:
+            if len(state) < self._best_solution:
 
                 # maak een set van alle bezochte staten
                 current_steps = len(state)
@@ -188,25 +212,22 @@ class DepthFirst():
                         new_list = copy(last_list)
 
                         # get the maximum move
-                        if move == max(moves) and move > 0:
-                            new_list[i] += move
+                        #if self.check_for_max_move(move, moves):
+                        new_list[i] += move
 
-                        elif move == min(moves) and move < 0:
-                            new_list[i] += move
 
                         if tuple(new_list) in self._visited and self._visited[tuple(new_list)] < current_steps:
                             continue
 
                         # als deze configuratie  al een keer bereikt is en hij deze keer niet sneller is dan de vorige keer slaan we hem over
                         if tuple(new_list) in self._visited and self._visited[tuple(new_list)] > current_steps:
-                            self.check_for_better_solution(new_list)
+                            self.check_for_better_solution(new_list, state)
 
                         self.get_next_state(new_list, state)
                         break
 
             # check of het algoritme nog wel een nieuwe staat kan bereiken, anders wordt er een stap terug gedaan
-            if not self._new_state and len(state) > 1:
-                state.pop()
-                self._stack.append(state)
+            state = self.check_for_new_state(state)
+
 
         return self.pick_best_solution()

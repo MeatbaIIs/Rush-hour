@@ -8,7 +8,7 @@ import queue
 import random
 import numpy as np
 from ..helpers import loader
-import keyboard
+#import keyboard
 import csv
 import time
 
@@ -52,6 +52,8 @@ class ImprovingRandom():
         best_solution_len = inf
         start_time = time.perf_counter()
 
+        times_between_solutions = []
+
         while self._running:
             self._solution = []
             counter = 0
@@ -66,6 +68,10 @@ class ImprovingRandom():
                 best_solution_len = len(best_solution)
                 end_time = time.perf_counter()
                 duration = round((end_time-start_time)/60, 2)
+
+                times_between_solutions.append(duration)
+
+                print(times_between_solutions)
                 print(
                     f'found a solution of {len(self._solution)} steps after around {duration} minutes')
 

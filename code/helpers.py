@@ -68,12 +68,12 @@ def solution_to_csv(solution, filename):
             csvwriter.writerow(step)
 
 
-def load_solution(input_file_name):
+def load_solution(filename):
     """ Loads solution from csv file and returns it """
     solution = []
     # Load solution in list of lists
-    with open(input_file_name, 'r') as f:
-        file_reader = reader(f)
+    with open(filename, 'r') as f:
+        file_reader = csv.reader(f)
         next(file_reader)
         for line in file_reader:
             solution.append([line[0], int(line[1])])
