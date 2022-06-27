@@ -64,11 +64,16 @@ def check_filename(filename):
 
     return filename
 
+def check_files(filename):
+    if filename[5:] not in files:
+        print("\nNo such file\n")
+        time.sleep(1)
+        return False
+
 def ask_for_solution():
     solution_name = input("What is the file name of the solution? ")
     solution_name = check_filename(solution_name)
-    old_solution = load_solution(solution_name)
-    return old_solution
+    return solution_name
 
 def solution_to_csv(solution, filename):
     """ takes a solution formatted as a list of steps and outputs this to a csv file """

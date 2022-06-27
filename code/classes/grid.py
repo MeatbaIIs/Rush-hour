@@ -4,16 +4,17 @@ import copy
 
 
 class Grid():
-    def __init__(self, size=7):
+    def __init__(self, size=6):
         self._grid = []
+
         for i in range(size):
             self._grid.append(size * ['*'])
+
         self._empty_grid = copy.deepcopy(self._grid)
         self._empty_state = []
 
-        # dictionary of all the cars
+        # create a dictionary of all the cars
         self._cars = {}
-
         self._car_names = []
 
         # keep track of the movement per car to compare grids
@@ -74,7 +75,7 @@ class Grid():
             car.set_coordinates(x, new_y)
 
     def possible_moves(self, name):
-        """Gives the possible moves of a given car"""
+        """Gives the possible moves of a car"""
 
         # get variables
         moves = []
@@ -155,6 +156,7 @@ class Grid():
         return moves
 
     def furthest_possible_moves(self, car):
+        """get the furthest possible move for a car"""
         moves = self.possible_moves(car)
         if not moves:
             return moves
@@ -168,6 +170,7 @@ class Grid():
         return [random.choice([moves[0], moves[-1]])]
 
     def furthest_next_lists(self, current_list):
+        """get all new possible configurations when only moving the maximum amount"""
         self.set_configuration_from_list(current_list)
         next_lists = []
 
@@ -230,6 +233,7 @@ class Grid():
         return self._grid
 
     def route_to_state(self, route):
+        """given the steps to a solution, create a sequence of total movements"""
         state = copy.copy(self._empty_state)
         states = [copy.copy(state)]
         for move in route:
