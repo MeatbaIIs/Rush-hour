@@ -1,4 +1,5 @@
 import copy
+from ..helpers import check_solution
 
 
 class RemoveUseless():
@@ -23,25 +24,6 @@ class RemoveUseless():
                     self._test_solution[i][1] += distance
                     return
 
-    def check_solution(self):
-        """ Returns True if test_solution is a valid solution. """
-        gridcopy = copy.deepcopy(self._grid)
-
-        # Run through all moves in the solution
-        for move in self._test_solution:
-            car = move[0]
-            distance = move[1]
-
-            # Check if the move is possible
-            if not distance in gridcopy.possible_moves(car):
-                return False
-            gridcopy.move(car, distance)
-
-        # Check if Rush hour puzzle is solved after carrying out all moves
-        if gridcopy.win():
-            return True
-        return False
-
     def step(self, i):
         """ Attempt to make a solution where the i-th move is left out. """
 
@@ -55,7 +37,7 @@ class RemoveUseless():
         self.correct_later_moves(car, distance, i)
 
         # Modify solution if new solution is valid
-        if self.check_solution():
+        if check_solution(self._grid, self._test_solution):
             self._solution = copy.deepcopy(self._test_solution)
             return True
 

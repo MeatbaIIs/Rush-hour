@@ -1,7 +1,7 @@
 import copy
 import queue
 import numpy as np
-from ..helpers import is_solution, total_movements_to_steps
+from ..helpers import is_solution, total_movements_sequence_to_steps, next_total_movements
 
 
 class BreadthFirst():
@@ -19,9 +19,9 @@ class BreadthFirst():
         self._visited = set()
         self._visited.add(tuple(initial_list))
 
-    def get_next_total_movements(self, last_list):
+    def get_next_total_movements(self, total_movements):
         """ Get the next total_movements after all possible steps. """
-        return self._grid.possible_next_lists(last_list)
+        return next_total_movements(self._grid, total_movements, furthest=False)
 
     def run(self):
         """ Runs a breadth first algorithm """
@@ -31,7 +31,7 @@ class BreadthFirst():
             total_movements_sequence = self._queue.get()
 
             if is_solution(self._grid, total_movements_sequence):
-                solution = total_movements_to_steps(
+                solution = total_movements_sequence_to_steps(
                     self._grid, total_movements_sequence)
                 break
 

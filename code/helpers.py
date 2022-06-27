@@ -149,13 +149,33 @@ def load_solution(filename):
 
 def is_solution(grid, total_movements_sequence):
     """ Checks whether the given total_movements_sequence is a solution for a given Grid object"""
-    grid.set_configuration_from_list(total_movements_sequence[-1])
+    set_total_movements(grid, total_movements_sequence[-1])
     if grid.win():
         return True
     return False
 
 
-def total_movements_to_steps(grid, solution):
+def check_solution(grid, solution):
+    """ Returns True if test_solution is a valid solution. """
+    gridcopy = copy.deepcopy(grid)
+
+    # Run through all moves in the solution
+    for move in solution:
+        car = move[0]
+        distance = move[1]
+
+        # Check if the move is possible
+        if not distance in gridcopy.possible_moves(car):
+            return False
+        gridcopy.move(car, distance)
+
+    # Check if Rush hour puzzle is solved after carrying out all moves
+    if gridcopy.win():
+        return True
+    return False
+
+
+def total_movements_sequence_to_steps(grid, solution):
     """ 
     Given a sequence of total_movements, e.g. [-2, 0, 5, 1]
     rewrite this as steps, e.g. [X, 2]
@@ -176,3 +196,82 @@ def total_movements_to_steps(grid, solution):
         previous_total_movements = next_total_movements
 
     return steps
+
+
+def steps_to_total_movements_sequence(grid, steps):
+    """
+    Given steps and a grid, rewrite these as a sequence of states, which are represented as total_movements.
+    """
+    total_movements = grid.get_empty_grid()
+    total_movements_sequence = [copy.copy(total_movements)]
+    for move in steps:
+        for i, car in enumerate(grid.get_car_names()):
+            if car == move[0]:
+                distance = move[1]
+                total_movements[i] += distance
+                total_movements_sequence.append(copy.copy(total_movements))
+
+    return total_movements_sequence
+
+# BACK UP
+# def route_to_state(self, route):
+#         state = copy.copy(self._empty_state)
+#         states = [copy.copy(state)]
+#         for move in route:
+#             for i, car in enumerate(self._cars):
+#                 if car == move[0]:
+#                     distance = move[1]
+#                     state[i] += distance
+#                     states.append(copy.copy(state))
+
+#         return states
+
+
+def set_total_movements(grid, total_movements):
+    """ Sets grid object to a state with the given total_movements """
+    new_grid = copy.deepcopy(grid.get_empty_grid())
+
+    for i, name in enumerate(grid.get_car_names()):
+        x = grid.get_car_initial_x(name)
+        y = grid.get_car_initial_y(name)
+        length = grid.get_car_length(name)
+
+        if grid.get_car_orientation(name) == 'H':
+            x += total_movements[i]
+            for j in range(length):
+                new_grid[y][x + j] = name
+        else:
+            y += total_movements[i]
+            for j in range(length):
+                new_grid[y+j][x] = name
+
+        # Update coordinates in each Car object
+        grid.set_car_x(name, x)
+        grid.set_car_y(name, y)
+        grid.set_grid(new_grid)
+
+    return
+
+
+def next_total_movements(grid, total_movements, furthest):
+    """ Gives the possible total_movements after one move on the grid that can be made with the given total_movements """
+
+    set_total_movements(grid, total_movements)
+    next_total_movements = []
+
+    # For each car see what moves are possible
+    for i, name in enumerate(grid.get_car_names()):
+
+        if furthest:
+            moves = grid.furthest_possible_moves(name)
+        else:
+            moves = grid.possible_moves(name)
+
+        for distance in moves:
+
+            # Write each move as a new total_movements and append
+            next_total_movement = copy.deepcopy(total_movements)
+            next_total_movement[i] += distance
+            next_total_movements.append(next_total_movement)
+
+    return next_total_movements
