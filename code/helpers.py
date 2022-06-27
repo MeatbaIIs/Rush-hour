@@ -59,9 +59,24 @@ def dict_compare(new_dict, list_of_grids: List[Dict]) -> bool:
             return True
     return False
 
+def check_filename(filename):
+    if not ".csv" in filename:
+        filename = filename + ".csv"
+
+    if not "data/" in filename:
+        filename = "data/" + filename
+
+    return filename
+
+def ask_for_solution():
+    solution_name = input("What is the file name of the solution? ")
+    solution_name = check_filename(solution_name)
+    old_solution = load_solution(solution_name)
+    return old_solution
 
 def solution_to_csv(solution, filename):
     """ takes a solution formatted as a list of steps and outputs this to a csv file """
+
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
         csvwriter.writerow(['car', 'move'])
@@ -74,12 +89,15 @@ def solution_to_csv(solution, filename):
 
 def load_solution(filename):
     solution = []
+
     # Load solution in list of lists
     with open(filename, 'r') as f:
         file_reader = csv.reader(f)
         next(file_reader)
+
         for line in file_reader:
             solution.append([line[0], int(line[1])])
+
     return solution
 
 
