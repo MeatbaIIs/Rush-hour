@@ -9,7 +9,7 @@ class Grid():
         for i in range(size):
             self._grid.append(size * ['*'])
         self._empty_grid = copy.deepcopy(self._grid)
-        # self._empty_state = []
+        self._initial_total_movements = []
 
         # dictionary of all the cars
         self._cars = {}
@@ -27,7 +27,7 @@ class Grid():
         car = Car(name, orientation, x, y, length, self._size)  # car_num)
         self._cars[name] = car
         self._car_names.append(name)
-        # self._empty_state.append(0)
+        self._initial_total_movements.append(0)
 
         # change empty spaces to the right letter
         for i in range(length):
@@ -196,6 +196,9 @@ class Grid():
 
     def get_car_initial_y(self, car_name):
         return self._cars[car_name].get_initial_y()
+
+    def get_initial_total_movements(self):
+        return self._initial_total_movements
 
     def set_car_x(self, car_name, x):
         return self._cars[car_name].set_x(x)

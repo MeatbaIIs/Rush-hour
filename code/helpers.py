@@ -202,7 +202,7 @@ def steps_to_total_movements_sequence(grid, steps):
     """
     Given steps and a grid, rewrite these as a sequence of states, which are represented as total_movements.
     """
-    total_movements = grid.get_empty_grid()
+    total_movements = grid.get_initial_total_movements()
     total_movements_sequence = [copy.copy(total_movements)]
     for move in steps:
         for i, car in enumerate(grid.get_car_names()):
