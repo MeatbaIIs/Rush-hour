@@ -51,7 +51,7 @@ class BreadthFirstIter(BreadthFirst):
 
             last_state = seq[-1]
 
-            for new_state in self._grid.furthest_next_lists(list(last_state)):
+            for new_state in self._grid.possible_next_lists(list(last_state)):
                 new_state = tuple(new_state)
                 if new_state in visited:
                     continue
@@ -65,13 +65,13 @@ class BreadthFirstIter(BreadthFirst):
         """  """
         self.load_solution()
 
-        for i in range(500):
-            # print(i)
-            index = random.randrange(len(self._solution_states)-5)
-            seq = self._solution_states[index:index+5]
+        for index in range(len(self._solution_states)-7):
+            print(index)
+            # index = random.randrange(len(self._solution_states)-7)
+            seq = self._solution_states[index:index+7]
             opt_seq = self.breadth_first_iteration(seq)
             self._solution_states = self._solution_states[:index] + \
-                opt_seq + self._solution_states[index+5:]
+                opt_seq + self._solution_states[index+7:]
 
         print(f'Found {self._counter} optimizations.')
         return self.solution_list_to_steps(self._solution_states)

@@ -7,7 +7,7 @@ import csv
 from code.helpers import loader, solution_to_csv, load_solution
 from code.algorithms.take_out_loops import TakeOutLoops
 from code.algorithms.breadth_first_iter import BreadthFirstIter
-from code.algorithms.improving_algorithm import Improving_algorithm
+from code.algorithms.remove_useless import RemoveUseless
 import argparse
 import pandas as pd
 from csv import reader
@@ -32,20 +32,20 @@ def main(input_file_name):
     print(f'After taking out loops the solution is {len(solution)} steps.')
 
     print('Seeing if any useless steps can be left out.')
-    IA = Improving_algorithm(grid, solution)
+    IA = RemoveUseless(grid, solution)
     solution = IA.run()
     print(
         f'After deleting useless steps the solution is {len(solution)} steps.')
 
-    # print('Iterating with Breadth First')
-    # BFI = BreadthFirstIter(grid, solution)
-    # solution = BFI.run()
-    # print(
-    #     f'After iterating with breadth first the solution {len(solution)} steps.')
+    print('Iterating with Breadth First')
+    BFI = BreadthFirstIter(grid, solution)
+    solution = BFI.run()
+    print(
+        f'After iterating with breadth first the solution {len(solution)} steps.')
 
     print('Writing optimized solution to a csv file')
     filename = input_file_name.rstrip(".csv") + "_optimized.csv"
-    solution_to_csv(filename)
+    solution_to_csv(solution, filename)
 
 
 if __name__ == "__main__":
