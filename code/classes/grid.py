@@ -11,7 +11,7 @@ class Grid():
             self._grid.append(size * ['*'])
 
         self._empty_grid = copy.deepcopy(self._grid)
-        self._empty_state = []
+        self._initial_total_movements = []
 
         # create a dictionary of all the cars
         self._cars = {}
@@ -28,7 +28,7 @@ class Grid():
         car = Car(name, orientation, x, y, length, self._size)  # car_num)
         self._cars[name] = car
         self._car_names.append(name)
-        self._empty_state.append(0)
+        self._initial_total_movements.append(0)
 
         # change empty spaces to the right letter
         for i in range(length):
@@ -169,6 +169,7 @@ class Grid():
 
         return [random.choice([moves[0], moves[-1]])]
 
+<<<<<<< HEAD
     def furthest_next_lists(self, current_list):
         """get all new possible configurations when only moving the maximum amount"""
         self.set_configuration_from_list(current_list)
@@ -266,6 +267,8 @@ class Grid():
 
         return steps
 
+=======
+>>>>>>> 89bce82065b979ffcd8385867b9cbce316379100
     def print_grid(self):
         for y in self._grid:
             print(''.join(y))
@@ -273,6 +276,9 @@ class Grid():
 
     def get_grid(self):
         return self._grid
+
+    def get_empty_grid(self):
+        return self._empty_grid
 
     def set_grid(self, new_state):
         self._grid = new_state
@@ -286,6 +292,15 @@ class Grid():
 
     def get_car_y(self, car_name):
         return self._cars[car_name].get_y()
+
+    def get_car_initial_x(self, car_name):
+        return self._cars[car_name].get_initial_x()
+
+    def get_car_initial_y(self, car_name):
+        return self._cars[car_name].get_initial_y()
+
+    def get_initial_total_movements(self):
+        return self._initial_total_movements
 
     def set_car_x(self, car_name, x):
         return self._cars[car_name].set_x(x)
@@ -301,15 +316,6 @@ class Grid():
 
     def get_size(self):
         return self._size
-
-    def win_leon(self):
-        """Check if the red car can reach the end"""
-        x, y = self._cars['X'].coordinates()
-
-        # check whether every space before the red car is empty
-        if self._grid[y][x + 2:self._size] == (self._size - x - 2) * ["*"]:
-            return True
-        return False
 
     def win(self):
         """Check if the red car has reached the end"""

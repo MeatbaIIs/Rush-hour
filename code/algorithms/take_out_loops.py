@@ -1,67 +1,32 @@
 import copy
+from ..helpers import steps_to_total_movements_sequence, total_movements_sequence_to_steps
 
 
 class TakeOutLoops():
     def __init__(self, grid, solution):
         self._grid = grid
         self._given_solution = solution
-        self._car_indexes = {}
-        for i, name in enumerate(self._grid.get_car_names()):
-            self._car_indexes[name] = i
 
-        self._solution_states = []
-        self._solution_states.append(tuple([0 for i in self._car_indexes]))
-        self._optimized_states = []
-
-        self._optimized_solution = copy.deepcopy(self._given_solution)
-
-    def load_solution(self):
-
-        for car, distance in self._given_solution:
-            car_index = self._car_indexes[car]
-            new_state = list(copy.deepcopy(self._solution_states[-1]))
-            new_state[car_index] += distance
-            self._solution_states.append(tuple(new_state))
-
-        return
-
-    def solution_list_to_steps(self, solution):
-        """ 
-        Given a list of lists of total moved distances for each car, e.g. [-2, 0, 5, 1]
-        rewrite this as steps, e.g. [X, 2]
-        """
-        steps = []
-        previous_state = solution[0]
-
-        for next_state in solution[1:]:
-
-            for i in range(len(previous_state)):
-
-                if not next_state[i] == previous_state[i]:
-                    car = self._grid.get_car_names()[i]
-                    distance = next_state[i] - previous_state[i]
-
-            steps.append([car, distance])
-            previous_state = next_state
-
-        return steps
+        self._total_movements_sequence = []
+        self._optimized_sequence = []
 
     def run(self):
         """ For a given solution, check if the same state is visited multiple times and take out the steps in between """
-        self.load_solution()
+        self._total_movements_sequence = steps_to_total_movements_sequence(
+            self._grid, self._given_solution)
         counter = 0
 
-        for state in self._solution_states:
+        for total_movements in self._total_movements_sequence:
 
-            if not state in self._optimized_states:
-                self._optimized_states.append(state)
+            if not total_movements in self._optimized_sequence:
+                self._optimized_sequence.append(total_movements)
                 continue
 
             counter += 1
-            loop_start = self._optimized_states.index(state)
-            self._optimized_states = self._optimized_states[:loop_start]
-            self._optimized_states.append(state)
+            loop_start = self._optimized_sequence.index(total_movements)
+            self._optimized_sequence = self._optimized_sequence[:loop_start]
+            self._optimized_sequence.append(total_movements)
 
         print(f'Found and took out {counter} loops.')
 
-        return self.solution_list_to_steps(self._optimized_states)
+        return total_movements_sequence_to_steps(self._grid, self._optimized_sequence)
