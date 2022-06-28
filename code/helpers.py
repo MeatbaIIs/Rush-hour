@@ -64,14 +64,13 @@ def check_filename(filename):
 
     return filename
 
-<<<<<<< HEAD
-def check_files(filename):
-    if filename[5:] not in files:
-        print("\nNo such file\n")
-        time.sleep(1)
-        return False
-=======
->>>>>>> 89bce82065b979ffcd8385867b9cbce316379100
+
+# def check_files(filename):
+#     if filename[5:] not in files:
+#         print("\nNo such file\n")
+#         time.sleep(1)
+#         return False
+
 
 def ask_for_solution():
     solution_name = input("What is the file name of the solution? ")
