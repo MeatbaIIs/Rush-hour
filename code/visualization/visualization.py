@@ -14,16 +14,13 @@ import random
 
 
 def main(solution_file_name, steps, puzzle_name):
-    # Get puzzle
-    # puzzle_name = re.search(
-    #     "data/Rushhour\d+x\d+_\d+", solution_file_name).group() + ".csv"
 
     # Get puzzle size
     size = int(re.search(
         "Rushhour.+x", puzzle_name).group().lstrip("Rushhour").rstrip("x"))
 
-    # Visualize initial state
-    state = [[0] * size for i in range(0, size)]
+    # Visualize initial total_movements
+    total_movements = [[0] * size for i in range(0, size)]
     color = 0
     cars = {}
 
@@ -44,14 +41,15 @@ def main(solution_file_name, steps, puzzle_name):
             }
             cars[name] = car_dict
 
-    # Load initial state
+    # Load initial total_movements
     for car in cars.values():
         if car['orientation'] == 'H':
             for j in range(car['x'], car['x'] + car['len']):
-                state[car['y']][j] = car['color']
+                total_movements[car['y']][j] = car['color']
+
         else:
             for j in range(car['y'], car['y'] + car['len']):
-                state[j][car['x']] = car['color']
+                total_movements[j][car['x']] = car['color']
 
     # Make custom color map
     colors_list = [(1, 1, 1)]
@@ -64,7 +62,7 @@ def main(solution_file_name, steps, puzzle_name):
 
     # Visualize steps
     fig, ax = plt.subplots()
-    ims = [[ax.imshow(state, cmap=custom_colors, animated=True)]]
+    ims = [[ax.imshow(total_movements, cmap=custom_colors, animated=True)]]
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
@@ -80,25 +78,25 @@ def main(solution_file_name, steps, puzzle_name):
             if car['orientation'] == 'H':
 
                 for j in range(car['x'], car['x'] + car['len']):
-                    state[car['y']][j] = 0
+                    total_movements[car['y']][j] = 0
 
                 car['x'] += distance
 
                 for j in range(car['x'], car['x'] + car['len']):
-                    state[car['y']][j] = car['color']
+                    total_movements[car['y']][j] = car['color']
 
             else:
 
                 for j in range(car['y'], car['y'] + car['len']):
-                    state[j][car['x']] = 0
+                    total_movements[j][car['x']] = 0
 
                 car['y'] += distance
 
                 for j in range(car['y'], car['y'] + car['len']):
-                    state[j][car['x']] = car['color']
+                    total_movements[j][car['x']] = car['color']
 
             if step < steps:
-                im = ax.imshow(state, cmap=custom_colors, animated=True)
+                im = ax.imshow(total_movements, cmap=custom_colors, animated=True)
                 ims.append([im])
     ani = animation.ArtistAnimation(
         fig, ims, interval=200, blit=True, repeat_delay=2000)

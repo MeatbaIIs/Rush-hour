@@ -228,7 +228,7 @@ iterations (i)")
         if save_file == "YES" or save_file == 'Y':
             answer = input("Do you want a visual of the solution? (yes/no)").upper()
             if answer == "YES" or answer == "Y":
-                visual(save_filename, len(solution), input_filename)
+                visual(save_filename, len(solution) + 1, input_filename)
 
 
 if __name__ == "__main__":
