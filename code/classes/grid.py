@@ -42,17 +42,17 @@ class Grid():
 
         # get variables
         car = self._cars[name]
-        coor = car.coordinates()
         orientation = car._orientation
         length = car._length
 
-        x = coor[0]
-        y = coor[1]
+        x = car.get_x()
+        y = car.get_y()
 
         # check orientation
         if orientation == 'H':
 
             new_x = x + distance
+
             # empty the previous space of the car
             self._grid[y][x:x+length] = length * ["*"]
 
@@ -169,106 +169,6 @@ class Grid():
 
         return [random.choice([moves[0], moves[-1]])]
 
-<<<<<<< HEAD
-    def furthest_next_lists(self, current_list):
-        """get all new possible configurations when only moving the maximum amount"""
-        self.set_configuration_from_list(current_list)
-        next_lists = []
-
-        # For each car see what moves are possible
-        for i, name in enumerate(self._car_names):
-
-            moves = self.furthest_possible_moves(name)
-
-            for distance in moves:
-
-                # Write each move as a new list and collect all possible new lists
-                next_list = copy.deepcopy(current_list)
-                next_list[i] += distance
-                next_lists.append(next_list)
-        return next_lists
-
-    def possible_next_lists(self, current_list):
-        """ Gives the possible lists after one move on the grid that can be made with the given list """
-
-        self.set_configuration_from_list(current_list)
-        next_lists = []
-
-        # For each car see what moves are possible
-        for i, name in enumerate(self._car_names):
-
-            moves = self.possible_moves(name)
-
-            for distance in moves:
-
-                # Write each move as a new list and collect all possible new lists
-                next_list = copy.deepcopy(current_list)
-                next_list[i] += distance
-                next_lists.append(next_list)
-
-        return next_lists
-
-    def set_configuration_from_list(self, given_list):
-        """ Given a list with the total moved distance from the start position for each car, changes to this configuration """
-        self._grid = copy.deepcopy(self._empty_grid)
-
-        for i, name in enumerate(self._car_names):
-            car = self._cars[name]
-            x = car.get_initial_x()
-            y = car.get_initial_y()
-            length = car.get_length()
-
-            if car.get_orientation() == 'H':
-                x += given_list[i]
-                for j in range(length):
-                    self._grid[y][x + j] = name
-            else:
-                y += given_list[i]
-                for j in range(length):
-                    self._grid[y+j][x] = name
-
-            # Update coordinates in each Car object
-            car.set_x(x)
-            car.set_y(y)
-
-        return self._grid
-
-    def route_to_state(self, route):
-        """given the steps to a solution, create a sequence of total movements"""
-        state = copy.copy(self._empty_state)
-        states = [copy.copy(state)]
-        for move in route:
-            for i, car in enumerate(self._cars):
-                if car == move[0]:
-                    distance = move[1]
-                    state[i] += distance
-                    states.append(copy.copy(state))
-
-        return states
-
-    def solution_list_to_steps(self, state):
-        """
-        Given a list of lists of total moved distances for each car, e.g. [-2, 0, 5, 1]
-        rewrite this as steps, e.g. [X, 2]
-        """
-        steps = []
-        previous_state = state[0]
-
-        for next_state in state[1:]:
-
-            for i in range(len(previous_state)):
-
-                if next_state[i] != previous_state[i]:
-                    car = self._car_names[i]
-                    distance = next_state[i] - previous_state[i]
-
-            steps.append([car, distance])
-            previous_state = next_state
-
-        return steps
-
-=======
->>>>>>> 89bce82065b979ffcd8385867b9cbce316379100
     def print_grid(self):
         for y in self._grid:
             print(''.join(y))

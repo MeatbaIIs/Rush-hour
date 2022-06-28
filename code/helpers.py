@@ -56,6 +56,7 @@ def loader(input_file_name):
 #     return False
 
 def check_filename(filename):
+    """Adds the right folder and extension to a filename"""
     if not ".csv" in filename:
         filename = filename + ".csv"
 
@@ -64,16 +65,9 @@ def check_filename(filename):
 
     return filename
 
-<<<<<<< HEAD
-def check_files(filename):
-    if filename[5:] not in files:
-        print("\nNo such file\n")
-        time.sleep(1)
-        return False
-=======
->>>>>>> 89bce82065b979ffcd8385867b9cbce316379100
 
 def ask_for_solution():
+    """Ask for a filename of a solution and adds the right folder and extension if necessary"""
     solution_name = input("What is the file name of the solution? ")
     solution_name = check_filename(solution_name)
     return solution_name
@@ -183,7 +177,7 @@ def check_solution(grid, solution):
 
 
 def total_movements_sequence_to_steps(grid, solution):
-    """ 
+    """
     Given a sequence of total_movements, e.g. [-2, 0, 5, 1]
     rewrite this as steps, e.g. [X, 2]
     """
@@ -198,6 +192,7 @@ def total_movements_sequence_to_steps(grid, solution):
                 car = grid.get_car_names()[i]
                 distance = next_total_movements[i] - \
                     previous_total_movements[i]
+                break
 
         steps.append([car, distance])
         previous_total_movements = next_total_movements
