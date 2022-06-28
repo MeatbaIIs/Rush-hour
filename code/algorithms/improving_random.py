@@ -1,29 +1,21 @@
 """
-Algorithm that solves a given Rush hour puzzle by taking random steps. The best solution is written to a csv file while running.
+Algorithm that solves a puzzle by continually search for a better random solution
 """
-
-from cmath import inf
 import copy
 import queue
 import random
 import numpy as np
-from ..helpers import loader
-#import keyboard
+from ..helpers import loader, MethodInputError
 import csv
 import time
 
 
 class ImprovingRandom():
     def __init__(self, grid):
-        print("Running Random Optimized algorithm")
         self._start_grid = grid
         self._solution = []
         self._grid = copy.deepcopy(self._start_grid)
         self._running = True
-
-        # keyboard.add_hotkey("enter", self.stop_running)
-        self._solution_filename = input_file_name.rstrip(
-            ".csv") + "_randopt_solution.csv"
 
     def begin_new_solution(self):
         self._solution = []
@@ -37,6 +29,7 @@ class ImprovingRandom():
         distance = 0
         moves = []
 
+        # keep picking a new car until one has a legal move
         while not moves:
             car = random.choice(list(self._grid._cars.keys()))
             moves = self._grid.possible_moves(car)
@@ -46,44 +39,48 @@ class ImprovingRandom():
 
         return [car, distance]
 
-    def run(self):
+    def run(self, method, amount):
         """ Runs a looping random algorithm """
-
+        print("Running Random Optimized algorithm")
         best_solution = []
-        best_solution_len = inf
+        best_solution_len = float("inf")
         start_time = time.perf_counter()
         beginning = time.perf_counter()
+        amount = int(amount)
 
-        times_between_solutions = []
+        # check if a correct method is chosen
+        if method != "time" and method != "iterations":
+            raise MethodInputError
 
-        while time.perf_counter()-beginning < 60:
+        stop_condition = 0
+
+        while stop_condition < amount:
             self._solution = []
             counter = 0
             self.begin_new_solution()
 
+            # stop when taking more steps than best solution
             while not self._grid.win() and counter < best_solution_len:
                 self._solution.append(self.random_step())
                 counter += 1
 
+            # if a better solution is found, save it and look for better
             if best_solution_len > len(self._solution):
                 best_solution = copy.deepcopy(self._solution)
                 best_solution_len = len(best_solution)
                 end_time = time.perf_counter()
                 duration = round((end_time-start_time)/60, 2)
 
-                # times_between_solutions.append(duration)
-
                 print(
                     f'found a solution of {len(self._solution)} steps after around {duration} minutes')
 
-                # with open(self._solution_filename, 'w') as csvfile:
-                #     csvwriter = csv.writer(csvfile, delimiter=',')
-                #     csvwriter.writerow(['car', 'move'])
-
-                #     for step in best_solution:
-                #         csvwriter.writerow(step)
-
-                # start time for next round
                 start_time = time.perf_counter()
+
+            # determining the stop condition depending on chosen method
+            if method == "time":
+                stop_condition =  time.perf_counter() - beginning
+
+            elif method == "iterations":
+                stop_condition += 1
 
         return best_solution

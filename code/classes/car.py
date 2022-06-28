@@ -1,6 +1,6 @@
-""""
+"""
 This class keeps track of all the variables concerning a specific car on the grid
-""""
+"""
 
 class Car():
     def __init__(self, name, orientation, x, y, length, grid_size):
