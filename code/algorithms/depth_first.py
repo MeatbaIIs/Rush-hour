@@ -1,6 +1,6 @@
 from code.classes.grid import Grid
 from copy import deepcopy, copy
-from code.helpers import steps_to_total_movements_sequence, set_total_movements, total_movements_sequence_to_steps
+from code.helpers import steps_to_total_movements_sequence, set_total_movements, total_movements_sequence_to_steps, MethodInputError
 
 
 
@@ -41,14 +41,13 @@ class DepthFirst():
         Looks if the current configuration has been used for a solution and
         replaces part of the steps if this is is a faster way to reach the solution
         """
-
         for i, solution in enumerate(self._solutions):
 
             for j, config in enumerate(solution):
 
                 # if the current configuration has been reached faster than in the solution replace the steps
                 if new_list == config:
-                    solution[:j] = state + [new_list]
+                    solution[:j + 1] = state + [new_list]
 
                     # if this is better than the current best solution, update the length of the best solution
                     if len(solution) < self._best_solution:
@@ -92,11 +91,13 @@ class DepthFirst():
             self.remove_long_visited(self._best_solution)
             print(total_movements_sequence_to_steps(self._grid, state))
 
-    def run(self):
+    def run(self, method):
         """
         Runs the depth-first algorithm with as little memory use as possible
         """
         state = [[0 for i in range(len(self._grid.get_car_names()))]]
+        if method != "furthest" and method != "optimal":
+            raise MethodInputError
 
         while state:
 
@@ -113,15 +114,14 @@ class DepthFirst():
 
                 # make sure to stop searching deeper when the length of the best solution is reached
                 if len(state) < self._best_solution:
-                    longest_moves = set()
+                    if method == "furthest":
+                        if moves:
+                            moves = set([max(moves), min(moves)])
 
-                    if moves and max(moves) > 0:
-                        longest_moves.add(max(moves))
+                        else:
+                            continue
 
-                    if moves and min(moves) < 0:
-                        longest_moves.add(min(moves))
-
-                    for move in longest_moves:
+                    for move in moves:
 
                         # make a copy of the last list to add a move
                         new_list = copy(state[-1])

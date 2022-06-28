@@ -43,7 +43,10 @@ TakeOutLoops (TOL) ")
 
         input_filename = input("What problem would you like to use it on? ")
 
-        puzzle_numbers = range(1, 11)
+        if input_filename.upper() == "QUIT" or input_filename.upper() == 'Q':
+            break
+
+        puzzle_numbers = range(1, 7).append(10)
         number = int(input_filename)
 
         # allow user to only input the puzzle number
@@ -55,8 +58,6 @@ TakeOutLoops (TOL) ")
             elif number == 7:
                 input_filename = "Rushhour12x12_" + str(number)
 
-        if input_filename.upper() == "QUIT" or input_filename.upper() == 'Q':
-            break
 
         # check if the filename points to the right folder and has the .csv extension, and adds them if not
         input_filename = check_filename(input_filename)
@@ -85,6 +86,18 @@ TakeOutLoops (TOL) ")
 
         elif algorithm == "DEPTHFIRST" or algorithm == 'DF':
             answer = input("Would you like to give a solution to quicken the process? (yes/no) ").upper()
+            method = ""
+            while method != "furthest" and method != "optimal":
+                print("Methods:\n \
+furthest (f) \n \
+optimal (o) \n ")
+                method = input("What method would you like to use? ").lower()
+
+                if method == 'f':
+                    method = "furthest"
+
+                elif method == "o":
+                    method = "optimal"
 
             if answer == "YES" or answer == 'Y':
                 filename = ask_for_solution()
@@ -97,12 +110,13 @@ TakeOutLoops (TOL) ")
 
                 old_solution = load_solution(filename)
                 df = DF(grid, best_solution = len(old_solution) -1, solution = old_solution)
-                solution = df.run()
+                solution = df.run(method)
                 print(solution)
 
             else:
+
                 DepthFirst = DF(grid)
-                solution = DepthFirst.run()
+                solution = DepthFirst.run(method)
                 print(solution)
 
         elif algorithm == "RANDOM" or algorithm == 'R':
