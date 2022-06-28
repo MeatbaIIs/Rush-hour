@@ -1,20 +1,14 @@
+"""
+This file contains helper functions for the rest of the files in this project
+"""
 import csv
 from typing import Dict
 from .classes.grid import Grid
 import re
 from typing import List, Dict
 import copy
-# # from .algorithms.breadth_first import BreadthFirst as BF
-# # from .algorithms.beam_search import BeamSearch as BFF
-# # from .algorithms.depth_first import DepthFirst as DF
-# from .algorithms.random import Random
 from csv import reader
 
-
-# class MethodInputError(Exception):
-#     """Raised when a method input is wrong for batchrunner"""
-#     """possible inputs are 'DF', 'BF', 'BFF', 'Random' and 'MaxRandom'"""
-#     pass
 
 
 def loader(input_file_name):
@@ -45,15 +39,6 @@ def loader(input_file_name):
 
     return grid
 
-
-# def dict_compare(new_dict, list_of_grids: List[Dict]) -> bool:
-#     """
-#     returns true if 2 dictionaries of the grid movements per car are the same
-#     """
-#     for dict in list_of_grids:
-#         if new_dict == dict:
-#             return True
-#     return False
 
 def check_filename(filename):
     """Adds the right folder and extension to a filename"""
@@ -101,53 +86,6 @@ def load_solution(filename):
     return solution
 
 
-# def batchrunner(file: str, method: str, N_times: int):
-#     """
-#     Runs a certain algorithm for a certain file N times
-#     It returns the total moves done, the steps for all the moves and the time it took to run per iteration
-#     """
-#     grid = loader(file)
-#     # keep track of number of moves until solution (not number of steps!)
-#     total_moves = []
-#     # the exact moves done
-#     total_movement_list = []
-#     # time it took for solve
-#     total_times = []
-
-#     # batchrun the algorithm N times
-#     for i in range(N_times):
-#         # copy the greed so it remains unsolved every iteration
-#         input_grid = copy.deepcopy(grid)
-#         done_steps = []
-#         time_taken = 0
-#         # translate the method to the algorithms
-#         if method == "Random":
-#             algorithm = Random(input_grid)
-#             done_steps, time_taken = algorithm.run("random_not_prev")
-#         elif method == "MaxRandom":
-#             algorithm = Random(input_grid)
-#             done_steps, time_taken = algorithm.run("max_random")
-#         elif method == "DF":
-#             algorithm = DF(input_grid)
-#             done_steps, time_taken = algorithm.run()
-#         elif method == "BF":
-#             algorithm = BF(input_grid)
-#             done_steps, time_taken = algorithm.run()
-#         elif method == "BFF":
-#             algorithm = BFF(input_grid)
-#             done_steps, time_taken = algorithm.run()
-#         # return an error if method is incorrect
-#         # if more methods are added like breath-first then depth first, make sure an elif statement is added
-#         else:
-#             raise MethodInputError
-
-#         # add the info per algorithm iteration to total batchrun data
-#         total_movement_list.append(done_steps)
-#         total_moves.append(len(done_steps))
-#         total_times.append(time_taken)
-
-#     return total_moves, total_movement_list, total_times
-
 def is_solution(grid, total_movements_sequence):
     """ Checks whether the given total_movements_sequence is a solution for a given Grid object"""
     set_total_movements(grid, total_movements_sequence[-1])
@@ -157,7 +95,7 @@ def is_solution(grid, total_movements_sequence):
 
 
 def check_solution(grid, solution):
-    """ Returns True if test_solution is a valid solution. """
+    """ Returns True if a solution is a valid solution. """
     gridcopy = copy.deepcopy(grid)
 
     # Run through all moves in the solution
@@ -173,6 +111,7 @@ def check_solution(grid, solution):
     # Check if Rush hour puzzle is solved after carrying out all moves
     if gridcopy.win():
         return True
+
     return False
 
 
@@ -214,19 +153,6 @@ def steps_to_total_movements_sequence(grid, steps):
                 total_movements_sequence.append(copy.copy(total_movements))
 
     return total_movements_sequence
-
-# BACK UP
-# def route_to_state(self, route):
-#         state = copy.copy(self._empty_state)
-#         states = [copy.copy(state)]
-#         for move in route:
-#             for i, car in enumerate(self._cars):
-#                 if car == move[0]:
-#                     distance = move[1]
-#                     state[i] += distance
-#                     states.append(copy.copy(state))
-
-#         return states
 
 
 def set_total_movements(grid, total_movements):
