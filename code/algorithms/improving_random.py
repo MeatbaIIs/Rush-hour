@@ -14,12 +14,13 @@ import time
 
 
 class ImprovingRandom():
-    def __init__(self, input_file_name):
+    def __init__(self, grid):
         print("Running Random Optimized algorithm")
-        self._start_grid = loader(input_file_name)
+        self._start_grid = grid
         self._solution = []
         self._grid = copy.deepcopy(self._start_grid)
         self._running = True
+        
         # keyboard.add_hotkey("enter", self.stop_running)
         self._solution_filename = input_file_name.rstrip(
             ".csv") + "_randopt_solution.csv"
@@ -71,7 +72,6 @@ class ImprovingRandom():
 
                 times_between_solutions.append(duration)
 
-                print(times_between_solutions)
                 print(
                     f'found a solution of {len(self._solution)} steps after around {duration} minutes')
 
