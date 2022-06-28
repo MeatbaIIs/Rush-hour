@@ -20,7 +20,7 @@ class ImprovingRandom():
         self._solution = []
         self._grid = copy.deepcopy(self._start_grid)
         self._running = True
-        
+
         # keyboard.add_hotkey("enter", self.stop_running)
         self._solution_filename = input_file_name.rstrip(
             ".csv") + "_randopt_solution.csv"
@@ -52,10 +52,11 @@ class ImprovingRandom():
         best_solution = []
         best_solution_len = inf
         start_time = time.perf_counter()
+        beginning = time.perf_counter()
 
         times_between_solutions = []
 
-        while self._running:
+        while time.perf_counter()-beginning < 60:
             self._solution = []
             counter = 0
             self.begin_new_solution()
@@ -70,17 +71,17 @@ class ImprovingRandom():
                 end_time = time.perf_counter()
                 duration = round((end_time-start_time)/60, 2)
 
-                times_between_solutions.append(duration)
+                # times_between_solutions.append(duration)
 
                 print(
                     f'found a solution of {len(self._solution)} steps after around {duration} minutes')
 
-                with open(self._solution_filename, 'w') as csvfile:
-                    csvwriter = csv.writer(csvfile, delimiter=',')
-                    csvwriter.writerow(['car', 'move'])
+                # with open(self._solution_filename, 'w') as csvfile:
+                #     csvwriter = csv.writer(csvfile, delimiter=',')
+                #     csvwriter.writerow(['car', 'move'])
 
-                    for step in best_solution:
-                        csvwriter.writerow(step)
+                #     for step in best_solution:
+                #         csvwriter.writerow(step)
 
                 # start time for next round
                 start_time = time.perf_counter()

@@ -18,10 +18,10 @@ class Grid():
         self._car_names = []
 
         # keep track of the movement per car to compare grids
-        self._total_movements = {}
+        # self._total_movements = {}
 
         self._size = size
-        self._last_car = ""
+        # self._last_car = ""
 
     def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
