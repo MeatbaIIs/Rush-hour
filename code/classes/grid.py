@@ -5,8 +5,10 @@ import copy
 
 class Grid():
     def __init__(self, size=6):
-        self._grid = []
+        self._size = size
 
+        # initialize an empty grid
+        self._grid = []
         for i in range(size):
             self._grid.append(size * ['*'])
 
@@ -16,12 +18,6 @@ class Grid():
         # create a dictionary of all the cars
         self._cars = {}
         self._car_names = []
-
-        # keep track of the movement per car to compare grids
-        # self._total_movements = {}
-
-        self._size = size
-        # self._last_car = ""
 
     def add_car(self, name, orientation, x, y, length, car_num):
         """Add a car to the grid"""
@@ -42,9 +38,8 @@ class Grid():
 
         # get variables
         car = self._cars[name]
-        orientation = car._orientation
-        length = car._length
-
+        orientation = car.get_orientation()
+        length = car.get_length()
         x = car.get_x()
         y = car.get_y()
 
@@ -75,17 +70,17 @@ class Grid():
             car.set_coordinates(x, new_y)
 
     def possible_moves(self, name):
-        """Gives the possible moves of a car"""
+        """Get all the possible moves of a car"""
 
         # get variables
         moves = []
         car = self._cars[name]
-        orientation = car._orientation
-        length = car._length
+        orientation = car.get_orientation()
+        length = car.get_length()
         coor = car.coordinates()
 
-        x = coor[0]
-        y = coor[1]
+        x = car.get_x()
+        y = car.get_y()
 
         # check orientation and then checks the empty spaces in front and behind the car
         if orientation == 'H':
@@ -156,7 +151,7 @@ class Grid():
         return moves
 
     def furthest_possible_moves(self, car):
-        """get the furthest possible move for a car"""
+        """Get the furthest possible move for a car"""
         moves = self.possible_moves(car)
         if not moves:
             return moves
@@ -167,9 +162,11 @@ class Grid():
         if abs(moves[-1]) > abs(moves[0]):
             return [moves[-1]]
 
+        # if there are two furthest moves, pick random
         return [random.choice([moves[0], moves[-1]])]
 
     def print_grid(self):
+        """Print the grid as strings"""
         for y in self._grid:
             print(''.join(y))
         print()
