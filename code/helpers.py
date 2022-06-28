@@ -203,3 +203,8 @@ def next_total_movements(grid, total_movements, furthest):
             next_total_movements.append(next_total_movement)
 
     return next_total_movements
+
+
+class MethodInputError(Exception):
+    """Raised when a method input is wrong"""
+    pass

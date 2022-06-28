@@ -1,8 +1,8 @@
-""""
+"""
 This algorithm tries random steps with random cars until a solution is found
 There are two variations, one to only move forward or backward maximally
 The other to go through the cars one by one instead of randomly
-""""
+"""
 
 
 import random
@@ -10,7 +10,7 @@ import copy
 from code.classes.grid import Grid
 from code.classes.car import Car
 import time
-
+from code.helpers import MethodInputError
 
 class Random():
     def __init__(self, grid):
@@ -120,8 +120,3 @@ class Random():
             return previous_steps, time_taken
         else:
             raise MethodInputError
-
-class MethodInputError(Exception):
-    """Raised when a method input is wrong for Random.run()"""
-    """possible inputs are 'max_random' and 'random_not_prev' """
-    pass

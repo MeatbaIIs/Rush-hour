@@ -1,6 +1,6 @@
 """
 Authors: Anneloes van Schaik and Leon Schuijtvlot
-Student numbers:
+Student numbers: 10981268 and 14291584
 
 This program lets the user go through a short menu to use the algorithms made in this project
 """
@@ -106,19 +106,51 @@ TakeOutLoops (TOL) ")
                 print(solution)
 
         elif algorithm == "RANDOM" or algorithm == 'R':
-            print("Methods: \n \
-random \n \
-max_random \n \
-random_not_prev")
+            method = ""
+            while method != "random" and method != "max_random" and method != "random_not_prev":
+                print("Methods: \n \
+random (r)\n \
+max_random (mr)\n \
+random_not_prev (rnp)")
 
-            method = input("Choose your method: ").lower()
+                method = input("Choose your method: ").lower()
+
+                if method == 'r':
+                    method = "random"
+                elif method == "mr":
+                    method = "max_random"
+                elif method == "rnp":
+                    method = "random_not_prev"
+
+                if method != "random" and method != "max_random" and method != "random_not_prev":
+                    print("\nPick a correct method\n")
+                    time.sleep(1)
+
             Rand = Random(grid)
             solution, time_taken = Rand.run(method)
             print(solution)
 
         elif algorithm == "IMPROVINGRANDOM" or algorithm == "IR":
+            method = ""
+            while method != 'time' and method != "iterations":
+                print("Methods: \n \
+time (t)\n \
+iterations (i)")
+                method = input("Would you like to stop on time or iterations? ").lower()
+
+                if method == 'i':
+                    method = "iterations"
+
+                elif method == 't':
+                    method = "time"
+
+                else:
+                    print("\nPick a correct method\n")
+                    time.sleep(1)
+
+            amount = input("How many iterations or how long would you like to run the algorithm? ").lower()
             ir = IR(grid)
-            solution = ir.run()
+            solution = ir.run(method, amount)
             print(solution)
 
         elif algorithm == "BREADTHFIRSTITERATING" or algorithm == "BFI":
