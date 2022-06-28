@@ -77,7 +77,6 @@ class Grid():
         car = self._cars[name]
         orientation = car.get_orientation()
         length = car.get_length()
-        coor = car.coordinates()
 
         x = car.get_x()
         y = car.get_y()
