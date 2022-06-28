@@ -1,3 +1,8 @@
+"""
+This class keeps track of the current grid and is used to determine or calculate attributes of the grid or the cars
+"""
+
+
 from .car import Car
 import random
 import copy
@@ -30,6 +35,7 @@ class Grid():
         for i in range(length):
             if orientation == 'H':
                 self._grid[y][x + i] = name
+
             elif orientation == 'V':
                 self._grid[y + i][x] = name
 

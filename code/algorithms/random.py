@@ -1,3 +1,10 @@
+""""
+This algorithm tries random steps with random cars until a solution is found
+There are two variations, one to only move forward or backward maximally
+The other to go through the cars one by one instead of randomly
+""""
+
+
 import random
 import copy
 from code.classes.grid import Grid
