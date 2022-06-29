@@ -93,7 +93,7 @@ class Random():
         st = time.time()
         current_depth = 0
         self._previous_steps = []
-        
+
         while not self._grid.win() and current_depth < depth:
 
             # get the cars one by one
@@ -114,7 +114,7 @@ class Random():
         time_taken = et - st
         return self._previous_steps, time_taken
 
-    def run(self, method, depth):
+    def run(self, method, depth = float("inf")):
         """Runs an algorithm based on the chosen method"""
         if method == "max_random":
             previous_steps, time_taken = self.random_algorithm_max_move(depth)
