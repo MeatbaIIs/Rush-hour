@@ -9,7 +9,7 @@ These simple rules create a rather complex game. The game is easy enough to solv
 This README first explains what the algorithms and heuristics do, then it will explain how to use them. Or you can just run "python3 main.py" in the terminal and you can probably figure the usage out yourself. 
 
 A visualization of a solution looks a bit like this:
-![Animated 6 by 6 grid on which colored blocks are visible that represent cars. With each frame, one car moves. At the end, the red car, which is horizontal, drives all the way to the right. The puzzle is solved.](data/Rushhour6x6_1_solution.gif)
+![Animated 6 by 6 grid on which colored blocks are visible that represent cars. With each frame, one car moves. At the end, the red car, which is horizontal, drives all the way to the right. The puzzle is solved.](data/Rushhour6x6_1_solution.gif, width="320")
 
 # Constructive Algorithms
 Here the algorithms that construct a solution from scratch are explained.
