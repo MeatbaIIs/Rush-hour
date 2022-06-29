@@ -27,10 +27,10 @@ def main(input_file_name):
 
     print(f'Optimizing a solution of {len(solution)} steps.')
 
-    print('Taking out loops.')
-    TOL = TakeOutLoops(grid, solution)
-    solution = TOL.run()
-    print(f'After taking out loops the solution is {len(solution)} steps.')
+    # print('Taking out loops.')
+    # TOL = TakeOutLoops(grid, solution)
+    # solution = TOL.run()
+    # print(f'After taking out loops the solution is {len(solution)} steps.')
 
     print('Seeing if any useless steps can be left out.')
     IA = RemoveUseless(grid, solution)
