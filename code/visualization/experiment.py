@@ -24,25 +24,27 @@ import matplotlib.pyplot as plt
 
 
 def main(input_file_name, method):
+    N = 10
+    puzzles = [
+        "data/Rushhour6x6_1.csv",
+        "data/Rushhour6x6_2.csv",
+        "data/Rushhour6x6_3.csv",
+        "data/Rushhour9x9_4.csv",
+        "data/Rushhour9x9_5.csv",
+        "data/Rushhour9x9_6.csv",
+        "data/Rushhour12x12_7.csv"
+    ]
+    algorithms = [
+        "TOL",
+        "RU",
+        "ALL"
+    ]
+
     if method == "generate_solutions":
 
         # generates 10 solutions with improving random set to time = 60 seconds
         # Generate random solutions and save
-        N = 10
-        puzzles = [
-            "data/Rushhour6x6_1.csv",
-            "data/Rushhour6x6_2.csv",
-            "data/Rushhour6x6_3.csv",
-            "data/Rushhour9x9_4.csv",
-            "data/Rushhour9x9_5.csv",
-            "data/Rushhour9x9_6.csv",
-            "data/Rushhour12x12_7.csv"
-        ]
-        algorithms = [
-            "TOL",
-            "RU",
-            "ALL"
-        ]
+    
         results = pd.DataFrame(columns=["puzzle", "iteration", "steps", "time"])
         for puzzle in puzzles:
             stable_grid = loader(puzzle)
@@ -73,10 +75,11 @@ def main(input_file_name, method):
         average_steps = results["steps"].mean()
         print(f'average steps was {average_steps}')
 
-    elif method == "optimize":
-
         # Optimize the previously generated solutions with TakeOutLoops, RemoveUseless, and both each for 3 iterations
         results.to_csv("data/random/impro_random_results.csv", index=False)
+
+    elif method == "optimize":
+
 
         iterative_results = pd.DataFrame(
             columns=["puzzle", "solution", "iteration", "algorithm", "steps", "time"])
