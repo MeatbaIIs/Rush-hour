@@ -8,10 +8,12 @@ import numpy as np
 from ..helpers import loader, MethodInputError
 import csv
 import time
+from code.algorithms.random import Random
 
 
-class ImprovingRandom():
+class ImprovingRandom(Random):
     def __init__(self, grid):
+        super().__init__(grid)
         self._start_grid = grid
         self._solution = []
         self._grid = copy.deepcopy(self._start_grid)
@@ -39,7 +41,7 @@ class ImprovingRandom():
 
         return [car, distance]
 
-    def run(self, method, amount):
+    def run_improving(self, method, amount, random_method = "random"):
         """ Runs a looping random algorithm """
         print("Running Random Optimized algorithm")
         best_solution = []
@@ -55,14 +57,15 @@ class ImprovingRandom():
         stop_condition = 0
 
         while stop_condition < amount:
-            self._solution = []
+            # self._solution = []
             counter = 0
             self.begin_new_solution()
 
-            # stop when taking more steps than best solution
-            while not self._grid.win() and counter < best_solution_len:
-                self._solution.append(self.random_step())
-                counter += 1
+            # # stop when taking more steps than best solution
+            # while not self._grid.win() and counter < best_solution_len:
+            #     self._solution.append(self.random_step())
+            #     counter += 1
+            self._solution, _ = self.run(random_method, best_solution_len)
 
             # if a better solution is found, save it and look for better
             if best_solution_len > len(self._solution):

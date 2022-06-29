@@ -46,11 +46,11 @@ TakeOutLoops (TOL) ")
         if input_filename.upper() == "QUIT" or input_filename.upper() == 'Q':
             break
 
-        puzzle_numbers = range(1, 7).append(10)
+        puzzle_numbers = range(1, 7)
         number = int(input_filename)
 
         # allow user to only input the puzzle number
-        if number in puzzle_numbers:
+        if number in puzzle_numbers or number == 10:
             if number <= 3 or number == 10:
                 input_filename = "Rushhour6x6_" + str(number)
             elif number <= 6:
@@ -164,7 +164,7 @@ iterations (i)")
 
             amount = input("How many iterations or how long would you like to run the algorithm? ").lower()
             ir = IR(grid)
-            solution = ir.run(method, amount)
+            solution = ir.run_improving(method, amount)
             print(solution)
 
         elif algorithm == "BREADTHFIRSTITERATING" or algorithm == "BFI":
