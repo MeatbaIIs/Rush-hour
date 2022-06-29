@@ -16,7 +16,8 @@ from code.algorithms.random import Random
 from code.algorithms.take_out_loops import TakeOutLoops as TOL
 from code.helpers import loader, solution_to_csv, check_filename, ask_for_solution, load_solution
 from code.visualization.visualization import main as visual
-
+from code.visualization.generate_runtimes import generate_runtimes as GR
+from code.visualization.experiment import main as experiment
 import os
 import time
 
@@ -32,7 +33,10 @@ Random (R) \n \
 ImprovingRandom (IR) \n \
 BreadthFirstIterating (BFI) \n \
 RemoveUseless (RU) \n \
-TakeOutLoops (TOL) ")
+TakeOutLoops (TOL) \n \n\
+Experiments: \n \
+Generate_Runtimes (GR) \n \
+Experiment (E)")
 
         # asks to choose an algorithm and what problem to use it on
         algorithm = input("What algorithm would you like to use? ").upper()
@@ -74,6 +78,8 @@ TakeOutLoops (TOL) ")
         # load corresponding grid
         grid = loader(input_filename)
 
+        start_time = time.perf_counter()
+
         if algorithm == "BREADTHFIRST" or algorithm =="BF":
             bf = BF(grid)
             solution = bf.run()
@@ -108,13 +114,14 @@ optimal (o) \n ")
                     time.sleep(1)
                     continue
 
+                start_time = time.perf_counter()
                 old_solution = load_solution(filename)
                 df = DF(grid, best_solution = len(old_solution) -1, solution = old_solution)
                 solution = df.run(method)
                 print(solution)
 
             else:
-
+                start_time = time.perf_counter()
                 DepthFirst = DF(grid)
                 solution = DepthFirst.run(method)
                 print(solution)
@@ -140,6 +147,7 @@ random_not_prev (rnp)")
                     print("\nPick a correct method\n")
                     time.sleep(1)
 
+            start_time = time.perf_counter()
             Rand = Random(grid)
             solution, time_taken = Rand.run(method)
             print(solution)
@@ -179,6 +187,7 @@ random_not_prev (rnp)")
                     random_method = "random_not_prev"
 
             amount = input("How many iterations or how long would you like to run the algorithm? ").lower()
+            start_time = time.perf_counter()
             ir = IR(grid)
             solution = ir.run_improving(method, amount, random_method = random_method)
             print(solution)
@@ -191,8 +200,8 @@ random_not_prev (rnp)")
                 time.sleep(1)
                 continue
 
+            start_time = time.perf_counter()
             old_solution = load_solution(filename)
-
             bfi = BFI(grid, old_solution)
             solution = bfi.run()
 
@@ -204,8 +213,8 @@ random_not_prev (rnp)")
                 time.sleep(1)
                 continue
 
+            start_time = time.perf_counter()
             old_solution = load_solution(filename)
-
             ru = RU(grid, old_solution)
             solution = ru.run()
             print(solution)
@@ -218,16 +227,64 @@ random_not_prev (rnp)")
                 time.sleep(1)
                 continue
 
+            start_time = time.perf_counter()
             old_solution = load_solution(filename)
             tol = TOL(grid, old_solution)
             solution = tol.run()
             print(solution)
+
+        elif algorithm == "GENERATERUNTIMES" or algorithm == "GR":
+            output_filename = input("What name would you like to give your graph? ")
+            if not (".png" in output_filename or ".jpg" in output_filename):
+                output_filename = output_filename + ".png"
+
+            if not "data/" in output_filename:
+                output_filename = "data/" + output_filename
+
+            GR(input_filename, output_filename)
+
+            # no files to save as for algorithm
+            continue
+
+        elif algorithm == "EXPERIMENT" or algorithm == "E":
+            method = ""
+            while method != "generate_solutions" and method != "optimize" and method != "plot_improvingrandom" and \
+            method != "plot_iteration_steps" and method != "plot_iteration_time":
+                print("Methods \n \
+generate_solution (gs) \n \
+optimize (o) \n \
+plot_improvingrandom (pi) \n \
+plot_iteration_steps (pis) \n \
+plot_iteration_time (pit)")
+
+                method = input("What method would you like to use? ").lower()
+
+                if method == "gs":
+                    method = "generate_solutions"
+                elif method == "o":
+                    method = "optimize"
+                elif method == "pi":
+                    method = "plot_improvingrandom"
+                elif method == "pis":
+                    method = "plot_iteration_steps"
+                elif method ==  "pit":
+                    method = "plot_iteration_time"
+
+                if method != "generate_solutions" and method != "optimize" and method != "plot_improvingrandom" and \
+                method != "plot_iteration_steps" and method != "plot_iteration_time":
+                    print("\nPick a valid method\n")
+
+                experiment(input_filename, method)
 
         # message if algorithm is not in list
         else:
             print("\nNo such algorithm\n")
             time.sleep(1)
             continue
+
+        time_ran = time.perf_counter() - start_time
+
+        print(f"Algorithm ran for {round(time_ran / 60, 2)} minutes")
 
         save_file = input("Would you like to save the file? (yes/no)").upper()
 
