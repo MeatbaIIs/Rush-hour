@@ -2,7 +2,6 @@
 Visualize a solution to a Rush hour puzzle
 Usage: visualization.py solution_file_name
 """
-import argparse
 import re
 import matplotlib.pyplot as plt
 from csv import reader
@@ -96,7 +95,8 @@ def main(solution_file_name, steps, puzzle_name):
                     total_movements[j][car['x']] = car['color']
 
             if step < steps:
-                im = ax.imshow(total_movements, cmap=custom_colors, animated=True)
+                im = ax.imshow(total_movements,
+                               cmap=custom_colors, animated=True)
                 ims.append([im])
     ani = animation.ArtistAnimation(
         fig, ims, interval=200, blit=True, repeat_delay=2000)
@@ -105,19 +105,3 @@ def main(solution_file_name, steps, puzzle_name):
     ani.save(output_file_name, writer=animation.PillowWriter(fps=2))
 
     plt.show()
-
-
-if __name__ == "__main__":
-    # set-up parsing command line arguments
-    parser = argparse.ArgumentParser(description="Solve a Rush hour puzzle.")
-
-    # adding arguments
-    parser.add_argument("input", help="input file (csv)")
-    parser.add_argument("-s",
-                        "--steps", type=int, default=200, help="maximum amount of steps/frames to visualize (default: 200)")
-
-    # read arguments from command line
-    args = parser.parse_args()
-
-    # run main with provided arguments
-    main(args.input, args.steps)
