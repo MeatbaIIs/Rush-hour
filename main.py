@@ -51,16 +51,17 @@ Experiment (E)")
             break
 
         puzzle_numbers = range(1, 7)
-        number = int(input_filename)
+        if input_filename.isnumeric():
+            number = int(input_filename)
 
-        # allow user to only input the puzzle number
-        if number in puzzle_numbers or number == 10:
-            if number <= 3 or number == 10:
-                input_filename = "Rushhour6x6_" + str(number)
-            elif number <= 6:
-                input_filename = "Rushhour9x9_" + str(number)
-            elif number == 7:
-                input_filename = "Rushhour12x12_" + str(number)
+            # allow user to only input the puzzle number
+            if number in puzzle_numbers or number == 10:
+                if number <= 3 or number == 10:
+                    input_filename = "Rushhour6x6_" + str(number)
+                elif number <= 6:
+                    input_filename = "Rushhour9x9_" + str(number)
+                elif number == 7:
+                    input_filename = "Rushhour12x12_" + str(number)
 
 
         # check if the filename points to the right folder and has the .csv extension, and adds them if not
@@ -250,7 +251,7 @@ random_not_prev (rnp)")
             method = ""
             while method != "generate_solutions" and method != "optimize" and method != "plot_improvingrandom" and \
             method != "plot_iteration_steps" and method != "plot_iteration_time":
-                print("Methods \n \
+                print("Methods: \n \
 generate_solution (gs) \n \
 optimize (o) \n \
 plot_improvingrandom (pi) \n \
@@ -275,6 +276,7 @@ plot_iteration_time (pit)")
                     print("\nPick a valid method\n")
 
                 experiment(input_filename, method)
+                continue
 
         # message if algorithm is not in list
         else:
