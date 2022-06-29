@@ -18,12 +18,13 @@ class Random():
         self._last_car = ""
         self._previous_steps = []
 
-    def random_algorithm(self):
+    def random_algorithm(self, depth = float('inf')):
         """Move a random car randomly and check for the win condition"""
         random_car = random.choice(list(self._grid._cars.keys()))
 
+        current_depth = 0
         st = time.time()
-        while not self._grid.win():
+        while not self._grid.win() and current_depth < depth:
 
             # get the possible moves
             moves = self._grid.possible_moves(random_car)
@@ -35,6 +36,7 @@ class Random():
 
                 # keep track of all the moves done
                 self._previous_steps.append([random_car, random_move])
+                current_depth += 1
 
             self._last_car = random_car
 
@@ -45,12 +47,13 @@ class Random():
         time_taken = et - st
         return self._previous_steps, time_taken
 
-    def random_algorithm_max_move(self):
+    def random_algorithm_max_move(self, depth = float('inf')):
         """Move a random car either forward or backward maximally and check for the win condition"""
         random_car = random.choice(list(self._grid._cars.keys()))
 
+        current_depth = 0
         st = time.time()
-        while not self._grid.win():
+        while not self._grid.win() and current_depth < depth:
             moves = self._grid.possible_moves(random_car)
 
             # never move the same car twice in a row
@@ -83,11 +86,12 @@ class Random():
         time_taken = et - st
         return self._previous_steps, time_taken
 
-    def random_algorithm_all_cars(self):
+    def random_algorithm_all_cars(self, depth = float('inf')):
         """Move all cars one by one randomly and check for the win condition"""
         st = time.time()
+        current_depth = 0
 
-        while not self._grid.win():
+        while not self._grid.win() and current_depth < depth:
 
             # get the cars one by one
             for car in self._grid._cars:
@@ -102,21 +106,21 @@ class Random():
 
                     # keep track of all the moves done
                     self._previous_steps.append([car, random_move])
-
+                    current_depth +=1
         et = time.time()
         time_taken = et - st
         return self._previous_steps, time_taken
 
-    def run(self, method):
+    def run(self, method, depth):
         """Runs an algorithm based on the chosen method"""
         if method == "max_random":
-            previous_steps, time_taken = self.random_algorithm_max_move()
+            previous_steps, time_taken = self.random_algorithm_max_move(depth)
             return previous_steps, time_taken
         elif method == "random_not_prev":
-            previous_steps, time_taken = self.random_algorithm_all_cars()
+            previous_steps, time_taken = self.random_algorithm_all_cars(depth)
             return previous_steps, time_taken
         elif method == "random":
-            previous_steps, time_taken = self.random_algorithm()
+            previous_steps, time_taken = self.random_algorithm(depth)
             return previous_steps, time_taken
         else:
             raise MethodInputError
