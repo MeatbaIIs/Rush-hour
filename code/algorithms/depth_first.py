@@ -54,7 +54,6 @@ class DepthFirst():
                         self._best_solution = len(solution) - 1
                         print(f'found a solution of {len(solution) - 1} steps')
                         self.remove_long_visited(self._best_solution)
-                        # print(total_movements_sequence_to_steps(self._grid, solution))
 
 
     def pick_best_solution(self):
@@ -89,13 +88,13 @@ class DepthFirst():
             self._solutions.append(copy(total_movements_sequence))
             self._best_solution = len(total_movements_sequence) - 1
             self.remove_long_visited(self._best_solution)
-            # print(total_movements_sequence_to_steps(self._grid, total_movements_sequence))
 
     def run(self, method):
         """
         Runs the depth-first algorithm with as little memory use as possible
         """
-        total_movements_sequence = [[0 for i in range(len(self._grid.get_car_names()))]]
+        total_movements_sequence = self._grid.get_initial_total_movements()
+        
         if method != "furthest" and method != "optimal":
             raise MethodInputError
 
@@ -116,7 +115,9 @@ class DepthFirst():
                 if current_steps + 1 < self._best_solution:
                     if method == "furthest":
                         if moves:
+
                             new_moves = set()
+
                             if min(moves) < 0:
                                 new_moves.add(min(moves))
 
