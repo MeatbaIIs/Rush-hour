@@ -53,10 +53,12 @@ def main(solution_file_name, steps, puzzle_name):
 
     # Make custom color map
     colors_list = [(1, 1, 1)]
+
     for i in range(color-1):
         hsv = (i/color, 1, random.randrange(7, 11)/10)
         rgb = hsv_to_rgb(hsv)
         colors_list.append(rgb)
+
     colors_list.append((1, 0, 0))
     custom_colors = ListedColormap(colors_list)
 
@@ -66,10 +68,13 @@ def main(solution_file_name, steps, puzzle_name):
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
+    # read the solution file name
     with open(solution_file_name, 'r') as f:
         file_reader = reader(f)
         next(file_reader)
         step = 0
+
+        # move cars in order of the solution file
         for line in file_reader:
             step += 1
             car = cars[line[0]]
@@ -77,30 +82,38 @@ def main(solution_file_name, steps, puzzle_name):
 
             if car['orientation'] == 'H':
 
+                # remove current position of car
                 for j in range(car['x'], car['x'] + car['len']):
                     total_movements[car['y']][j] = 0
 
                 car['x'] += distance
 
+                # add new position for car
                 for j in range(car['x'], car['x'] + car['len']):
                     total_movements[car['y']][j] = car['color']
 
             else:
 
+                # remove current position of car
                 for j in range(car['y'], car['y'] + car['len']):
                     total_movements[j][car['x']] = 0
 
                 car['y'] += distance
 
+                # add new position for car
                 for j in range(car['y'], car['y'] + car['len']):
                     total_movements[j][car['x']] = car['color']
 
+            # check if the steps dont exceed the maximum step
             if step < steps:
                 im = ax.imshow(total_movements, cmap=custom_colors, animated=True)
                 ims.append([im])
+
+    # specify animation attributes
     ani = animation.ArtistAnimation(
         fig, ims, interval=200, blit=True, repeat_delay=2000)
 
+    # save the file
     output_file_name = solution_file_name.rstrip('.csv') + ".gif"
     ani.save(output_file_name, writer=animation.PillowWriter(fps=2))
 
