@@ -52,7 +52,7 @@ class DepthFirst():
                     # if this is better than the current best solution, update the length of the best solution
                     if len(solution) - 1 < self._best_solution:
                         self._best_solution = len(solution) - 1
-                        print(f'found solution of {len(solution) - 1} steps')
+                        print(f'found a solution of {len(solution) - 1} steps')
                         self.remove_long_visited(self._best_solution)
                         # print(total_movements_sequence_to_steps(self._grid, solution))
 
