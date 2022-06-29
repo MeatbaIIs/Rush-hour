@@ -65,7 +65,7 @@ class ImprovingRandom(Random):
             # while not self._grid.win() and counter < best_solution_len:
             #     self._solution.append(self.random_step())
             #     counter += 1
-            self._solution, _ = self.run(random_method, best_solution_len)
+            self._solution, _ = self.run(random_method, best_solution_len + 1)
 
             # if a better solution is found, save it and look for better
             if best_solution_len > len(self._solution):
