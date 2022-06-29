@@ -3,23 +3,14 @@ Takes Rush hour puzzle in the command line and solves it.
 Usage: main.py [PUZZLE_NAME.CSV]
 """
 
-import csv
-from code.algorithms.depth_first import DepthFirst
-from code.algorithms.breadth_first import BreadthFirst
-from code.algorithms.beam_search import BeamSearch
 from code.algorithms.take_out_loops import TakeOutLoops
-from code.algorithms.random import Random
-from code.helpers import loader, solution_to_csv
-from code.classes.grid import Grid
+from code.helpers import loader, solution_to_csv, load_solution
 from code.algorithms.remove_useless import RemoveUseless
 from code.algorithms.improving_random import ImprovingRandom
-from code.algorithms.breadth_first_iter import BreadthFirstIter
 import argparse
 import copy
 import time
 import pandas as pd
-import re
-from code.helpers import load_solution, solution_to_csv
 import matplotlib.pyplot as plt
 
 
@@ -44,8 +35,9 @@ def main(input_file_name, method):
 
         # generates 10 solutions with improving random set to time = 60 seconds
         # Generate random solutions and save
-    
-        results = pd.DataFrame(columns=["puzzle", "iteration", "steps", "time"])
+
+        results = pd.DataFrame(
+            columns=["puzzle", "iteration", "steps", "time"])
         for puzzle in puzzles:
             stable_grid = loader(puzzle)
             for i in range(N):
@@ -79,7 +71,6 @@ def main(input_file_name, method):
         results.to_csv("data/random/impro_random_results.csv", index=False)
 
     elif method == "optimize":
-
 
         iterative_results = pd.DataFrame(
             columns=["puzzle", "solution", "iteration", "algorithm", "steps", "time"])
@@ -132,8 +123,8 @@ def main(input_file_name, method):
                         iterative_results.loc[len(iterative_results)] = [puzzle_num, j,
                                                                          iteration, algorithm, steps, duration]
 
-        iterative_results.to_csv("data/random/iterative_results.csv", index=False)
-
+        iterative_results.to_csv(
+            "data/random/iterative_results.csv", index=False)
 
     elif method == "plot_improvingrandom":
         # Plot the length of the solutions generated with ImprovingRandom
