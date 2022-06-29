@@ -146,7 +146,9 @@ random_not_prev (rnp)")
 
         elif algorithm == "IMPROVINGRANDOM" or algorithm == "IR":
             method = ""
-            while method != 'time' and method != "iterations":
+            random_method = ""
+            while (method != 'time' and method != "iterations") or \
+            (random_method != "random" and random_method != "max_random" and random_method != "random_not_prev"):
                 print("Methods: \n \
 time (t)\n \
 iterations (i)")
@@ -162,9 +164,23 @@ iterations (i)")
                     print("\nPick a correct method\n")
                     time.sleep(1)
 
+                print("Methods: \n \
+random (r)\n \
+max_random (mr)\n \
+random_not_prev (rnp)")
+
+                random_method = input("Choose your method for random: ").lower()
+
+                if random_method == 'r':
+                    random_method = "random"
+                elif random_method == "mr":
+                    random_method = "max_random"
+                elif random_method == "rnp":
+                    random_method = "random_not_prev"
+
             amount = input("How many iterations or how long would you like to run the algorithm? ").lower()
             ir = IR(grid)
-            solution = ir.run_improving(method, amount)
+            solution = ir.run_improving(method, amount, random_method = random_method)
             print(solution)
 
         elif algorithm == "BREADTHFIRSTITERATING" or algorithm == "BFI":
