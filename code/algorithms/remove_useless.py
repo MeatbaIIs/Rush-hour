@@ -18,7 +18,7 @@ class RemoveUseless():
         for i in range(step, len(self._test_solution)):
             if self._test_solution[i][0] == car:
                 if self._test_solution[i][1] == -distance:
-                    self._test_solution.pop(i)
+                    removing = self._test_solution.pop(i)
                     return
                 else:
                     self._test_solution[i][1] += distance
@@ -40,7 +40,6 @@ class RemoveUseless():
         if check_solution(self._grid, self._test_solution):
             self._solution = copy.deepcopy(self._test_solution)
             return True
-
         return False
 
     def run(self):
@@ -53,7 +52,6 @@ class RemoveUseless():
 
         while found_optimization:
             found_optimization = False
-
             for i in range(len(self._solution)):
                 if self.step(i):
                     found_optimization = True

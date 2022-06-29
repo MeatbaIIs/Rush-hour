@@ -10,7 +10,6 @@ import copy
 from csv import reader
 
 
-
 def loader(input_file_name):
     """
     Initialize a grid with the Rush Hour puzzle given as argument
@@ -111,7 +110,6 @@ def check_solution(grid, solution):
     # Check if Rush hour puzzle is solved after carrying out all moves
     if gridcopy.win():
         return True
-
     return False
 
 
