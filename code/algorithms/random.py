@@ -21,6 +21,7 @@ class Random():
     def random_algorithm(self, depth = float('inf')):
         """Move a random car randomly and check for the win condition"""
         random_car = random.choice(list(self._grid._cars.keys()))
+        self._previous_steps = []
 
         current_depth = 0
         st = time.time()
@@ -50,7 +51,7 @@ class Random():
     def random_algorithm_max_move(self, depth = float('inf')):
         """Move a random car either forward or backward maximally and check for the win condition"""
         random_car = random.choice(list(self._grid._cars.keys()))
-
+        self._previous_steps = []
         current_depth = 0
         st = time.time()
         while not self._grid.win() and current_depth < depth:
@@ -78,6 +79,7 @@ class Random():
 
                 # make sure the same car never moves twice
                 self._last_car = random_car
+                current_depth += 1
 
             # pick a new random car
             random_car = random.choice(list(self._grid._cars.keys()))
@@ -90,7 +92,8 @@ class Random():
         """Move all cars one by one randomly and check for the win condition"""
         st = time.time()
         current_depth = 0
-
+        self._previous_steps = []
+        
         while not self._grid.win() and current_depth < depth:
 
             # get the cars one by one

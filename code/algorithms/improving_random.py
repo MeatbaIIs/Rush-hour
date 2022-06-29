@@ -58,7 +58,6 @@ class ImprovingRandom(Random):
 
         while stop_condition < amount:
             # self._solution = []
-            counter = 0
             self.begin_new_solution()
 
             # # stop when taking more steps than best solution
@@ -66,9 +65,10 @@ class ImprovingRandom(Random):
             #     self._solution.append(self.random_step())
             #     counter += 1
             self._solution, _ = self.run(random_method, best_solution_len + 1)
-
+            
             # if a better solution is found, save it and look for better
             if best_solution_len > len(self._solution):
+                ("Found")
                 best_solution = copy.deepcopy(self._solution)
                 best_solution_len = len(best_solution)
                 end_time = time.perf_counter()
