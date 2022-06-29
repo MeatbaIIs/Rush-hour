@@ -1,15 +1,11 @@
 """
 Visualize a solution to a Rush hour puzzle
-Usage: visualization.py solution_file_name
 """
-import argparse
 import re
-import matplotlib.pyplot as plt
 from csv import reader
-from matplotlib.colors import ListedColormap
+from matplotlib.colors import ListedColormap, hsv_to_rgb
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
-from matplotlib.colors import hsv_to_rgb
 import random
 
 
@@ -106,7 +102,8 @@ def main(solution_file_name, steps, puzzle_name):
 
             # check if the steps dont exceed the maximum step
             if step < steps:
-                im = ax.imshow(total_movements, cmap=custom_colors, animated=True)
+                im = ax.imshow(total_movements,
+                               cmap=custom_colors, animated=True)
                 ims.append([im])
 
     # specify animation attributes
@@ -118,19 +115,3 @@ def main(solution_file_name, steps, puzzle_name):
     ani.save(output_file_name, writer=animation.PillowWriter(fps=2))
 
     plt.show()
-
-
-if __name__ == "__main__":
-    # set-up parsing command line arguments
-    parser = argparse.ArgumentParser(description="Solve a Rush hour puzzle.")
-
-    # adding arguments
-    parser.add_argument("input", help="input file (csv)")
-    parser.add_argument("-s",
-                        "--steps", type=int, default=200, help="maximum amount of steps/frames to visualize (default: 200)")
-
-    # read arguments from command line
-    args = parser.parse_args()
-
-    # run main with provided arguments
-    main(args.input, args.steps)
