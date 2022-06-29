@@ -1,14 +1,11 @@
 """
 Visualize a solution to a Rush hour puzzle
-Usage: visualization.py solution_file_name
 """
 import re
-import matplotlib.pyplot as plt
 from csv import reader
-from matplotlib.colors import ListedColormap
+from matplotlib.colors import ListedColormap, hsv_to_rgb
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
-from matplotlib.colors import hsv_to_rgb
 import random
 
 
