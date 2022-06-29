@@ -22,7 +22,6 @@ import os
 import time
 
 
-
 def main():
     while True:
         print("Algorithm names:\n \
@@ -63,7 +62,6 @@ Experiment (E)")
                 elif number == 7:
                     input_filename = "Rushhour12x12_" + str(number)
 
-
         # check if the filename points to the right folder and has the .csv extension, and adds them if not
         input_filename = check_filename(input_filename)
 
@@ -81,7 +79,7 @@ Experiment (E)")
 
         start_time = time.perf_counter()
 
-        if algorithm == "BREADTHFIRST" or algorithm =="BF":
+        if algorithm == "BREADTHFIRST" or algorithm == "BF":
             bf = BF(grid)
             solution = bf.run()
             print(solution)
@@ -92,7 +90,8 @@ Experiment (E)")
             print(solution)
 
         elif algorithm == "DEPTHFIRST" or algorithm == 'DF':
-            answer = input("Would you like to give a solution to quicken the process? (yes/no) ").upper()
+            answer = input(
+                "Would you like to give a solution to quicken the process? (yes/no) ").upper()
             method = ""
             while method != "furthest" and method != "optimal":
                 print("Methods:\n \
@@ -117,7 +116,8 @@ optimal (o) \n ")
 
                 start_time = time.perf_counter()
                 old_solution = load_solution(filename)
-                df = DF(grid, best_solution = len(old_solution) -1, solution = old_solution)
+                df = DF(grid, best_solution=len(
+                    old_solution) - 1, solution=old_solution)
                 solution = df.run(method)
                 print(solution)
 
@@ -157,11 +157,12 @@ random_not_prev (rnp)")
             method = ""
             random_method = ""
             while (method != 'time' and method != "iterations") or \
-            (random_method != "random" and random_method != "max_random" and random_method != "random_not_prev"):
+                    (random_method != "random" and random_method != "max_random" and random_method != "random_not_prev"):
                 print("Methods: \n \
 time (t)\n \
 iterations (i)")
-                method = input("Would you like to stop on time or iterations? ").lower()
+                method = input(
+                    "Would you like to stop on time or iterations? ").lower()
 
                 if method == 'i':
                     method = "iterations"
@@ -178,7 +179,8 @@ random (r)\n \
 max_random (mr)\n \
 random_not_prev (rnp)")
 
-                random_method = input("Choose your method for random: ").lower()
+                random_method = input(
+                    "Choose your method for random: ").lower()
 
                 if random_method == 'r':
                     random_method = "random"
@@ -187,10 +189,12 @@ random_not_prev (rnp)")
                 elif random_method == "rnp":
                     random_method = "random_not_prev"
 
-            amount = input("How many iterations or how long would you like to run the algorithm? ").lower()
+            amount = input(
+                "How many iterations or how long would you like to run the algorithm? ").lower()
             start_time = time.perf_counter()
             ir = IR(grid)
-            solution = ir.run_improving(method, amount, random_method = random_method)
+            solution = ir.run_improving(
+                method, amount, random_method=random_method)
             print(solution)
 
         elif algorithm == "BREADTHFIRSTITERATING" or algorithm == "BFI":
@@ -235,7 +239,8 @@ random_not_prev (rnp)")
             print(solution)
 
         elif algorithm == "GENERATERUNTIMES" or algorithm == "GR":
-            output_filename = input("What name would you like to give your graph? ")
+            output_filename = input(
+                "What name would you like to give your graph? ")
             if not (".png" in output_filename or ".jpg" in output_filename):
                 output_filename = output_filename + ".png"
 
@@ -250,7 +255,7 @@ random_not_prev (rnp)")
         elif algorithm == "EXPERIMENT" or algorithm == "E":
             method = ""
             while method != "generate_solutions" and method != "optimize" and method != "plot_improvingrandom" and \
-            method != "plot_iteration_steps" and method != "plot_iteration_time":
+                    method != "plot_iteration_steps" and method != "plot_iteration_time":
                 print("Methods: \n \
 generate_solution (gs) \n \
 optimize (o) \n \
@@ -268,11 +273,11 @@ plot_iteration_time (pit)")
                     method = "plot_improvingrandom"
                 elif method == "pis":
                     method = "plot_iteration_steps"
-                elif method ==  "pit":
+                elif method == "pit":
                     method = "plot_iteration_time"
 
                 if method != "generate_solutions" and method != "optimize" and method != "plot_improvingrandom" and \
-                method != "plot_iteration_steps" and method != "plot_iteration_time":
+                        method != "plot_iteration_steps" and method != "plot_iteration_time":
                     print("\nPick a valid method\n")
 
                 experiment(input_filename, method)
@@ -292,7 +297,8 @@ plot_iteration_time (pit)")
 
         # lets the user save the solution
         while save_file == "YES" or save_file == 'Y':
-            save_filename = input("What name would you choose for your save file? ")
+            save_filename = input(
+                "What name would you choose for your save file? ")
             save_filename = check_filename(save_filename)
 
             # checks if file already exists
@@ -306,7 +312,8 @@ plot_iteration_time (pit)")
 
                 # asks whether user still wants to save the file
                 else:
-                    save_file = input("Want to pick a new name? (yes/no)").upper()
+                    save_file = input(
+                        "Want to pick a new name? (yes/no)").upper()
 
             # if no such file exists it saves the solution
             else:
@@ -315,7 +322,8 @@ plot_iteration_time (pit)")
 
         # if the solution is saved there is an option to create a corresponding visual
         if save_file == "YES" or save_file == 'Y':
-            answer = input("Do you want a visual of the solution? (yes/no)").upper()
+            answer = input(
+                "Do you want a visual of the solution? (yes/no)").upper()
             if answer == "YES" or answer == "Y":
                 visual(save_filename, len(solution) + 1, input_filename)
 
