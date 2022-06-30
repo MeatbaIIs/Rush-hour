@@ -64,7 +64,6 @@ Experiment (E)")
 
         # check if the filename points to the right folder and has the .csv extension, and adds them if not
         input_filename = check_filename(input_filename)
-        print(input_filename)
 
         # get the list of all the files in the data folder
         files = os.listdir("data")
