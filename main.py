@@ -8,7 +8,6 @@ This program lets the user go through a short menu to use the algorithms made in
 import csv
 from code.algorithms.beam_search import BeamSearch as BS
 from code.algorithms.breadth_first import BreadthFirst as BF
-from code.algorithms.breadth_first_iter import BreadthFirstIter as BFI
 from code.algorithms.depth_first import DepthFirst as DF
 from code.algorithms.improving_random import ImprovingRandom as IR
 from code.algorithms.remove_useless import RemoveUseless as RU
@@ -30,7 +29,6 @@ BreadthFirst (BF) \n \
 DepthFirst (DF) \n \
 Random (R) \n \
 ImprovingRandom (IR) \n \
-BreadthFirstIterating (BFI) \n \
 RemoveUseless (RU) \n \
 TakeOutLoops (TOL) \n \n\
 Experiments: \n \
@@ -192,22 +190,8 @@ random_not_prev (rnp)")
                 "How many iterations or how long would you like to run the algorithm? ").lower()
             start_time = time.perf_counter()
             ir = IR(grid)
-            solution = ir.run_improving(
-                method, amount, random_method=random_method)
+            solution = ir.run_improving(method, amount, random_method=random_method)
             print(solution)
-
-        elif algorithm == "BREADTHFIRSTITERATING" or algorithm == "BFI":
-            filename = ask_for_solution()
-
-            if filename[5:] not in files:
-                print("\nNo such file\n")
-                time.sleep(1)
-                continue
-
-            start_time = time.perf_counter()
-            old_solution = load_solution(filename)
-            bfi = BFI(grid, old_solution)
-            solution = bfi.run()
 
         elif algorithm == "REMOVEUSELESS" or algorithm == "RU":
             filename = ask_for_solution()
