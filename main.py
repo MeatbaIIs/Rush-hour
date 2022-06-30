@@ -49,7 +49,7 @@ Experiment (E)")
         if input_filename.upper() == "QUIT" or input_filename.upper() == 'Q':
             break
 
-        puzzle_numbers = range(1, 7)
+        puzzle_numbers = range(1, 8)
         if input_filename.isnumeric():
             number = int(input_filename)
 
@@ -64,6 +64,7 @@ Experiment (E)")
 
         # check if the filename points to the right folder and has the .csv extension, and adds them if not
         input_filename = check_filename(input_filename)
+        print(input_filename)
 
         # get the list of all the files in the data folder
         files = os.listdir("data")
