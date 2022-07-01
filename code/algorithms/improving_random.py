@@ -2,11 +2,8 @@
 Algorithm that solves a puzzle by continually search for a better random solution
 """
 import copy
-import queue
 import random
-import numpy as np
-from ..helpers import loader, MethodInputError
-import csv
+from ..helpers import MethodInputError
 import time
 from code.algorithms.random import Random
 
@@ -60,10 +57,6 @@ class ImprovingRandom(Random):
             # self._solution = []
             self.begin_new_solution()
 
-            # # stop when taking more steps than best solution
-            # while not self._grid.win() and counter < best_solution_len:
-            #     self._solution.append(self.random_step())
-            #     counter += 1
             self._solution, _ = self.run(random_method, best_solution_len + 1)
 
             # if a better solution is found, save it and look for better
