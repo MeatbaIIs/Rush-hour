@@ -2,12 +2,9 @@
 This file contains helper functions for the rest of the files in this project
 """
 import csv
-from typing import Dict
 from .classes.grid import Grid
 import re
-from typing import List, Dict
 import copy
-from csv import reader
 
 
 def loader(input_file_name):
