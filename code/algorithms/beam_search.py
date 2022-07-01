@@ -8,6 +8,7 @@ class BeamSearch(BreadthFirst):
         A Beam Search algorithm that runs like breadth first, only instead of saving the total_movements of all possible next steps, it only saves that of (one of) the furthest.
         """
         super().__init__(grid)
+        print("Running Beam-search algorithm")
 
     def get_next_total_movements(self, total_movements):
         """

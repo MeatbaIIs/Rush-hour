@@ -18,6 +18,7 @@ class BreadthFirst():
         # Visited is a set of tuples
         self._visited = set()
         self._visited.add(tuple(initial_list))
+        print("Running Breadth-first algorithm")
 
     def get_next_total_movements(self, total_movements):
         """ Get the next total_movements after all possible steps. """

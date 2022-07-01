@@ -12,6 +12,7 @@ class TakeOutLoops():
 
     def run(self):
         """ For a given solution, check if the same state is visited multiple times and take out the steps in between """
+        print("Running Take-Out-Loops algorithm")
         self._total_movements_sequence = steps_to_total_movements_sequence(
             self._grid, self._given_solution)
         counter = 0

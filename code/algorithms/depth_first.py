@@ -93,13 +93,14 @@ class DepthFirst():
         """
         Runs the depth-first algorithm with as little memory use as possible
         """
+        print("Running depth-first algorithm")
         total_movements_sequence = [[0 for i in range(len(self._grid.get_car_names()))]]
 
         if method != "furthest" and method != "optimal":
             raise MethodInputError
 
         while total_movements_sequence:
-            
+
             # get the last configuaration of the current total_movements_sequence
             last_total_movements = total_movements_sequence[-1]
             set_total_movements(self._grid, last_total_movements)

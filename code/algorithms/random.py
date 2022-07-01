@@ -20,6 +20,7 @@ class Random():
 
     def random_algorithm(self, depth = float('inf')):
         """Move a random car randomly and check for the win condition"""
+        print("running the random algorithm completely random")
         random_car = random.choice(list(self._grid._cars.keys()))
         self._previous_steps = []
 
@@ -50,6 +51,7 @@ class Random():
 
     def random_algorithm_max_move(self, depth = float('inf')):
         """Move a random car either forward or backward maximally and check for the win condition"""
+        print("Running random algorithm with furthest moves")
         random_car = random.choice(list(self._grid._cars.keys()))
         self._previous_steps = []
         current_depth = 0
@@ -90,6 +92,7 @@ class Random():
 
     def random_algorithm_all_cars(self, depth = float('inf')):
         """Move all cars one by one randomly and check for the win condition"""
+        print("Running random algorithm with picking cars one by one")
         st = time.time()
         current_depth = 0
         self._previous_steps = []

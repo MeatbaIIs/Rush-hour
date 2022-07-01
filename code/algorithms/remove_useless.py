@@ -10,10 +10,10 @@ class RemoveUseless():
         self._test_solution = []
 
     def correct_later_moves(self, car, distance, step):
-        """ 
-        Correct the next move of car 'car' after step 'step' for the given distance. 
+        """
+        Correct the next move of car 'car' after step 'step' for the given distance.
         If the next move of car is the same disance in the opposite direction, remove the next move as well.
-        Otherwise, add the given distance to the next move. 
+        Otherwise, add the given distance to the next move.
         """
         for i in range(step, len(self._test_solution)):
             if self._test_solution[i][0] == car:
@@ -43,11 +43,12 @@ class RemoveUseless():
         return False
 
     def run(self):
-        """ 
+        """
         Check for every move if it can be removed from the solution.
         Runs as long as new optimizations have been found
-        Returns the optimized solution 
+        Returns the optimized solution
         """
+        print("Running Remove Useless algorithm")
         found_optimization = True
 
         while found_optimization:
