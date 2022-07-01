@@ -182,8 +182,8 @@ class Grid():
     def get_empty_grid(self):
         return self._empty_grid
 
-    def set_grid(self, new_state):
-        self._grid = new_state
+    def set_grid(self, new_grid):
+        self._grid = new_grid
         return
 
     def get_car_names(self):
