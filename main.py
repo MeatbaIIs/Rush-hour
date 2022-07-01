@@ -112,7 +112,8 @@ optimal (o) \n ")
 
                 start_time = time.perf_counter()
                 old_solution = load_solution(filename)
-                df = DF(grid, best_solution = len(old_solution) - 1, solution = old_solution)
+                df = DF(grid, best_solution=len(
+                    old_solution) - 1, solution=old_solution)
                 solution = df.run(method)
 
             else:

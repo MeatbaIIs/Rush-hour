@@ -9,15 +9,14 @@ class BreadthFirst():
 
     def __init__(self, grid):
         self._grid = grid
-        initial_list = [0 for i in range(len(self._grid.get_car_names()))]
+        initial_total_movements = [
+            0 for i in range(len(self._grid.get_car_names()))]
 
-        # Queue is a queue of lists of lists
         self._queue = queue.Queue()
-        self._queue.put([initial_list])
+        self._queue.put([initial_total_movements])
 
-        # Visited is a set of tuples
         self._visited = set()
-        self._visited.add(tuple(initial_list))
+        self._visited.add(tuple(initial_total_movements))
         print("Running Breadth-first algorithm")
 
     def get_next_total_movements(self, total_movements):
