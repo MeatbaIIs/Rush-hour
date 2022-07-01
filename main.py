@@ -271,7 +271,7 @@ plot_iteration_time (pit)")
             continue
 
         print(f"Best solution found was of {len(solution)} steps")
-        
+
         if len(solution) < 100:
             print(solution)
 
