@@ -80,12 +80,10 @@ Experiment (E)")
         if algorithm == "BREADTHFIRST" or algorithm == "BF":
             bf = BF(grid)
             solution = bf.run()
-            print(solution)
 
         elif algorithm == "BEAMSEARCH" or algorithm == "BS":
             bs = BS(grid)
             solution = bs.run()
-            print(solution)
 
         elif algorithm == "DEPTHFIRST" or algorithm == 'DF':
             answer = input(
@@ -116,13 +114,11 @@ optimal (o) \n ")
                 old_solution = load_solution(filename)
                 df = DF(grid, best_solution = len(old_solution) - 1, solution = old_solution)
                 solution = df.run(method)
-                print(solution)
 
             else:
                 start_time = time.perf_counter()
                 DepthFirst = DF(grid)
                 solution = DepthFirst.run(method)
-                print(solution)
 
         elif algorithm == "RANDOM" or algorithm == 'R':
             method = ""
@@ -148,7 +144,6 @@ random_not_prev (rnp)")
             start_time = time.perf_counter()
             Rand = Random(grid)
             solution, time_taken = Rand.run(method)
-            print(solution)
 
         elif algorithm == "IMPROVINGRANDOM" or algorithm == "IR":
             method = ""
@@ -181,8 +176,10 @@ random_not_prev (rnp)")
 
                 if random_method == 'r':
                     random_method = "random"
+
                 elif random_method == "mr":
                     random_method = "max_random"
+
                 elif random_method == "rnp":
                     random_method = "random_not_prev"
 
@@ -191,7 +188,6 @@ random_not_prev (rnp)")
             start_time = time.perf_counter()
             ir = IR(grid)
             solution = ir.run_improving(method, amount, random_method=random_method)
-            print(solution)
 
         elif algorithm == "REMOVEUSELESS" or algorithm == "RU":
             filename = ask_for_solution()
@@ -205,7 +201,6 @@ random_not_prev (rnp)")
             old_solution = load_solution(filename)
             ru = RU(grid, old_solution)
             solution = ru.run()
-            print(solution)
 
         elif algorithm == "TAKEOUTLOOPS" or algorithm == "TOL":
             filename = ask_for_solution()
@@ -219,7 +214,6 @@ random_not_prev (rnp)")
             old_solution = load_solution(filename)
             tol = TOL(grid, old_solution)
             solution = tol.run()
-            print(solution)
 
         elif algorithm == "GENERATERUNTIMES" or algorithm == "GR":
             output_filename = input(
@@ -250,12 +244,16 @@ plot_iteration_time (pit)")
 
                 if method == "gs":
                     method = "generate_solutions"
+
                 elif method == "o":
                     method = "optimize"
+
                 elif method == "pi":
                     method = "plot_improvingrandom"
+
                 elif method == "pis":
                     method = "plot_iteration_steps"
+
                 elif method == "pit":
                     method = "plot_iteration_time"
 
@@ -271,6 +269,11 @@ plot_iteration_time (pit)")
             print("\nNo such algorithm\n")
             time.sleep(1)
             continue
+
+        print(f"Best solution found was of {len(solution)} steps")
+        
+        if len(solution) < 100:
+            print(solution)
 
         time_ran = time.perf_counter() - start_time
 
