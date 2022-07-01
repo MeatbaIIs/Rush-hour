@@ -1,77 +1,91 @@
 import copy
 from .breadth_first import BreadthFirst
 import queue
+from ..helpers import set_total_movements, total_movements_sequence_to_steps
 import random
 
 
 class BreadthFirstIter(BreadthFirst):
     def __init__(self, grid, solution):
-        self._grid = grid
+        super().__init__(grid)
+        self._start = []
+        self._end = []
         self._given_solution = solution
         self._car_indexes = {}
         for i, name in enumerate(self._grid.get_car_names()):
             self._car_indexes[name] = i
 
-        self._solution_states = []
-        self._solution_states.append(tuple([0 for i in self._car_indexes]))
+        self._total_movements_sequence = []
+        self._total_movements_sequence.append(
+            tuple([0 for i in self._grid.get_car_names()]))
         self._counter = 0
 
-    def load_solution(self):
+    def init_iteration(self, index):
+        self._start = self._total_movements_sequence[index]
+        self._end = self._total_movements_sequence[index+7]
+        self._visited = set()
+        self._visited.add(tuple(self._start))
+        self._queue = queue.Queue()
+        self._queue.put([self._start])
+        set_total_movements(self._grid, self._start)
 
+    def is_solution(self, total_movements_sequence):
+        if total_movements_sequence[-1] == self._end:
+            return True
+        return False
+
+    def load_solution(self):
         for car, distance in self._given_solution:
             car_index = self._car_indexes[car]
-            new_state = list(copy.deepcopy(self._solution_states[-1]))
-            new_state[car_index] += distance
-            self._solution_states.append(tuple(new_state))
-
-        return
-
-    def breadth_first_iteration(self, sequence_to_improve):
-        start_state = sequence_to_improve[0]
-        end_state = sequence_to_improve[-1]
-
-        bf_queue = queue.Queue()
-        bf_queue.put([start_state])
-        visited = set()
-        visited.add(start_state)
-
-        while not bf_queue.empty():
-
-            seq = bf_queue.get()
-            # print(f'{bf_queue.qsize()}')
-
-            if seq[-1] == end_state:
-                # print('found optimization')
-                self._counter += 1
-                return seq
-
-            if len(seq) >= len(sequence_to_improve):
-                # print('didnt find it')
-                return sequence_to_improve
-
-            last_state = seq[-1]
-
-            for new_state in self._grid.possible_next_lists(list(last_state)):
-                new_state = tuple(new_state)
-                if new_state in visited:
-                    continue
-
-                visited.add(new_state)
-                child = copy.deepcopy(seq)
-                child.append(new_state)
-                bf_queue.put(child)
+            new_total_movements = list(copy.deepcopy(
+                self._total_movements_sequence[-1]))
+            new_total_movements[car_index] += distance
+            self._total_movements_sequence.append(tuple(new_total_movements))
 
     def run(self):
-        """  """
+        """ Runs a breadth first algorithm """
+        while not self._queue.empty():
+
+            # Get total_movement_sequence from the queue
+            total_movements_sequence = self._queue.get()
+
+            if self.is_solution(total_movements_sequence):
+                solution = total_movements_sequence_to_steps(
+                    self._grid, total_movements_sequence)
+                break
+
+            # Get last total_movements
+            last_total_movements = list(total_movements_sequence[-1])
+
+            # Look for possible new total_movements after taking one step
+            for total_movements in self.get_next_total_movements(last_total_movements):
+                new_tuple = tuple(total_movements)
+
+                # Skip if total_movements encountered before
+                if new_tuple in self._visited:
+                    continue
+
+                # If not, put it in the queue
+                self._visited.add(new_tuple)
+                child = copy.deepcopy(total_movements_sequence)
+                child.append(total_movements)
+                self._queue.put(child)
+
+        return solution
+
+    def run_iterations(self):
         self.load_solution()
 
-        for index in range(len(self._solution_states)-7):
-            print(index)
-            # index = random.randrange(len(self._solution_states)-7)
-            seq = self._solution_states[index:index+7]
-            opt_seq = self.breadth_first_iteration(seq)
-            self._solution_states = self._solution_states[:index] + \
-                opt_seq + self._solution_states[index+7:]
+        for i in range(len(self._given_solution)-7):
+            # Run iteration
+            self.init_iteration(i)
+            optimized_sequence = self.run()
+
+            # Check if an improved sequence was found
+            if len(optimized_sequence) < 7:
+                self._counter += 1
+                self._solution_states = self._solution_states[:i] + \
+                    optimized_sequence + self._solution_states[i+7:]
 
         print(f'Found {self._counter} optimizations.')
         return self.solution_list_to_steps(self._solution_states)

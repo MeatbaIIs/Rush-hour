@@ -208,7 +208,7 @@ random_not_prev (rnp)")
             start_time = time.perf_counter()
             old_solution = load_solution(filename)
             bfi = BFI(grid, old_solution)
-            solution = bfi.run()
+            solution = bfi.run_iterations()
 
         elif algorithm == "REMOVEUSELESS" or algorithm == "RU":
             filename = ask_for_solution()
